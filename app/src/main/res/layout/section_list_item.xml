@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/llSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="6dp"
+        android:layout_marginRight="6dp"
+        android:background="@drawable/listitemstyle">
+        <TextView
+            android:id="@+id/tvSecNumber"
+            android:layout_width="40dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:paddingLeft="4dp"
+            android:layout_gravity="center"
+            android:textSize="34dp" />
+
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_weight="1">
+
+            <TableRow
+                android:id="@+id/trWidthSec"
+                android:layout_width="match_parent"
+                android:layout_height="24dp">
+
+                <TextView
+                    android:id="@+id/tvBaseWidth"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingTop="2dp"
+                    android:gravity="right"
+                    android:text="Base_Width:"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/valBaseWidth"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#D1D5D4"
+                    android:text="9500"/>
+
+                <TextView
+                    android:id="@+id/tvTopWidth"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingTop="2dp"
+                    android:gravity="right"
+                    android:text="Top_Width:"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/valTopWidth"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#D1D5D4"
+                    android:text="9500"/>
+            </TableRow>
+
+            <TableRow
+                android:id="@+id/trHeightSec"
+                android:layout_width="match_parent"
+                android:layout_marginBottom="4dp"
+                android:layout_height="24dp" >
+
+                <TextView
+                    android:id="@+id/tvSecHeight"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingTop="2dp"
+                    android:gravity="right"
+                    android:text="Height:"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/valSecHeight"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#D1D5D4"
+                    android:text="9500"/>
+
+                <TextView
+                    android:id="@+id/tvReserve"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp"
+                    android:layout_marginTop="4dp"
+                    android:paddingTop="2dp"
+                    android:gravity="right"
+                    android:text="Reserve:"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/valReserve"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
+                    android:layout_marginLeft="2dp"
+                    android:layout_marginRight="2dp"
+                    android:layout_marginTop="4dp"
+                    android:background="#D1D5D4"
+                    android:text=""/>
+            </TableRow>
+        </TableLayout>
+    </LinearLayout>
+</LinearLayout>

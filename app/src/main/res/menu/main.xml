@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/mHelp"
+        android:title="@string/menuitem1"
+        app:showAsAction="never">
+
+    </item>
+    <item
+        android:id="@+id/mNew"
+        android:title="@string/menuitem2"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/mPattern"
+        android:title="@string/menuitem3"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/mLoadFromServer"
+        android:title="@string/menuitem4"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/mSaveToServer"
+        android:title="@string/menuitem5"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/mLoadFromStorage"
+        android:title="@string/menuitem6"
+        app:showAsAction="never">
+    </item>
+    <item
+        android:id="@+id/mSaveToStorage"
+        android:title="@string/menuitem7"
+        app:showAsAction="never">
+    </item>
+
+    <item
+        android:id="@+id/mQuit"
+        android:title="@string/menuitem8"
+        app:showAsAction="never">
+    </item>
+</menu>
