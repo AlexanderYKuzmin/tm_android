@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity"
+    tools:context=".view.main.MainActivity"
     tools:viewBindingIgnore="true"
     android:background="@color/sandy">
 
@@ -30,7 +30,7 @@
             android:layout_marginRight="6dp"
             android:gravity="center_horizontal"
             android:lineSpacingExtra="8sp"
-            android:text="Last input object"
+            android:text="@string/title_last_loaded_building_ru"
             android:textColor="#271457"
             android:textSize="28dp"
             android:textStyle="bold" />
@@ -47,8 +47,8 @@
                 android:layout_marginTop="2dp"
                 android:layout_marginRight="4dp">
 
-                <TextView
-                    android:id="@+id/tvId"
+                <EditText
+                    android:id="@+id/etId"
                     android:layout_width="150dp"
                     android:layout_height="28dp"
                     android:layout_marginLeft="2dp"
@@ -58,7 +58,8 @@
                     android:background="@drawable/etinnershadow"
                     android:paddingLeft="6dp"
                     android:textColor="@color/black"
-                    android:textSize="16dp" />
+                    android:textSize="16dp"
+                    android:inputType="none"/>
 
                 <EditText
                     android:id="@+id/etObjectName"
@@ -168,7 +169,7 @@
                         android:layout_marginRight="6dp"
                         android:gravity="right"
                         android:paddingTop="2dp"
-                        android:text="Type:"
+                        android:text="@string/type_ru"
                         android:textSize="14dp" />
 
                     <Spinner
@@ -201,7 +202,7 @@
                         android:layout_marginRight="6dp"
                         android:gravity="right"
                         android:paddingTop="2dp"
-                        android:text="Config:"
+                        android:text="@string/conf_ru"
                         android:textSize="14dp" />
 
                     <Spinner
@@ -234,7 +235,7 @@
                         android:layout_marginRight="6dp"
                         android:gravity="right"
                         android:paddingTop="2dp"
-                        android:text="Height:"
+                        android:text="@string/section_height_ru"
                         android:textSize="14dp" />
 
                     <EditText
@@ -271,7 +272,7 @@
                         android:layout_marginRight="6dp"
                         android:gravity="right"
                         android:paddingTop="4dp"
-                        android:text="Sections:"
+                        android:text="@string/sections_ru"
                         android:textSize="14dp" />
 
                     <EditText
@@ -344,7 +345,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="Register" />
+            android:text="@string/register_btn_ru" />
 
         <Button
             android:id="@+id/btnContinue"
@@ -352,7 +353,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="Continue" />
+            android:text="@string/continue_btn_ru" />
 
         <Button
             android:id="@+id/btnReset"
@@ -360,7 +361,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:layout_margin="4dp"
-            android:text="RESET" />
+            android:text="@string/reset_btn_ru" />
     </TableRow>
 
 

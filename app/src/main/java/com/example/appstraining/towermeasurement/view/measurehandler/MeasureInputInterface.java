@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.measurehandler;
 
 import com.example.appstraining.towermeasurement.model.Measurement;
 

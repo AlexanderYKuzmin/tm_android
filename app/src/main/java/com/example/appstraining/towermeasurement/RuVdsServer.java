@@ -4,6 +4,7 @@ import android.util.Log;
 
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.RequestCode;
+import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -87,7 +88,7 @@ public class RuVdsServer {
     }
 
     public static void GET(MainPresenter mainPresenter, OkHttpClient client, RequestCode requestCode, int id
-            ,String name, String address) {
+            , String name, String address) {
         String getURL = URL + "?"
                 + "reqcode=" + requestCode + "&"
                 + "objname=" + name + "&"
@@ -106,11 +107,11 @@ public class RuVdsServer {
                 //mainPresenter.ruvdsThreadName = Thread.currentThread().getName();
                 switch (requestCode){
                     case GET:
-                        mainPresenter.building = createObjectFromJson(response.body().string());
+                        mainPresenter.setBuilding(createObjectFromJson(response.body().string()));
                         mainPresenter.isBuildingPrepared = true;
                         break;
                     case SEARCH:
-                        mainPresenter.buildingMap = createMapFromJson(response.body().string());
+                        mainPresenter.setBuildingMap(createMapFromJson(response.body().string()));
                         mainPresenter.isBuildingMapPrepared = true;
 
                 }

@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.measurehandler.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -6,7 +6,6 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -14,27 +13,29 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.appstraining.towermeasurement.MainPresenter;
-import com.example.appstraining.towermeasurement.MeasureInputPresenter;
-import com.example.appstraining.towermeasurement.databinding.DialogItemBinding;
+import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.view.main.MainPresenter;
+import com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputPresenter;
 import com.example.appstraining.towermeasurement.databinding.MeasureDialogFragmentBinding;
 
 public class MeasureDialogFragment extends DialogFragment {
-    final String LOG_TAG = "MeasureDialogFragment";
-    Context context;
-    MeasureInputPresenter mMeasureInputPresenter;
-    MeasureDialogFragmentBinding binding;
-    String[] measureConstantsStrArr;
-    int[] measureInputAngleFields;
+    private final String LOG_TAG = "MeasureDialogFragment";
+    private Context context;
+    private MeasureInputPresenter mMeasureInputPresenter;
+    private MeasureDialogFragmentBinding binding;
+    private String[] measureConstantsStrArr;
+    private int[] measureInputAngleFields;
+    private int[] measureDefaultValues;
 
-    int measureNum;
+    private int measureNum;
 
     public MeasureDialogFragment(Context context, MeasureInputPresenter presenter, int measureNum,
-                                 String[] params){
+                                 String[] params, int[] defaultValues){
         this.context = context;
         this.mMeasureInputPresenter = presenter;
         this.measureNum = measureNum;
         measureConstantsStrArr = params;
+        measureDefaultValues = defaultValues;
     }
 
     @NonNull
@@ -43,8 +44,10 @@ public class MeasureDialogFragment extends DialogFragment {
         //View v = getActivity().getLayoutInflater().inflate(R.layout.measure_dialog_fragment, null);
         binding = MeasureDialogFragmentBinding.inflate(LayoutInflater.from(getContext()));
 
+        setDefaultFieldData(binding);
+
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Insert measurement values")
+        builder.setTitle(R.string.title_measurement_dialog_ru)
                 .setView(binding.getRoot())
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -124,5 +127,21 @@ public class MeasureDialogFragment extends DialogFragment {
                 height
         };
         return angleFields;
+    }
+
+    private void setDefaultFieldData(MeasureDialogFragmentBinding binding) {
+        Log.d(LOG_TAG, "binding field [0] = " + measureDefaultValues[0]);
+        Log.d(LOG_TAG, "binding field [3] = " + measureDefaultValues[3]);
+
+        binding.etLeftDegMeasFrag.setText(String.valueOf(measureDefaultValues[0]));
+        binding.etLeftMinMeasFrag.setText(String.valueOf(measureDefaultValues[1]));
+        binding.etLeftSecMeasFrag.setText(String.valueOf(measureDefaultValues[2]));
+        binding.etRightDegMeasFrag.setText(String.valueOf(measureDefaultValues[3]));
+        binding.etRightMinMeasFrag.setText(String.valueOf(measureDefaultValues[4]));
+        binding.etRightSecMeasFrag.setText(String.valueOf(measureDefaultValues[5]));
+        binding.etAzimuthMeasFrag.setText(String.valueOf(measureDefaultValues[6]));
+        binding.etTheoDistanceMeasFrag.setText(String.valueOf(measureDefaultValues[7]));
+        binding.etTheoHeightMeasFrag.setText(String.valueOf(measureDefaultValues[8]));
+        binding.tvMeasureNumberMeasFrag.setText(String.valueOf(measureDefaultValues[9]));
     }
 }

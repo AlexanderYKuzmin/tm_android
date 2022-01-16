@@ -31,4 +31,123 @@
     <string name="startresults">startresults</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <!-- Russian -->
+    <string name="app_name_ru">АМС-контроль</string>
+    <!--<string name="emailhint">Email</string>
+    <string name="pwdhint">Password</string>-->
+
+    <!-- Menu -->
+    <string name="menuitem1_ru">Справка</string>
+    <string name="menuitem2_ru">Новый объект</string>
+    <string name="menuitem3_ru">Использовать шаблон</string>
+    <string name="menuitem4_ru">Загрузить из удаленной базы</string>
+    <string name="menuitem5_ru">Выгрузить в удаленную базу</string>
+    <string name="menuitem6_ru">Загрузить из утсройства</string>
+    <string name="menuitem7_ru">Выгрузить на устройство</string>
+    <string name="menuitem8_ru">Выход</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <!--<string name="hello_blank_fragment">Hello blank fragment</string>-->
+
+    <!-- Buttons -->
+    <string name="login_ru">Вход</string>
+
+
+    <!-- Titles -->
+
+    <string name="search_dialog_title_ru">Перечень доступных объектов</string>
+    <string name="search_request_title_ru">Введите параметры поиска</string>
+    <string name="title_view_selected_ru">Выбранный объект</string>
+    <string name="title_report_ru">Отчет</string>
+    <string name="title_new_ru">Новое сооружение</string>
+    <string name="title_last_loaded_building_ru">Последний объект</string>
+    <string name="sign_in">Авторизация:</string>
+
+    <!--&lt;!&ndash; parcel names &ndash;&gt;
+    <string name="measureslist">measureslist</string>
+    <string name="startmeasures">startmeasures</string>
+    <string name="ismeasureschanged">ismeasureschanged</string>
+    <string name="startresults">startresults</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
+    -->
+<!-- ***************** -->
+    <!-- Main Screen -->
+    <!-- TextView -->
+    <string name="sections_ru">Секции: </string>
+    <string name="conf_ru">Конфиг: </string>
+
+    <!-- Fragments -->
+    <!-- List of object -->
+    <string name="id">ID:</string>
+    <string name="name_ru">Назв:</string>
+    <string name="address_ru">Адр:</string>
+    <string name="date_ru">Дата:</string>
+
+    <!-- Sections parameters -->
+    <string name="base_width_ru">Основание:</string>
+    <string name="top_width_ru">Топ:</string>
+    <string name="section_height_ru">Высота:</string>
+    <string name="reserve_ru">Резерв:</string>
+
+    <!-- Fragment edit section dialog-->
+    <string name="section_dialog_fragment_title">Параметры секции</string>
+    <string name="section_ru">Секция № </string>
+    <string name="section_bottom_width_ru">Основание, мм:</string>
+    <string name="section_top_width_ru">Верх, мм:</string>
+    <string name="edit_section_height_ru">Высота, мм:</string>
+
+
+    <!-- Buttons -->
+    <string name="register_btn_ru">Регистрация</string>
+    <string name="continue_btn_ru">Продолжить</string>
+    <string name="reset_btn_ru">Сброс</string>
+    <string name="update_btn_ru">Обновить</string>
+    <string name="measure_btn_ru">Измерния</string>
+    <string name="ok_btn_ru">Ок</string>
+    <string name="cancel_btn_ru">Отмена</string>
+    <string name="report_btn_ru">Отчет</string>
+
+<!-- ***************** -->
+    <!-- Measurement screen -->
+
+    <string name="title_measure_activity_ru">Ввод измерений</string>
+
+    <string name="contractor_ru">Исполнитель</string>
+    <string name="measure_date_ru">Дата</string>
+
+    <!-- Fragment lv item-->
+    <string name="left_angle_ru">Левый</string>
+    <string name="right_angle_ru">Правый</string>
+    <string name="side_ru">Сторона:</string>
+    <string name="theo_distance_ru">Дистанция:</string>
+    <string name="theo_height_ru">Тео высота:</string>
+    <string name="azimuth_ru">Азимут:</string>
+    <string name="position_ru">Поз:</string>
+    <string name="date_hint_ru">ДД-ММ-ГГГГ</string>
+    
+    <!-- Measurement fragment dialog-->
+    <string name="title_measurement_dialog_ru">Ввод данных измерения</string>
+    <string name="measurement_number_ru">Измерение № </string>
+    <string name="left_angle_measurement_dialog_ru">Левый угол:</string>
+    <string name="right_angle_measurement_dialog_ru">Правый угол:</string>
+    <string name="distance_measurement_dialog_ru">Дистанция:</string>
+    <string name="azimuth_measurement_dialog_ru">Азимут:</string>
+    <string name="theo_height_measurement_dialog_ru">Тео высота:</string>
+    <string name="cancel_measurement_dialog">Отмена</string>
+<!-- ****************************** -->
+
+    <!-- Report Screen -->
+
+    <!-- TextView Report Screen-->
+    <string name="configuration_ru">Конфигурация: </string>
+    <string name="type_ru">Тип: </string>
+    <string name="height_ru">Высота, мм: </string>
+    <string name="tolerance_ru">Допуск, мм: </string>
+    <string name="total_offset_ru">Итоговое отклонение, мм: </string>
+
+    <!-- Buttons -->
+    <string name="full_info_ru">Больше даных</string>
+    <string name="create_report_ru">Сформировать отчет</string>
+
 </resources>

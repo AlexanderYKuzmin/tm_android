@@ -2,10 +2,9 @@ package com.example.appstraining.towermeasurement;
 
 import android.content.Context;
 import android.util.Log;
-import android.widget.SimpleAdapter;
 
 import com.example.appstraining.towermeasurement.model.Building;
-import com.example.appstraining.towermeasurement.model.LoadBuildingsAdapter;
+import com.example.appstraining.towermeasurement.view.main.fragments.LoadBuildingsAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

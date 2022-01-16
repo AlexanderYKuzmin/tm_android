@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.model;
+package com.example.appstraining.towermeasurement.view.main.fragments;
 
 import android.content.Context;
 import android.util.Log;

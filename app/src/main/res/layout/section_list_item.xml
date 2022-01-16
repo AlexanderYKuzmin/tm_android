@@ -42,7 +42,7 @@
                     android:layout_marginTop="4dp"
                     android:paddingTop="2dp"
                     android:gravity="right"
-                    android:text="Base_Width:"
+                    android:text="@string/base_width_ru"
                     android:textSize="16dp" />
 
                 <TextView
@@ -65,7 +65,7 @@
                     android:layout_marginTop="4dp"
                     android:paddingTop="2dp"
                     android:gravity="right"
-                    android:text="Top_Width:"
+                    android:text="@string/top_width_ru"
                     android:textSize="16dp" />
 
                 <TextView
@@ -95,7 +95,7 @@
                     android:layout_marginTop="4dp"
                     android:paddingTop="2dp"
                     android:gravity="right"
-                    android:text="Height:"
+                    android:text="@string/section_height_ru"
                     android:textSize="16dp" />
 
                 <TextView
@@ -118,7 +118,7 @@
                     android:layout_marginTop="4dp"
                     android:paddingTop="2dp"
                     android:gravity="right"
-                    android:text="Reserve:"
+                    android:text="@string/reserve_ru"
                     android:textSize="16dp" />
 
                 <TextView

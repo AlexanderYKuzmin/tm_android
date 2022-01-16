@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.view.main;
 
 import android.content.Context;
 import android.os.Build;
@@ -10,6 +10,10 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
+import com.example.appstraining.towermeasurement.DrawPreparation;
+import com.example.appstraining.towermeasurement.LocalDBExplorer;
+import com.example.appstraining.towermeasurement.RuVdsServer;
+import com.example.appstraining.towermeasurement.Util;
 import com.example.appstraining.towermeasurement.model.BaseOrTop;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.BuildingType;
@@ -19,7 +23,7 @@ import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.RequestCode;
 import com.example.appstraining.towermeasurement.model.Result;
 import com.example.appstraining.towermeasurement.model.Section;
-import com.example.appstraining.towermeasurement.view.MainViewInterface;
+import com.example.appstraining.towermeasurement.view.main.MainViewInterface;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -41,16 +45,16 @@ public class MainPresenter implements LifecycleObserver {
     Context context;
     Properties properties;
 
-    boolean isBuildingMapPrepared = false;
-    boolean isBuildingPrepared = false;
+    public boolean isBuildingMapPrepared = false;
+    public boolean isBuildingPrepared = false;
     public static boolean isMeasuresChanged = false;
 
     LocalDBExplorer dbExplorer;
     DrawPreparation drawPreparation;
 
-    Building building = null;
+    private Building building;
     Map<Integer, Building> buildingMap;
-    SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     public MainPresenter(MainViewInterface mainActivity, Context context){
         mMainActivity = mainActivity;
@@ -58,11 +62,30 @@ public class MainPresenter implements LifecycleObserver {
         dbExplorer = new LocalDBExplorer(context);
         drawPreparation = new DrawPreparation(this);
     }
+
+    public void setBuilding(Building building) {
+        this.building = building;
+    }
+
+    //@OnLifecycleEvent(Lifecycle.Event.ON_START)
+    public Building getBuilding(int id) {
+        return null;
+    }
+
+    public Building getBuilding(){
+        return building;
+    }
+
     public void getSectionListAdapter() {
         //Intent intent = new Intent(context, SectionsViewPager.class);
        // mMainActivity.start
 
     }
+
+    public void setBuildingMap(Map<Integer, Building> buildingMap) {
+        this.buildingMap = buildingMap;
+    }
+
 
 
     public void createBuilding(String... params) {                  // for tab "new" menu
@@ -137,20 +160,6 @@ public class MainPresenter implements LifecycleObserver {
                 + "measurements size = " + building.getMeasurements().size() + "\n"
                 + "results size = " + building.getResults().size()
         );
-    }
-
-    public void setBuilding(Building building) {
-        this.building = building;
-    }
-
-    //@OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public Building getBuilding(int id) {
-
-        return null;
-    }
-
-    public Building getBuilding(){
-        return building;
     }
 
     public void getBuildingFromFile(){ // get rid of it

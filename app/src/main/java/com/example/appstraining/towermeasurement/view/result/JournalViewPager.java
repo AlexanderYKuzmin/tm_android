@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.result;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;

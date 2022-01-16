@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.start;
 
 import android.content.Intent;
 import android.os.Build;
@@ -13,8 +13,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.example.appstraining.towermeasurement.AuthPresenter;
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.view.main.MainActivity;
 
 public class StartActivity extends AppCompatActivity implements AuthView {
     TextView tvGreating;
@@ -36,7 +36,8 @@ public class StartActivity extends AppCompatActivity implements AuthView {
 
         tvGreating = (TextView) findViewById(R.id.tvGreating);
         tvGreating.setGravity(Gravity.CENTER);
-        tvGreating.setText("Welcome to\n Tower Measurement!");
+        /*tvGreating.setText("Welcome to\n Tower Measurement!");*/
+        tvGreating.setText("Добро пожаловать в\n АМС-контроль!");
         tvGreating.setTextAppearance(R.style.TitleStyle);
         tvGreating.setShadowLayer(5,8,8, getResources().getColor(R.color.text_shadow));
 

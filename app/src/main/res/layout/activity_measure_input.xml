@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MeasureInputActivity"
+    tools:context=".view.measurehandler.MeasureInputActivity"
     android:background="#EFBA60">
 
     <TextView
@@ -13,7 +13,7 @@
         android:layout_height="36dp"
         android:layout_marginTop="6dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/title_measure_activity"
+        android:text="@string/title_measure_activity_ru"
         android:textColor="#271457"
         android:textSize="30dp"
         android:textStyle="bold"
@@ -43,7 +43,7 @@
                 android:layout_marginRight="2dp"
                 android:paddingLeft="4dp"
                 android:layout_weight="0.75"
-                android:hint="Contractor"
+                android:hint="@string/contractor_ru"
                 android:textSize="24dp"
                 android:background="@drawable/etinnershadow"/>
 
@@ -55,7 +55,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:paddingLeft="4dp"
-                android:hint="DD-MM-YYYY"
+                android:hint="@string/date_hint_ru"
                 android:inputType="date"
                 android:textSize="24dp"
                 android:background="@drawable/etinnershadow"/>
@@ -73,7 +73,7 @@
                 android:layout_weight="0.6"
                 android:textAlignment="center"
                 android:textSize="12dp"
-                android:text="Contractor"/>
+                android:text="@string/contractor_ru"/>
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -82,7 +82,7 @@
                 android:layout_weight="0.4"
                 android:textAlignment="center"
                 android:textSize="12dp"
-                android:text="Date"/>
+                android:text="@string/measure_date_ru"/>
 
         </TableRow>
 

@@ -12,8 +12,9 @@ import android.view.View;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.ReportPreparePresenter;
 import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
-import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.Result;
+import com.example.appstraining.towermeasurement.view.result.GraphViewPager;
+import com.example.appstraining.towermeasurement.view.result.JournalViewPager;
 
 import java.util.ArrayList;
 import java.util.Comparator;

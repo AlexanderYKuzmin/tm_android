@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.StartActivity"
+    tools:context=".view.start.StartActivity"
     tools:viewBindingIgnore="true">
 
     <LinearLayout
@@ -43,7 +43,7 @@
             android:layout_marginLeft="20dp"
             android:layout_marginTop="18dp"
             android:gravity="center_vertical"
-            android:text="Sign in"
+            android:text="@string/sign_in"
             android:textColor="#271457"
             android:textSize="22dp"
             android:textStyle="bold" />
@@ -111,7 +111,8 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal"
                     android:layout_weight="1"
-                    android:text="Login" />
+                    android:text="@string/login_ru"
+                    android:textSize="16dp"/>
 
             </TableRow>
         </TableLayout>

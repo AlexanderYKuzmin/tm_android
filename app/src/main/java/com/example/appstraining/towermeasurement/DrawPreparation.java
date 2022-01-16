@@ -2,10 +2,8 @@ package com.example.appstraining.towermeasurement;
 
 import android.util.Log;
 
-import com.example.appstraining.towermeasurement.model.BaseOrTop;
 import com.example.appstraining.towermeasurement.model.Building;
-import com.example.appstraining.towermeasurement.model.Measurement;
-import com.example.appstraining.towermeasurement.model.Section;
+import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 
 public class DrawPreparation {
     private final String LOG_TAG = "DrawPreparation";

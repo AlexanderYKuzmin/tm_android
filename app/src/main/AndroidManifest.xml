@@ -14,12 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TowerMeasurement"
         android:usesCleartextTraffic="true">
-        <activity android:name=".view.JournalViewPager"></activity>
+        <activity android:name=".view.result.JournalViewPager"></activity>
         <activity android:name=".view.ReportPrepareActivity" />
-        <activity android:name=".view.MeasureInputActivity" />
-        <activity android:name=".view.GraphViewPager" />
-        <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.StartActivity">
+        <activity android:name=".view.measurehandler.MeasureInputActivity" />
+        <activity android:name=".view.result.GraphViewPager" />
+        <activity android:name=".view.main.MainActivity" />
+        <activity android:name=".view.start.StartActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

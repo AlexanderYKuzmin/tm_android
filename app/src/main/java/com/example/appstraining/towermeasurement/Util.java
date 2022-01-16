@@ -6,14 +6,11 @@ import android.os.Build;
 
 import androidx.annotation.RequiresApi;
 
-import com.example.appstraining.towermeasurement.view.MainActivity;
-
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.nio.file.Files;
 import java.util.Properties;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)

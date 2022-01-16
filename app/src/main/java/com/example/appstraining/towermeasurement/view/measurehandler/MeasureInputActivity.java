@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.measurehandler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -10,11 +10,11 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.SimpleAdapter;
 
-import com.example.appstraining.towermeasurement.MeasureInputPresenter;
 import com.example.appstraining.towermeasurement.MeasureListAdapterHelper;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.databinding.ActivityMeasureInputBinding;
 import com.example.appstraining.towermeasurement.model.Measurement;
+import com.example.appstraining.towermeasurement.view.measurehandler.fragments.MeasureDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,7 +31,8 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
     public static final int LEFT_LIST = 0;  // the list of angles on the left tower's side
     public static final int RIGHT_LIST = 1;
 
-    String[] constants;
+    private String[] constants;
+    private int[] defaultValues;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     @Override
@@ -95,7 +96,9 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
         if(binding.etTheoDistance.getText() == null)  binding.etTheoDistance.setText("0");
         if(binding.etTheoHeight.getText() == null)  binding.etTheoHeight.setText("0");*/
         constants = getConstants(); // Contractor, Date, Distance, Height
-        new MeasureDialogFragment(this, measureInputPresenter, position + 1, constants)
+        defaultValues = measureInputPresenter.getSingleMeasurementData(position);
+        Log.d(LOG_TAG, "Default Values = " + defaultValues);
+        new MeasureDialogFragment(this, measureInputPresenter, position + 1, constants, defaultValues)
                 .show(getSupportFragmentManager(), null);
     }
 

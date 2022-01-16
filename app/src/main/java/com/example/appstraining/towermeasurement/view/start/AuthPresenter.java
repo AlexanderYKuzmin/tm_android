@@ -1,8 +1,8 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.view.start;
 
 import android.content.Context;
 
-import com.example.appstraining.towermeasurement.view.AuthView;
+import com.example.appstraining.towermeasurement.view.start.AuthView;
 
 public class AuthPresenter {
     private Context context;

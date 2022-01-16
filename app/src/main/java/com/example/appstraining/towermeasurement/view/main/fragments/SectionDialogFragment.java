@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.main.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.appstraining.towermeasurement.MainPresenter;
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 
 public class SectionDialogFragment extends DialogFragment {
     final String LOG_TAG = "SectionDialogFragment";
@@ -42,7 +42,7 @@ public class SectionDialogFragment extends DialogFragment {
         etHeight = v.findViewById(R.id.etHeight_secFrag);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle("Change section parameters")
+        builder.setTitle(R.string.section_dialog_fragment_title)
                 .setView(v)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override

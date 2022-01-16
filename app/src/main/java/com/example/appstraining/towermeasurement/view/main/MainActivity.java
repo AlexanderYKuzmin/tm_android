@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.main;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -9,7 +9,6 @@ import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,13 +25,18 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.appstraining.towermeasurement.MainPresenter;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.SectionListAdapterHelper;
 import com.example.appstraining.towermeasurement.SpinnerConfigAdapterHelper;
 import com.example.appstraining.towermeasurement.SpinnerTypeAdapterHelper;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.model.Section;
+import com.example.appstraining.towermeasurement.view.InnerSearchDialogFragment;
+import com.example.appstraining.towermeasurement.view.main.fragments.SearchDialogFragment;
+import com.example.appstraining.towermeasurement.view.main.fragments.SectionDialogFragment;
+import com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputActivity;
+import com.example.appstraining.towermeasurement.view.ReportPrepareActivity;
+import com.example.appstraining.towermeasurement.view.TowerModelingFragment;
 
 import java.util.ArrayList;
 
@@ -51,7 +55,8 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     private MainActivityMode activityMode = MainActivityMode.LAST_LOADED_OBJECT;
 
     TextView tvTitle;
-    TextView tvId;
+    //TextView tvId;
+    EditText etId;
     //EditText tvId_1;
     EditText etName, etAddress;
     Spinner spinnerType, spinnerConfig;
@@ -74,7 +79,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         setContentView(R.layout.activity_main);
 
         tvTitle = (TextView) findViewById(R.id.tvTitle);
-        tvId = (TextView) findViewById(R.id.tvId);
+        etId = findViewById(R.id.etId);
         //tvId_1 = (EditText) findViewById(R.id.etId);
         etName = (EditText) findViewById(R.id.etObjectName);
         etAddress = (EditText) findViewById(R.id.etAddress);
@@ -209,14 +214,14 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                         new SearchDialogFragment(this, mainPresenter,
                                 etName.getText().toString(),
                                 etAddress.getText().toString(),
-                                R.string.search_dialog_title).show(getSupportFragmentManager(), null);
+                                R.string.search_dialog_title_ru).show(getSupportFragmentManager(), null);
                         activityMode = MainActivityMode.LAST_LOADED_OBJECT;
                         Log.d(LOG_TAG, "ActivityMode changed to " + activityMode.toString());
                         break;
                     case LOAD_FROM_STORAGE:
                         // to do
                         new InnerSearchDialogFragment(this,
-                                R.string.search_dialog_title,
+                                R.string.search_dialog_title_ru,
                                 etName.getText().toString(),
                                 etAddress.getText().toString(),
                                 mainPresenter).show(getSupportFragmentManager(), null);
@@ -247,6 +252,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                     case NEW:  // btnSecond name is CONTINUE
                         break;
                     case LAST_LOADED_OBJECT: // btnSecond name is MEASURE
+                    case SELECTED_OBJECT:
                         Intent intent = new Intent(context, MeasureInputActivity.class);
                         intent.putParcelableArrayListExtra(getString(R.string.startmeasures), mainPresenter.getMeasurements());
                         startActivityForResult(intent, MEASURE_ACTIVITY_REQUEST_CODE);
@@ -320,10 +326,13 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
         switch (activityMode) {
             case NEW:
-                title = this.getString(R.string.title_new);
-                btnFirst.setText("REGISTER");
-                btnSecond.setText("CONTINUE");
-                btnThird.setText("RESET");
+                removeAnimatedModel();
+                title = this.getString(R.string.title_new_ru);
+
+                btnFirst.setText(R.string.register_btn_ru);
+                btnSecond.setText(R.string.continue_btn_ru);
+                btnThird.setText(R.string.reset_btn_ru);
+
                 updateFocusable(false,true, true, true, true
                         , true,true
                 );
@@ -331,8 +340,9 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
             case LOAD_FROM_SERVER:
 
             case LOAD_FROM_STORAGE:
-                title = this.getString(R.string.search_request_title);
-                tvId.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
+                removeAnimatedModel();
+                title = this.getString(R.string.search_request_title_ru);
+                etId.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
                 etSectionsNumber.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
                 etHeight.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
                 spinnerType.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
@@ -340,16 +350,16 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 updateFocusable(false,true, true, false, false
                         , false,false
                 );
-                btnFirst.setText("CANCEL");
-                btnSecond.setText("OK");
-                btnThird.setText("RESET");
+                btnFirst.setText(R.string.cancel_btn_ru);
+                btnSecond.setText(R.string.ok_btn_ru);
+                btnThird.setText(R.string.reset_btn_ru);
                 break;
 
             case USE_TEMPLATE:
                 break;
             case LAST_LOADED_OBJECT:
-                title = this.getString(R.string.title_last_loaded_building);
-                tvId.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
+                title = this.getString(R.string.title_last_loaded_building_ru);
+                etId.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 etSectionsNumber.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 etHeight.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 spinnerType.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
@@ -364,14 +374,14 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 updateFocusable(false, false, false, false, false,
                         false, false);
                 //tvId.setText(id);
-                btnFirst.setText("UPDATE");
-                btnSecond.setText("MEASURE");
-                btnThird.setText("REPORT");
+                btnFirst.setText(R.string.update_btn_ru);
+                btnSecond.setText(R.string.measure_btn_ru);
+                btnThird.setText(R.string.report_btn_ru);
                 break;
             case SELECTED_OBJECT:
-                title = this.getString(R.string.title_view_selected);
+                title = this.getString(R.string.title_view_selected_ru);
                 //tvId_1 = (EditText) findViewById(R.id.etId) ;
-                tvId.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
+                etId.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 etSectionsNumber.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 etHeight.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 spinnerType.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
@@ -388,16 +398,16 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 numberOfSections = String.valueOf(mainPresenter.getBuilding().getNumberOfSections());
                 updateFocusable(false, false, false, false, false,
                         false, false);
-                btnFirst.setText("UPDATE");
-                btnSecond.setText("MEASURE");
-                btnThird.setText("REPORT");
+                btnFirst.setText(R.string.update_btn_ru);
+                btnSecond.setText(R.string.measure_btn_ru);
+                btnThird.setText(R.string.report_btn_ru);
 
         }
 
         tvTitle.setText(String.valueOf(title));
         tvTitle.setShadowLayer(3,4,4, getResources().getColor(R.color.text_shadow));
-        tvId.setText(id);
-        Log.d(LOG_TAG, "tvId get Text: " + tvId.getText().toString());
+        etId.setText(id);
+        Log.d(LOG_TAG, "tvId get Text: " + etId.getText().toString());
         //Log.d(LOG_TAG, "tvId_1 get Text: " + tvId_1.getText().toString());
         etName.setText(name);
         etAddress.setText(address);
@@ -406,24 +416,23 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         etHeight.setText(height);
         etSectionsNumber.setText(numberOfSections);
 
-        if(!(activityMode == MainActivityMode.NEW
+        if (!(activityMode == MainActivityMode.NEW
                 || activityMode == MainActivityMode.LOAD_FROM_SERVER
                 || activityMode == MainActivityMode.LOAD_FROM_STORAGE))
         {
             Log.d(LOG_TAG, "createBtnMode = " + String.valueOf(activityMode));
             sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
-            simpleAdapter.notifyDataSetChanged();
             // here to start tower model
         } else {
             sectionListAdapterHelper.updateAdapter();
-            simpleAdapter.notifyDataSetChanged();
         }
+        simpleAdapter.notifyDataSetChanged();
     }
 
     @Override
     public void updateFocusable(boolean fId, boolean fName, boolean fAddress, boolean fType, boolean fConfig
             , boolean fHeight, boolean fNumberOfSections) {
-        tvId.setFocusable(fId);
+        etId.setFocusable(fId);
         etName.setFocusable(fName);
         etAddress.setFocusable(fAddress);
         etHeight.setFocusable(fHeight);
@@ -444,8 +453,10 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     }
 
     public void removeAnimatedModel(){
-        FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.remove(modelingFragment);
-        fragmentTransaction.commit();
+        if (modelingFragment != null) {
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+            fragmentTransaction.remove(modelingFragment);
+            fragmentTransaction.commit();
+        }
     }
 }

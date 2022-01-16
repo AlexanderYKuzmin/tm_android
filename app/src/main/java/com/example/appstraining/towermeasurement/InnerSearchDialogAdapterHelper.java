@@ -5,7 +5,6 @@ import android.util.Log;
 import android.widget.SimpleAdapter;
 
 import com.example.appstraining.towermeasurement.model.Building;
-import com.example.appstraining.towermeasurement.model.LoadBuildingsAdapter;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

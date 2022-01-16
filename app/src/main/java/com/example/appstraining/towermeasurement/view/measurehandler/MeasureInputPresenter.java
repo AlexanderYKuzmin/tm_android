@@ -1,12 +1,11 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.view.measurehandler;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.example.appstraining.towermeasurement.model.Measurement;
-import com.example.appstraining.towermeasurement.view.MeasureInputInterface;
+import com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputInterface;
 
-import java.sql.Date;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -15,7 +14,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.example.appstraining.towermeasurement.view.MeasureInputActivity.LEFT_LIST;
+import static com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputActivity.LEFT_LIST;
 
 public class MeasureInputPresenter {
     private final String LOG_TAG = "MeasureInputPresenter";
@@ -152,4 +151,23 @@ public class MeasureInputPresenter {
         int leftSec = Integer.parseInt(fields[2]);
         int rightDeg = Integer.parseInt(fields)
     }*/
+
+    public int[] getSingleMeasurementData(int position) {
+        Measurement measurement = measurements.get(position);
+        int[] leftAngleDeg = fromDecToDeg(measurement.getLeftAngle());
+        int[] rightAngleDeg = fromDecToDeg(measurement.getRightAngle());
+
+        return  new int[]{
+                leftAngleDeg[0],
+                leftAngleDeg[1],
+                leftAngleDeg[2],
+                rightAngleDeg[0],
+                rightAngleDeg[1],
+                rightAngleDeg[2],
+                measurement.getAzimuth(),
+                measurement.getDistance(),
+                measurement.getTheoHeight(),
+                measurement.getNumber()
+        };
+    }
 }

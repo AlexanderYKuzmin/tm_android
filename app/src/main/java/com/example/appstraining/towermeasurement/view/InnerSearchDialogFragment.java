@@ -2,13 +2,11 @@ package com.example.appstraining.towermeasurement.view;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -20,11 +18,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.InnerSearchDialogAdapterHelper;
-import com.example.appstraining.towermeasurement.MainPresenter;
+import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.R;
-import com.example.appstraining.towermeasurement.SearchDialogAdapterHelper;
 import com.example.appstraining.towermeasurement.model.Building;
-import com.example.appstraining.towermeasurement.model.LoadBuildingsAdapter;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 
 import java.util.Map;
