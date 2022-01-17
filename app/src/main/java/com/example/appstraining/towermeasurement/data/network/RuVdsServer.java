@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.data.network;
 
 import android.util.Log;
 

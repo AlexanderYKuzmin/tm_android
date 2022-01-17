@@ -10,7 +10,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.appstraining.towermeasurement.R;
-import com.example.appstraining.towermeasurement.ReportPreparePresenter;
+import com.example.appstraining.towermeasurement.view.result.ReportPreparePresenter;
 import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
 import com.example.appstraining.towermeasurement.model.Result;
 import com.example.appstraining.towermeasurement.view.result.GraphViewPager;

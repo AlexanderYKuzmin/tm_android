@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.util;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -14,7 +14,7 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-public class Util {
+public class AppPropertyHandler {
 
     private static String FILENAME = "/app.properties";
     public static String getProperty(String key, Context context) {

@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.view.result;
 
 import android.content.Context;
 import android.os.Build;
@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.appstraining.towermeasurement.data.localDB.LocalDBExplorer;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.Result;
@@ -40,7 +41,7 @@ public class ReportPreparePresenter {
         this.levels = levels;
 
         localDBExplorer = new LocalDBExplorer(reportPrepareActivity.getApplicationContext());
-        reportBuilding = localDBExplorer.getBuilding(buildingID);
+        reportBuilding = localDBExplorer.get(buildingID);
         for(Result r : reportBuilding.getResults()) {
             Log.d(LOG_TAG, "result id = " + r.getId());
         }

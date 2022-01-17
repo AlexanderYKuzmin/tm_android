@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.model;
+package com.example.appstraining.towermeasurement.model.openGL;
 
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;

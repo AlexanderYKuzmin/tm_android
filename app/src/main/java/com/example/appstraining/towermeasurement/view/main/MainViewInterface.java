@@ -18,5 +18,5 @@ public interface MainViewInterface {
 
     void showAnimatedModel(Bundle bundle);
 
-
+    void removeAnimatedModel();
 }

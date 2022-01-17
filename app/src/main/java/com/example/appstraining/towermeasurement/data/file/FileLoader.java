@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.data.file;
 
 import android.content.Context;
 import android.os.Build;
@@ -7,12 +7,10 @@ import android.util.Log;
 import androidx.annotation.RequiresApi;
 
 import com.example.appstraining.towermeasurement.model.Building;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.example.appstraining.towermeasurement.util.JsonConverter;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;

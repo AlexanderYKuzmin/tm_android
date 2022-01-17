@@ -3,7 +3,7 @@ package com.example.appstraining.towermeasurement.view;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.example.appstraining.towermeasurement.DBHelper;
+import com.example.appstraining.towermeasurement.data.localDB.DBHelper;
 import com.example.appstraining.towermeasurement.model.Building;
 
 public class DataLoader {

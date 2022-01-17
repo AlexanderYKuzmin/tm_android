@@ -1,10 +1,9 @@
-package com.example.appstraining.towermeasurement.view.measurehandler;
+package com.example.appstraining.towermeasurement.view.measurement;
 
 import android.content.Context;
 import android.util.Log;
 
 import com.example.appstraining.towermeasurement.model.Measurement;
-import com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputInterface;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -14,7 +13,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputActivity.LEFT_LIST;
+import static com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity.LEFT_LIST;
 
 public class MeasureInputPresenter {
     private final String LOG_TAG = "MeasureInputPresenter";

@@ -10,10 +10,10 @@ import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 
-import com.example.appstraining.towermeasurement.DrawPreparation;
-import com.example.appstraining.towermeasurement.LocalDBExplorer;
-import com.example.appstraining.towermeasurement.RuVdsServer;
-import com.example.appstraining.towermeasurement.Util;
+import com.example.appstraining.towermeasurement.model.openGL.DrawPreparation;
+import com.example.appstraining.towermeasurement.data.localDB.LocalDBExplorer;
+import com.example.appstraining.towermeasurement.data.network.RuVdsServer;
+import com.example.appstraining.towermeasurement.util.AppPropertyHandler;
 import com.example.appstraining.towermeasurement.model.BaseOrTop;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.BuildingType;
@@ -23,7 +23,6 @@ import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.RequestCode;
 import com.example.appstraining.towermeasurement.model.Result;
 import com.example.appstraining.towermeasurement.model.Section;
-import com.example.appstraining.towermeasurement.view.main.MainViewInterface;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -49,7 +48,7 @@ public class MainPresenter implements LifecycleObserver {
     public boolean isBuildingPrepared = false;
     public static boolean isMeasuresChanged = false;
 
-    LocalDBExplorer dbExplorer;
+    private final LocalDBExplorer dbExplorer;
     DrawPreparation drawPreparation;
 
     private Building building;
@@ -200,6 +199,7 @@ public class MainPresenter implements LifecycleObserver {
     public void mountBuilding(MainActivityMode activityMode) {
         //this.building = building;
         //mMainActivity.updateSectionList(getSections());
+        //mMainActivity.removeAnimatedModel();
         mMainActivity.updateView(activityMode);
 
         /*mMainActivity.updateView(context.getString(R.string.title_view_selected)
@@ -213,7 +213,7 @@ public class MainPresenter implements LifecycleObserver {
         bundle.putFloatArray("toweredges", drawPreparation.getDrawingSequence(TOWER_EDGES));
         bundle.putInt("config", building.getConfig());
         bundle.putInt("levels", building.getNumberOfSections() + 1);
-        mMainActivity.showAnimatedModel(bundle);
+        //mMainActivity.showAnimatedModel(bundle);
 
     }
 
@@ -343,7 +343,7 @@ public class MainPresenter implements LifecycleObserver {
     public void getLastInputObject() {
         int id = 0;
         try {
-            String idStr = Util.getProperty("id", context);
+            String idStr = AppPropertyHandler.getProperty("id", context);
             if(idStr != null) id = Integer.parseInt(idStr);
         } finally {
             if(id > 0) {
@@ -360,11 +360,11 @@ public class MainPresenter implements LifecycleObserver {
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
-    public void quit() {                                            // save last edit object id to property
+    public void setLastInputObject() {                                            // save last edit object id to property
         //new FileLoader(context).saveBuildingToFile(building);
         Log.d(LOG_TAG, "Method quit started set id = " + building.getId());
         try {
-            Util.setProperty("id", String.valueOf(building.getId()), context);
+            AppPropertyHandler.setProperty("id", String.valueOf(building.getId()), context);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -529,22 +529,22 @@ public class MainPresenter implements LifecycleObserver {
     }
 */
     public void saveToLocalDB() {
-        LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
-        localDBExplorer.update(building);
-        localDBExplorer.closeDB();
+        //LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
+        dbExplorer.update(building);
+        dbExplorer.closeDB();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void saveToLocalDB(Integer... ids) {
-        LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
+        //LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
         ArrayList<Building> chosenBuildings = new ArrayList<>();
         for(int i = 0; i < ids.length; i++) {
             chosenBuildings.add(buildingMap.get(ids[i]));
             Log.d(LOG_TAG, "Building added ot LocalDatabase id = " + ids[i]);
             //if(i == (ids.length - 1)) building = chosenBuildings.get(i);
         }
-        localDBExplorer.insert(chosenBuildings);
-        localDBExplorer.closeDB();
+        dbExplorer.save(chosenBuildings);
+        dbExplorer.closeDB();
 
         /*String queryB = "insert or replace into buildings " +
                 "(b_id, b_name, b_address, b_type, b_config, " +
@@ -638,7 +638,7 @@ public class MainPresenter implements LifecycleObserver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void loadFromLocalDB(int building_id) {
         LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
-        building = localDBExplorer.getBuilding(building_id);
+        building = localDBExplorer.get(building_id);
         localDBExplorer.closeDB();
     }
 }

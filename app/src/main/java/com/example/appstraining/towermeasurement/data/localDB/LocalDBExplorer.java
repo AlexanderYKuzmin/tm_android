@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.data.localDB;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -20,7 +20,6 @@ import com.example.appstraining.towermeasurement.model.Section;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -47,11 +46,13 @@ public class LocalDBExplorer {
     }
 
     public void update(Building building) {
+        localDB = dbHelper.getWritableDatabase();
         Log.d(LOG_TAG, "Starting update building in SQLite id = " + building.getId() +
                 "Number of Sections = " + building.getNumberOfSections());
         int updCountB = 0, updCountS = 0, updCountM = 0, updCountR = 0;
         updCountB = localDB.update("buildings", getBuildingCV(building, MODE_UPDATE),
                 "b_id = ?", new String[] { String.valueOf(building.getId())});
+
         Log.d(LOG_TAG, "update building = " + updCountB);
 
         for (int i = 0; i < building.getNumberOfSections(); i++) {
@@ -95,7 +96,7 @@ public class LocalDBExplorer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Building getBuilding(int id) {
+    public Building get(int id) {
         Log.d(LOG_TAG, "Load building from local DB started id = " + id);
         boolean isBuildingDataAdded = false;
         Set<Integer> addedSectionIds = new HashSet<>();
@@ -232,7 +233,7 @@ public class LocalDBExplorer {
                 mapCursor.moveToFirst();
                 do {
                     building_id = mapCursor.getInt(mapCursor.getColumnIndex("b_id"));
-                    localDBBuildingMap.put(building_id, getBuilding(building_id));
+                    localDBBuildingMap.put(building_id, get(building_id));
                     Log.d(LOG_TAG, "building_id = " + building_id);
                 } while (mapCursor.moveToNext());
             }
@@ -242,7 +243,7 @@ public class LocalDBExplorer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void insert(Building building) {
+    public void save(Building building) {
         Log.d(LOG_TAG, "Start to insert building ot Local Database");
         //building.getSections().sort(Comparator.comparing(Section::getId));
         long id_b = 0, id_s = 0, id_m = 0;
@@ -274,9 +275,9 @@ public class LocalDBExplorer {
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void insert(List<Building> buildings){
+    public void save(List<Building> buildings){
         for(int i = 0; i < buildings.size(); i++) {
-            insert(buildings.get(i));
+            save(buildings.get(i));
         }
     }
 

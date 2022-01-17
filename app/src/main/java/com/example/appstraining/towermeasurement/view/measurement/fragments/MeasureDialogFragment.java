@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view.measurehandler.fragments;
+package com.example.appstraining.towermeasurement.view.measurement.fragments;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,7 +15,7 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
-import com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputPresenter;
+import com.example.appstraining.towermeasurement.view.measurement.MeasureInputPresenter;
 import com.example.appstraining.towermeasurement.databinding.MeasureDialogFragmentBinding;
 
 public class MeasureDialogFragment extends DialogFragment {

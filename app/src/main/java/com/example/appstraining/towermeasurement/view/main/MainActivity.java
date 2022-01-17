@@ -34,7 +34,7 @@ import com.example.appstraining.towermeasurement.model.Section;
 import com.example.appstraining.towermeasurement.view.InnerSearchDialogFragment;
 import com.example.appstraining.towermeasurement.view.main.fragments.SearchDialogFragment;
 import com.example.appstraining.towermeasurement.view.main.fragments.SectionDialogFragment;
-import com.example.appstraining.towermeasurement.view.measurehandler.MeasureInputActivity;
+import com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity;
 import com.example.appstraining.towermeasurement.view.ReportPrepareActivity;
 import com.example.appstraining.towermeasurement.view.TowerModelingFragment;
 
@@ -155,6 +155,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         return true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override                                                           // ActionBarMenu
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -185,6 +186,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 updateView(activityMode);
                 break;
             case R.id.mSaveToStorage:
+                mainPresenter.saveToLocalDB();
                 break;
             case R.id.mQuit:
 
@@ -319,14 +321,17 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         simpleAdapter.notifyDataSetChanged();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void updateView(MainActivityMode activityMode) {
+
+        removeAnimatedModel();
         String title = "", id = "", name = "", address = "", type = null, config = null,
                 height = "",  numberOfSections = "";
 
         switch (activityMode) {
             case NEW:
-                removeAnimatedModel();
+                //removeAnimatedModel();
                 title = this.getString(R.string.title_new_ru);
 
                 btnFirst.setText(R.string.register_btn_ru);
@@ -340,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
             case LOAD_FROM_SERVER:
 
             case LOAD_FROM_STORAGE:
-                removeAnimatedModel();
+                //removeAnimatedModel();
                 title = this.getString(R.string.search_request_title_ru);
                 etId.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
                 etSectionsNumber.setBackground(getResources().getDrawable(R.drawable.etunfocusable));
@@ -402,6 +407,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 btnSecond.setText(R.string.measure_btn_ru);
                 btnThird.setText(R.string.report_btn_ru);
 
+                mainPresenter.setLastInputObject();
         }
 
         tvTitle.setText(String.valueOf(title));

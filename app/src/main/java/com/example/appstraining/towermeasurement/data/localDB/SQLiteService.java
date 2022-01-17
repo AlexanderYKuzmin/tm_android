@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.data.localDB;
 
 import android.database.sqlite.SQLiteDatabase;
 

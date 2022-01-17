@@ -13,7 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.appstraining.towermeasurement.R;
-import com.example.appstraining.towermeasurement.model.TowerGLRenderer;
+import com.example.appstraining.towermeasurement.model.openGL.TowerGLRenderer;
 
 public class TowerModelingFragment extends Fragment {
     private final String LOG_TAG = "TowerFragment";

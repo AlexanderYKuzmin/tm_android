@@ -1,8 +1,6 @@
-package com.example.appstraining.towermeasurement.view.measurehandler;
+package com.example.appstraining.towermeasurement.view.measurement;
 
 import com.example.appstraining.towermeasurement.model.Measurement;
-
-import java.util.ArrayList;
 
 public interface MeasureInputInterface {
    // void sendValues(ArrayList<Measurement> measurements);

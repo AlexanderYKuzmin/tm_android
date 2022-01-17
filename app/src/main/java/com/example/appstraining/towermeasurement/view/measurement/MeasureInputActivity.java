@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view.measurehandler;
+package com.example.appstraining.towermeasurement.view.measurement;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -14,7 +14,7 @@ import com.example.appstraining.towermeasurement.MeasureListAdapterHelper;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.databinding.ActivityMeasureInputBinding;
 import com.example.appstraining.towermeasurement.model.Measurement;
-import com.example.appstraining.towermeasurement.view.measurehandler.fragments.MeasureDialogFragment;
+import com.example.appstraining.towermeasurement.view.measurement.fragments.MeasureDialogFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

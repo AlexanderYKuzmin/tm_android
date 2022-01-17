@@ -1,7 +1,9 @@
-package com.example.appstraining.towermeasurement.model;
+package com.example.appstraining.towermeasurement.model.openGL;
 
 import android.opengl.GLES20;
 import android.util.Log;
+
+import com.example.appstraining.towermeasurement.model.openGL.TowerGLRenderer;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -97,38 +99,24 @@ public class TowerModel {
         int vertexShader = TowerGLRenderer.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
         int vertexFragment = TowerGLRenderer.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
 
-        // create empty OpenGL ES Program
-        mProgram = GLES20.glCreateProgram();
-
-        // add the vertex shader to program
-        GLES20.glAttachShader(mProgram, vertexShader);
-        // add the fragment shader to program
-        GLES20.glAttachShader(mProgram, vertexFragment);
-
-        // creates OpenGL ES program executables
-        GLES20.glLinkProgram(mProgram);
+        mProgram = GLES20.glCreateProgram(); // create empty OpenGL ES Program
+        GLES20.glAttachShader(mProgram, vertexShader); // add the vertex shader to program
+        GLES20.glAttachShader(mProgram, vertexFragment); // add the fragment shader to program
+        GLES20.glLinkProgram(mProgram); // creates OpenGL ES program executables
     }
 
     public void draw(float[] mvpMatrix) {// pass in the calculated transformation matrix
 
-        // Add program to OpenGL ES environment
-        GLES20.glUseProgram(mProgram);
-
-        // get handle to vertex shader's vPosition member
-        positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition");
-        // Enable a handle to the triangle vertices
-        GLES20.glEnableVertexAttribArray(positionHandle);
-        // Prepare the triangle coordinate data
-        GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT,
+        GLES20.glUseProgram(mProgram); // Add program to OpenGL ES environment
+        positionHandle = GLES20.glGetAttribLocation(mProgram, "vPosition"); // get handle to vertex shader's vPosition member
+        GLES20.glEnableVertexAttribArray(positionHandle); // Enable a handle to the triangle vertices
+        GLES20.glVertexAttribPointer(positionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, // Prepare the triangle coordinate data
                 false, vertexStride, vertexBuffer);
-        // get handle to fragment shader's vColor member
-        colorHandle = GLES20.glGetUniformLocation(mProgram, "vColor");
-        // Set color for drawing the triangle
-        GLES20.glUniform4fv(colorHandle, 1, color, 0);
 
-        // get handle to shape's transformation matrix
-        vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix");
+        colorHandle = GLES20.glGetUniformLocation(mProgram, "vColor"); // get handle to fragment shader's vColor member
+        GLES20.glUniform4fv(colorHandle, 1, color, 0); // Set color for drawing the triangle
 
+        vPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "uMVPMatrix"); // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(vPMatrixHandle, 1, false, mvpMatrix, 0);
 
         // Draw the tower
@@ -156,9 +144,9 @@ public class TowerModel {
         //int position = 0;
         for (int i = 0; i < config; i++) {
             for(int j = 0; j < levels - 1; j++) {
-                Log.d(LOG_TAG, "Trying to draw edges.. " + superArray[position*3] + "; "
+                /*Log.d(LOG_TAG, "Trying to draw edges.. " + superArray[position*3] + "; "
                         + superArray[position*3 + 1] + "; "
-                        + superArray[position*3 + 2]);
+                        + superArray[position*3 + 2]);*/
                 GLES20.glDrawArrays(GLES20.GL_LINES, position, 2);
                 position ++;
             }
