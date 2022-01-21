@@ -3,8 +3,10 @@ package com.example.appstraining.towermeasurement.view.main.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -42,9 +44,18 @@ public class SectionDialogFragment extends DialogFragment {
         etHeight = v.findViewById(R.id.etHeight_secFrag);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.section_dialog_fragment_title)
+
+        TextView tvTitle = new TextView(context);
+        tvTitle.setText(R.string.section_dialog_fragment_title);
+        tvTitle.setTextSize(24);
+        tvTitle.setTypeface(tvTitle.getTypeface(), Typeface.BOLD);
+        tvTitle.setBackgroundColor(getResources().getColor(R.color.light_blue_600));
+        tvTitle.setGravity(Gravity.CENTER);
+        tvTitle.setTextColor(getResources().getColor(R.color.maincolor));
+
+        builder.setCustomTitle(tvTitle)
                 .setView(v)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.btn_section_dialog_fragment_main_ok_ru, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 mainPresenter.updateSection(secNum,
@@ -54,7 +65,13 @@ public class SectionDialogFragment extends DialogFragment {
                 );
                 Log.d(LOG_TAG, "OK pressed!!");
             }
-        });
+        })
+                .setNegativeButton(R.string.btn_section_dialog_fragment_main_cancel_ru, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dismiss();
+                    }
+                });
 
         return builder.create();
     }

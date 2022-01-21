@@ -16,9 +16,10 @@ import java.util.Properties;
 @RequiresApi(api = Build.VERSION_CODES.KITKAT)
 public class AppPropertyHandler {
 
-    private static String FILENAME = "/app.properties";
+    private final static String FILENAME = "/app.properties";
+
     public static String getProperty(String key, Context context) {
-        Properties properties = new Properties();;
+        Properties properties = new Properties();
         //AssetManager assetManager = context.getAssets();
         try{
             InputStream inputStream = new FileInputStream(context.getFilesDir().getAbsolutePath()

@@ -55,6 +55,7 @@
                     android:layout_marginTop="2dp"
                     android:layout_marginRight="6dp"
                     android:layout_marginBottom="2dp"
+                    android:gravity="center_vertical"
                     android:background="@drawable/etinnershadow"
                     android:paddingLeft="6dp"
                     android:textColor="@color/black"
@@ -92,7 +93,7 @@
                     android:layout_marginTop="1dp"
                     android:layout_marginRight="6dp"
                     android:gravity="center_horizontal"
-                    android:text="ID"
+                    android:text="@string/main_screen_id_ru"
                     android:textSize="10dp" />
 
                 <TextView
@@ -104,7 +105,7 @@
                     android:layout_marginRight="6dp"
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
-                    android:text="Object's name"
+                    android:text="@string/main_screen_name_ru"
                     android:textSize="10dp" />
             </TableRow>
         </TableLayout>
@@ -129,7 +130,7 @@
             android:layout_marginTop="1dp"
             android:layout_marginRight="6dp"
             android:gravity="center_horizontal"
-            android:text="Address"
+            android:text="@string/main_screen_address_ru"
             android:textSize="10dp" />
 
         <TableRow
@@ -300,7 +301,7 @@
                         android:layout_marginTop="0dp"
                         android:layout_marginRight="2dp"
                         android:layout_weight="1"
-                        android:text="GET"
+                        android:text="@string/btn_main_get"
                         android:textSize="8dp" />
                 </TableRow>
             </LinearLayout>

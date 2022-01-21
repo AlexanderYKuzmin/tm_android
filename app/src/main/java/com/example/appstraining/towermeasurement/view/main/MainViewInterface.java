@@ -19,4 +19,13 @@ public interface MainViewInterface {
     void showAnimatedModel(Bundle bundle);
 
     void removeAnimatedModel();
+
+    void onPause();
+
+    void showSearchFormDialogFragment();
+
+    void showInnerSearchResultDialogFragment();
+
+    void showMessage();
+
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
+import androidx.fragment.app.FragmentManager;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
@@ -52,8 +53,12 @@ public class MainPresenter implements LifecycleObserver {
     DrawPreparation drawPreparation;
 
     private Building building;
+    private String[] searchParameters;
     Map<Integer, Building> buildingMap;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+
+    // fragments handle
+
 
     public MainPresenter(MainViewInterface mainActivity, Context context){
         mMainActivity = mainActivity;
@@ -67,9 +72,10 @@ public class MainPresenter implements LifecycleObserver {
     }
 
     //@OnLifecycleEvent(Lifecycle.Event.ON_START)
-    public Building getBuilding(int id) {
-        return null;
-    }
+    /*@RequiresApi(api = Build.VERSION_CODES.N)
+    public void setBuildingOnStart(int id) {
+        getFromLocalDB(id);
+    }*/
 
     public Building getBuilding(){
         return building;
@@ -81,17 +87,20 @@ public class MainPresenter implements LifecycleObserver {
 
     }
 
+    public void setSearchParameters(String... parameters) { // from search dialog fragment
+        searchParameters = parameters;
+    }
+
     public void setBuildingMap(Map<Integer, Building> buildingMap) {
         this.buildingMap = buildingMap;
     }
-
-
 
     public void createBuilding(String... params) {                  // for tab "new" menu
         int id = 0;
         String name = params[0];
         String address = params[1];
-        BuildingType type = BuildingType.valueOf(params[2]);
+        //BuildingType type = BuildingType.valueOf(params[2]);
+        BuildingType type = BuildingType.getBuildingType(params[2]);
         int config = Integer.parseInt(params[3]);
         int numberOfSections = Integer.parseInt(params[4]);
         int height = Integer.parseInt(params[5]);
@@ -341,13 +350,16 @@ public class MainPresenter implements LifecycleObserver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void getLastInputObject() {
-        int id = 0;
+        Log.d(LOG_TAG, "get last input object");
+        int id = 2;
         try {
             String idStr = AppPropertyHandler.getProperty("id", context);
+            Log.d(LOG_TAG, "id string = " + idStr);
             if(idStr != null) id = Integer.parseInt(idStr);
+            Log.d(LOG_TAG, "id = " + id);
         } finally {
             if(id > 0) {
-                loadFromLocalDB(id);
+                getFromLocalDB(id);
                 mountBuilding(MainActivityMode.LAST_LOADED_OBJECT);
             }
         }
@@ -363,8 +375,11 @@ public class MainPresenter implements LifecycleObserver {
     public void setLastInputObject() {                                            // save last edit object id to property
         //new FileLoader(context).saveBuildingToFile(building);
         Log.d(LOG_TAG, "Method quit started set id = " + building.getId());
+
+        String idStr = building.getId() > 0 ? String.valueOf(building.getId()) : "1";
+
         try {
-            AppPropertyHandler.setProperty("id", String.valueOf(building.getId()), context);
+            AppPropertyHandler.setProperty("id", idStr, context);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -623,22 +638,29 @@ public class MainPresenter implements LifecycleObserver {
             }
         }
 */
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<Integer, Building> getBuildingMapFromLocal(String name, String address) {
+    public Map<Integer, Building> getBuildingMapFromLocal() {
         LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
-        buildingMap = localDBExplorer.getBuildingMap(name, address);
+        buildingMap = localDBExplorer.getBuildingMap(searchParameters);
         localDBExplorer.closeDB();
+        Log.d(LOG_TAG, "building map from local: " + buildingMap);
         return buildingMap;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void loadFromLocalDB(int building_id) {
+    public void getFromLocalDB(int building_id) {
         LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
         building = localDBExplorer.get(building_id);
         localDBExplorer.closeDB();
+    }
+
+    public void showInnerSearchResultDialogFragment(FragmentManager fragmentManager) {
+        //innerSearchResultDialogFragment.show(fragmentManager, null);
+    }
+
+    public void showSearchFormDialogFragment(FragmentManager fragmentManager) {
+        //searchFormDialogFragment.show(fragmentManager, null);
     }
 }

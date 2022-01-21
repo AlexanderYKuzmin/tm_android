@@ -138,22 +138,50 @@ public class GraphFragment extends Fragment {
             graphView.addSeries(getBorderSeries());
 
         } else {   // For XOY graphic
-
-            if(graphRange[ReportPreparePresenter.MIN_X]  < -deviation ||
+            Log.d(LOG_TAG, "XOY create view");
+            Log.d(LOG_TAG, "max Y = " + ReportPreparePresenter.MAX_Y);
+            /*if(graphRange[ReportPreparePresenter.MIN_X]  < -deviation ||
                 graphRange[ReportPreparePresenter.MAX_X] > deviation ||
                 graphRange[ReportPreparePresenter.MIN_Y] < -deviation ||
                 graphRange[ReportPreparePresenter.MAX_Y] > deviation
             ) {
+                Log.d(LOG_TAG, "in min XY max XY range");
                 graphView.getViewport().setMinX(graphRange[ReportPreparePresenter.MIN_X]);
                 graphView.getViewport().setMaxX(graphRange[ReportPreparePresenter.MAX_X]);
                 graphView.getViewport().setMinY(graphRange[ReportPreparePresenter.MIN_Y]);
                 graphView.getViewport().setMaxY(graphRange[ReportPreparePresenter.MAX_Y]);
             } else {
-                graphView.getViewport().setMinX(-deviation - 5);
-                graphView.getViewport().setMaxX(deviation + 5);
+                //graphView.getViewport().setMinX(-deviation - 5);
+                graphView.getViewport().setMinX(graphRange[ReportPreparePresenter.MIN_X]); //test
+                //graphView.getViewport().setMaxX(deviation + 5);
+                graphView.getViewport().setMinX(graphRange[ReportPreparePresenter.MAX_X]); //test
                 graphView.getViewport().setMinY(-deviation - 5);
                 graphView.getViewport().setMaxY(deviation + 5);
+            }*/
+            if (graphRange[ReportPreparePresenter.MIN_X]  < -deviation) {
+                graphView.getViewport().setMinX(graphRange[ReportPreparePresenter.MIN_X]);
+            } else {
+                graphView.getViewport().setMinX(-deviation - 5);
             }
+
+            if (graphRange[ReportPreparePresenter.MAX_X] > deviation) {
+                graphView.getViewport().setMaxX(graphRange[ReportPreparePresenter.MAX_X]);
+            } else {
+                graphView.getViewport().setMaxX(deviation + 5);
+            }
+
+            if (graphRange[ReportPreparePresenter.MIN_Y] < -deviation) {
+                graphView.getViewport().setMinY(graphRange[ReportPreparePresenter.MIN_Y]);
+            } else {
+                graphView.getViewport().setMinY(-deviation - 5);
+            }
+
+            if (graphRange[ReportPreparePresenter.MAX_Y] > deviation) {
+                graphView.getViewport().setMaxY(graphRange[ReportPreparePresenter.MAX_Y]);
+            } else {
+                graphView.getViewport().setMaxY(deviation + 5);
+            }
+
             graphView.getGridLabelRenderer().setNumVerticalLabels(
                     graphRange[ReportPreparePresenter.MAX_Y]/5);
             graphView.getGridLabelRenderer().setNumVerticalLabels(

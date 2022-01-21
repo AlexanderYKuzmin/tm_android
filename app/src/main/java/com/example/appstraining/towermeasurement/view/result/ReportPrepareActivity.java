@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.result;
 
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,11 +10,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.appstraining.towermeasurement.R;
-import com.example.appstraining.towermeasurement.view.result.ReportPreparePresenter;
 import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
 import com.example.appstraining.towermeasurement.model.Result;
-import com.example.appstraining.towermeasurement.view.result.GraphViewPager;
-import com.example.appstraining.towermeasurement.view.result.JournalViewPager;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -125,7 +122,7 @@ public class ReportPrepareActivity extends AppCompatActivity {
         reportResults.sort(Comparator.comparing(Result::getShiftMm));
 
         binding.tvAddressReport.setText(rpPresenter.getReportBuilding().getAddress());
-        binding.tvTypeReport.setText(String.valueOf(rpPresenter.getReportBuilding().getType()));
+        binding.tvTypeReport.setText((rpPresenter.getReportBuilding().getType().getBuildingTypeRu()));
         binding.tvConfigReport.setText(String.valueOf(rpPresenter.getReportBuilding().getConfig()));
         binding.tvHeightReport.setText(String.valueOf(rpPresenter.getReportBuilding().getHeight()));
         binding.tvPossibleDeviation.setText(String.valueOf(deviationPoss));

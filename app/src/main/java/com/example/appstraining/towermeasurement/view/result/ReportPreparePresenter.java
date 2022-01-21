@@ -10,7 +10,6 @@ import com.example.appstraining.towermeasurement.data.localDB.LocalDBExplorer;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.Result;
-import com.example.appstraining.towermeasurement.view.ReportPrepareActivity;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -85,8 +84,8 @@ public class ReportPreparePresenter {
             if( i == size -2 -2) {
                 xozArray[i + 2] = reportResults.get(j + 1).getShiftMm();
                 xozArray[i + 3] = reportBuilding.getHeight();
-                if(xozRange[MIN_X] > xozArray[i + 2]) xozRange[MIN_X] = xozArray[i]; // set new minX in XOZ
-                if(xozRange[MAX_X] < xozArray[i + 2]) xozRange[MAX_X] = xozArray[i]; // set new max X in XOZ
+                if(xozRange[MIN_X] > xozArray[i + 2]) xozRange[MIN_X] = xozArray[i + 2]; // set new minX in XOZ
+                if(xozRange[MAX_X] < xozArray[i + 2]) xozRange[MAX_X] = xozArray[i + 2]; // set new max X in XOZ
                 xozRange[MAX_Y] = xozArray[i + 3];
                 Log.d(LOG_TAG, " xoz[i + 2] = " + xozArray[i + 2] + "; xoz[i+3] = " + xozArray[i + 3]);
             }
@@ -151,7 +150,7 @@ public class ReportPreparePresenter {
             xoyArray[i] = xozArray[i];
             xoyArray[i + 1] = yozArray[i];
             Log.d(LOG_TAG,
-            + xozArray[i] + " :: " + xozArray[i + 1]);
+            + xoyArray[i] + " :: " + xoyArray[i + 1]);
         }
         return xoyArray;
     }

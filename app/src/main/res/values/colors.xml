@@ -12,7 +12,7 @@
     <color name="sandyLight">#B2E6EE9C</color>
 
     <color name="light_font">#FBFBFB</color>
-    <color name="grey_font">#FF9E9E9E</color>
+    <color name="grey_font">#DFDDDD</color>
     <color name="text_shadow">#7F000000</color>
     <color name="text_shadow_white">#FFFFFF</color>
     <color name="green_200">#7564EF32</color>
@@ -21,5 +21,6 @@
     <color name="light_blue_A200">#FF40C4FF</color>
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
+    <color name="lite_sky">#E4DDF1FA</color>
 
 </resources>

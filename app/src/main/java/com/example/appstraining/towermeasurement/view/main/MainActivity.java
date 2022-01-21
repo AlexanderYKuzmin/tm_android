@@ -11,6 +11,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,16 +28,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appstraining.towermeasurement.R;
-import com.example.appstraining.towermeasurement.SectionListAdapterHelper;
-import com.example.appstraining.towermeasurement.SpinnerConfigAdapterHelper;
-import com.example.appstraining.towermeasurement.SpinnerTypeAdapterHelper;
+import com.example.appstraining.towermeasurement.view.main.fragments.SearchFormDialogFragment;
+import com.example.appstraining.towermeasurement.model.adapter.main.SectionListAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.main.SpinnerConfigAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.main.SpinnerTypeAdapterHelper;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.model.Section;
-import com.example.appstraining.towermeasurement.view.InnerSearchDialogFragment;
+import com.example.appstraining.towermeasurement.view.main.fragments.InnerSearchResultDialogFragment;
 import com.example.appstraining.towermeasurement.view.main.fragments.SearchDialogFragment;
 import com.example.appstraining.towermeasurement.view.main.fragments.SectionDialogFragment;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity;
-import com.example.appstraining.towermeasurement.view.ReportPrepareActivity;
+import com.example.appstraining.towermeasurement.view.result.ReportPrepareActivity;
 import com.example.appstraining.towermeasurement.view.TowerModelingFragment;
 
 import java.util.ArrayList;
@@ -49,10 +52,13 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     private final static int MEASURE_ACTIVITY_REQUEST_CODE = 0;
     //private final static int REPORT_ACTIVITY_REQUEST_CODE = 0;
 
+    private InnerSearchResultDialogFragment innerSearchResultDialogFragment;
+    private SearchFormDialogFragment searchFormDialogFragment;
    // private FragmentTransaction fragmentTransaction;
     private Fragment modelingFragment;
 
     private MainActivityMode activityMode = MainActivityMode.LAST_LOADED_OBJECT;
+    private boolean isTextWatcherOn = false;
 
     TextView tvTitle;
     //TextView tvId;
@@ -78,13 +84,25 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mainPresenter = new MainPresenter(this, context);
+        getLifecycle().addObserver(mainPresenter);
+        /*mainPresenter.setBuildingOnStart(
+                Integer.parseInt(AppPropertyHandler.getProperty("id", context))
+        );*/
+
+        searchFormDialogFragment = new SearchFormDialogFragment(context, mainPresenter, this);
+        innerSearchResultDialogFragment = new InnerSearchResultDialogFragment(context, mainPresenter, this);
+
         tvTitle = (TextView) findViewById(R.id.tvTitle);
         etId = findViewById(R.id.etId);
         //tvId_1 = (EditText) findViewById(R.id.etId);
         etName = (EditText) findViewById(R.id.etObjectName);
         etAddress = (EditText) findViewById(R.id.etAddress);
         etHeight = (EditText) findViewById(R.id.etHeight);
+
         etSectionsNumber = (EditText) findViewById(R.id.etAmountSec);
+
+
         btnCreate = (Button) findViewById(R.id.btnCreateSections);
         btnCreate.setOnClickListener(this);
         btnFirst = findViewById(R.id.btnReg);
@@ -96,8 +114,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
         lvSections = (ListView) findViewById(R.id.lvSections);
 
-        mainPresenter = new MainPresenter(this, context);
-        getLifecycle().addObserver(mainPresenter);
         //mainPresenter.getLastInputObject();
 
         spTypeHelper = new SpinnerTypeAdapterHelper(this);
@@ -110,6 +126,33 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         spinnerConfig = (Spinner) findViewById(R.id.spConfig);
         spinnerType.setAdapter(typeSpinnerAdapter);
         spinnerConfig.setAdapter(configSpinnerAdapter);
+
+        etSectionsNumber.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(isTextWatcherOn) {
+                    mainPresenter.createBuilding(etName.getText().toString(),
+                            etAddress.getText().toString(),
+                            spinnerType.getSelectedItem().toString(),
+                            spinnerConfig.getSelectedItem().toString(),
+                            s.toString(),
+                            etHeight.getText().toString());
+                    sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
+                    simpleAdapter.notifyDataSetChanged();
+                    isTextWatcherOn = false;
+                }
+            }
+        });
 
         sectionListAdapterHelper = new SectionListAdapterHelper(context);
         //data = sectionListAdapterHelper.getData();
@@ -183,6 +226,17 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 break;
             case R.id.mLoadFromStorage:
                 activityMode = MainActivityMode.LOAD_FROM_STORAGE;
+                //mainPresenter.showSearchFormDialogFragment(getSupportFragmentManager());
+                //mainPresenter.showInnerSearchResultDialogFragment(getSupportFragmentManager());
+                //updateView(activityMode);
+                /*new InnerSearchResultDialogFragment(this, R.string.search_dialog_title_ru, mainPresenter)
+                        .show(getSupportFragmentManager(), null);*/
+                Log.d(LOG_TAG, "search form dialog = " + searchFormDialogFragment);
+                showSearchFormDialogFragment();
+
+                Log.d(LOG_TAG, "After show method search form dialog");
+                //innerSearchResultDialogFragment.show(getSupportFragmentManager(), null);
+                activityMode = MainActivityMode.SELECTED_OBJECT;
                 updateView(activityMode);
                 break;
             case R.id.mSaveToStorage:
@@ -220,14 +274,14 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                         activityMode = MainActivityMode.LAST_LOADED_OBJECT;
                         Log.d(LOG_TAG, "ActivityMode changed to " + activityMode.toString());
                         break;
-                    case LOAD_FROM_STORAGE:
+                    case LOAD_FROM_STORAGE: // Переделать через модальное окно
                         // to do
-                        new InnerSearchDialogFragment(this,
+                        /*new InnerSearchResultDialogFragment(this,
                                 R.string.search_dialog_title_ru,
                                 etName.getText().toString(),
                                 etAddress.getText().toString(),
                                 mainPresenter).show(getSupportFragmentManager(), null);
-                        activityMode = MainActivityMode.SELECTED_OBJECT;
+                        activityMode = MainActivityMode.SELECTED_OBJECT;*/
                         Log.d(LOG_TAG, "Activity mode changed to" + activityMode.toString());
                 }
                 break;
@@ -260,12 +314,12 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                         startActivityForResult(intent, MEASURE_ACTIVITY_REQUEST_CODE);
                         break;
                     case LOAD_FROM_STORAGE:  // OK it is like a createBtn button
-                        new InnerSearchDialogFragment(this,
+                        /*new InnerSearchResultDialogFragment(this,
                                 R.string.search_dialog_title,
                                 etName.getText().toString(),
                                 etAddress.getText().toString(),
                                 mainPresenter).show(getSupportFragmentManager(), null);
-                        activityMode = MainActivityMode.SELECTED_OBJECT;
+                        activityMode = MainActivityMode.SELECTED_OBJECT;*/
                         Log.d(LOG_TAG, "Activity mode changed to" + activityMode.toString());
                 }
                 break;
@@ -430,6 +484,8 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
             sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
             // here to start tower model
         } else {
+            isTextWatcherOn = (activityMode == MainActivityMode.NEW) ? true : false;
+
             sectionListAdapterHelper.updateAdapter();
         }
         simpleAdapter.notifyDataSetChanged();
@@ -464,5 +520,22 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
             fragmentTransaction.remove(modelingFragment);
             fragmentTransaction.commit();
         }
+    }
+
+    public void showSearchFormDialogFragment() {
+        searchFormDialogFragment.show(getSupportFragmentManager(), null);
+    }
+
+    public void showInnerSearchResultDialogFragment() {
+        innerSearchResultDialogFragment.show(getSupportFragmentManager(), null);
+    }
+
+    public void showMessage() {
+        Toast.makeText(context, "Объекты не найдены", Toast.LENGTH_SHORT);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
     }
 }

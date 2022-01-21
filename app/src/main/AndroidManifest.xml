@@ -15,7 +15,7 @@
         android:theme="@style/Theme.TowerMeasurement"
         android:usesCleartextTraffic="true">
         <activity android:name=".view.result.JournalViewPager"></activity>
-        <activity android:name=".view.ReportPrepareActivity" />
+        <activity android:name=".view.result.ReportPrepareActivity" />
         <activity android:name=".view.measurement.MeasureInputActivity" />
         <activity android:name=".view.result.GraphViewPager" />
         <activity android:name=".view.main.MainActivity" />

@@ -5,8 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.SimpleAdapter;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,7 +23,6 @@ import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.view.main.MainViewInterface;
-import com.example.appstraining.towermeasurement.view.main.fragments.LoadBuildingsAdapter;
 
 import java.util.Map;
 
@@ -57,7 +59,7 @@ public class SearchDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
-        View v = getActivity().getLayoutInflater().inflate(R.layout.search_fragment_dialog, null);
+        View v = getActivity().getLayoutInflater().inflate(R.layout.search_results_fragment_dialog, null);
         //v.setBackgroundColor(getResources().getColor(R.color.sandyLight));
         buildingMap = mMainPresenter.getBuildingMap(name, address);
         /*Log.d(LOG_TAG, "Building map is recieved. First building : "
@@ -66,6 +68,9 @@ public class SearchDialogFragment extends DialogFragment {
         + "measurement.getRightAngle = " + buildingMap.get(1).getMeasurements().get(4).getLeftAngle());*/
         adapterHelper = new SearchDialogAdapterHelper(mContext);
         searchDialogSimpleAdapter = adapterHelper.getAdapter(buildingMap);
+
+
+
         mLocationList = (ListView)v.findViewById(R.id.lvSearchFragmentDialog);
         mLocationList.setAdapter(searchDialogSimpleAdapter);
         //mLocationList.setOnItemClickListener(this);
@@ -75,7 +80,8 @@ public class SearchDialogFragment extends DialogFragment {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         //builder.setTitle(title).setView(v);
-        builder.setTitle(title)
+        //TextView tvTitle = (TextView) titleView.findViewById(R.id.tv_title_search_form_dialog_frag_main);
+        builder.setTitle(R.string.inner_search_result_dialog_title_ru)
                 .setView(v)
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @RequiresApi(api = Build.VERSION_CODES.N)

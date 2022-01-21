@@ -1,9 +1,10 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.model.adapter.main;
 
 import android.content.Context;
 import android.util.Log;
 import android.widget.SimpleAdapter;
 
+import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Section;
 
 import java.util.ArrayList;

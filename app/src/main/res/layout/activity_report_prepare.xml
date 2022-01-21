@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.ReportPrepareActivity"
+    tools:context=".view.result.ReportPrepareActivity"
     android:background="@color/sandy">
     <TextView
         android:id="@+id/tvTitleReport"

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/tv_title_search_form_dialog_frag_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/search_form_main_title_ru"
+        android:textSize="24dp"
+        android:textStyle="bold"
+        android:textColor="#AEFBF7F7"
+        android:textAlignment="center"
+        android:background="#2E45C3">
+    </TextView>
+</LinearLayout>

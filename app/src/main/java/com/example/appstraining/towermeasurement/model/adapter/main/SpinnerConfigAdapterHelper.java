@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.model.adapter.main;
 
 import android.content.Context;
 import android.widget.ArrayAdapter;

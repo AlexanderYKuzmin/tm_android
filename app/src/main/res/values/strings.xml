@@ -71,18 +71,35 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
     -->
+
+
 <!-- ***************** -->
-    <!-- Main Screen -->
+    <!-- Main Screen  RU-->
     <!-- TextView -->
     <string name="sections_ru">Секции: </string>
     <string name="conf_ru">Конфиг: </string>
 
+    <string name="main_screen_id_ru">ID</string>
+    <string name="main_screen_name_ru">Код / Название</string>
+    <string name="main_screen_address_ru">Адрес</string>
+
+    <string name="btn_main_get">Загр.</string>
+
     <!-- Fragments -->
+
+    <!-- Search form dialog -->
+    <string name="search_form_main_name_ru">Название:</string>
+    <string name="search_form_main_address_ru">Адрес:</string>
+    <string name="search_form_main_title_ru">Параметры поиска</string>
+    <string name="btn_search_form_main_ok_ru">OK</string>
+    <string name="btn_search_form_main_cancel_ru">Отмена</string>
+
     <!-- List of object -->
-    <string name="id">ID:</string>
-    <string name="name_ru">Назв:</string>
-    <string name="address_ru">Адр:</string>
-    <string name="date_ru">Дата:</string>
+    <string name="inner_search_result_id_ru">ID:</string>
+    <string name="inner_search_result_name_ru">Назв:</string>
+    <string name="inner_search_result_address_ru">Адр:</string>
+    <string name="inner_search_result_date_ru">Дата:</string>
+    <string name="inner_search_result_dialog_title_ru">Доступные объекты</string>
 
     <!-- Sections parameters -->
     <string name="base_width_ru">Основание:</string>
@@ -92,10 +109,13 @@
 
     <!-- Fragment edit section dialog-->
     <string name="section_dialog_fragment_title">Параметры секции</string>
-    <string name="section_ru">Секция № </string>
-    <string name="section_bottom_width_ru">Основание, мм:</string>
-    <string name="section_top_width_ru">Верх, мм:</string>
-    <string name="edit_section_height_ru">Высота, мм:</string>
+    <string name="section_dialog_fragment_section_ru">Секция № </string>
+    <string name="section_dialog_fragment_bottom_width_ru">Основание, мм:</string>
+    <string name="section_dialog_fragment_top_width_ru">Топ, мм:</string>
+    <string name="section_dialog_fragment_height_ru">Высота, мм:</string>
+
+    <string name="btn_section_dialog_fragment_main_ok_ru">OK</string>
+    <string name="btn_section_dialog_fragment_main_cancel_ru">Отмена</string>
 
 
     <!-- Buttons -->
@@ -150,4 +170,8 @@
     <string name="full_info_ru">Больше даных</string>
     <string name="create_report_ru">Сформировать отчет</string>
 
+
+
+    <!-- Common messages-->
+    <string name="no_object_found">Объекты не найдены</string>
 </resources>

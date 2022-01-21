@@ -220,14 +220,15 @@ public class LocalDBExplorer {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public Map<Integer, Building> getBuildingMap(String name, String address) {
+    public Map<Integer, Building> getBuildingMap(String... searchParameters) {
         Log.d(LOG_TAG, "getBuildingMap started");
+
         Map<Integer, Building> localDBBuildingMap = new HashMap<>();
         int building_id = 0;
         String query = "select * from buildings " +
                 "where (b_name like ? and b_address like ?)";
         Cursor mapCursor = localDB.rawQuery(query,
-                new String[] {"%"+ name +"%", "%" + address + "%"});
+                new String[] {"%"+ searchParameters[0] +"%", "%" + searchParameters[1] + "%"});
         if (mapCursor != null) {
             if (mapCursor.moveToFirst()) {
                 mapCursor.moveToFirst();
@@ -247,6 +248,7 @@ public class LocalDBExplorer {
         Log.d(LOG_TAG, "Start to insert building ot Local Database");
         //building.getSections().sort(Comparator.comparing(Section::getId));
         long id_b = 0, id_s = 0, id_m = 0;
+
         c = localDB.query("buildings", new String[]{"b_id"}, "b_id = ?",
                 new String[] {String.valueOf(building.getId())}, null, null, null);
         Log.d(LOG_TAG, "cursor getCount() = " + c.getCount() + " ...insert");
