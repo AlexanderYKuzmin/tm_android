@@ -33,7 +33,6 @@ public class SearchFormDialogFragment extends DialogFragment {
     private MainViewInterface mainActivity;
     private SearchFormDialogFragmentBinding binding;
 
-
     public SearchFormDialogFragment(Context context, MainPresenter presenter, MainViewInterface mainActivity) {
         this.context = context;
         this.mainPresenter = presenter;
@@ -46,7 +45,6 @@ public class SearchFormDialogFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         //super.onCreate(savedInstanceState);
-
         binding = SearchFormDialogFragmentBinding.inflate(LayoutInflater.from(context));
         Log.d(LOG_TAG, "binding = " + binding.toString());
 
@@ -84,10 +82,4 @@ public class SearchFormDialogFragment extends DialogFragment {
         Log.d(LOG_TAG, "builder = " + builder);
         return builder.create();
     }
-
-    /*@Override
-    public void dismiss() {
-        super.dismiss();
-        mainPresenter.
-    }*/
 }

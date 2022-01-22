@@ -147,14 +147,15 @@
     <string name="date_hint_ru">ДД-ММ-ГГГГ</string>
     
     <!-- Measurement fragment dialog-->
-    <string name="title_measurement_dialog_ru">Ввод данных измерения</string>
+    <string name="title_measurement_dialog_ru">Ввод/редактирование измерения</string>
     <string name="measurement_number_ru">Измерение № </string>
     <string name="left_angle_measurement_dialog_ru">Левый угол:</string>
     <string name="right_angle_measurement_dialog_ru">Правый угол:</string>
     <string name="distance_measurement_dialog_ru">Дистанция:</string>
     <string name="azimuth_measurement_dialog_ru">Азимут:</string>
     <string name="theo_height_measurement_dialog_ru">Тео высота:</string>
-    <string name="cancel_measurement_dialog">Отмена</string>
+    <string name="btn_cancel_measure_dialog_frag_measurement_ru">Отмена</string>
+    <string name="btn_ok_measure_dialog_frag_measurement_ru">ОК</string>
 <!-- ****************************** -->
 
     <!-- Report Screen -->

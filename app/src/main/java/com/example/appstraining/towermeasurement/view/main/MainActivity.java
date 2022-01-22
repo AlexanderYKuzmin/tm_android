@@ -135,11 +135,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
                 if(isTextWatcherOn) {
                     mainPresenter.createBuilding(etName.getText().toString(),
                             etAddress.getText().toString(),
@@ -149,9 +144,16 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                             etHeight.getText().toString());
                     sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
                     simpleAdapter.notifyDataSetChanged();
-                    isTextWatcherOn = false;
                 }
             }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                //isTextWatcherOn = false;
+                //updateView(activityMode);
+            }
+
+
         });
 
         sectionListAdapterHelper = new SectionListAdapterHelper(context);
@@ -201,6 +203,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override                                                           // ActionBarMenu
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        isTextWatcherOn = false;
         switch (item.getItemId()){
             case R.id.mHelp:
                 break;
@@ -255,24 +258,23 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
             case R.id.btnCreateSections :
                 switch (activityMode) {
                     case NEW:
-                        mainPresenter.createBuilding(etName.getText().toString(),
+                        /*mainPresenter.createBuilding(etName.getText().toString(),
                                 etAddress.getText().toString(),
                                 spinnerType.getSelectedItem().toString(),
                                 spinnerConfig.getSelectedItem().toString(),
                                 etSectionsNumber.getText().toString(),
                                 etHeight.getText().toString());
                         sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
-                        simpleAdapter.notifyDataSetChanged();
+                        simpleAdapter.notifyDataSetChanged();*/
                         break;
                     case LOAD_FROM_SERVER:
-                            /*mainPresenter.getMapOfObjects(etName.getText().toString(),
-                                    etAddress.getText().toString());*/
-                        new SearchDialogFragment(this, mainPresenter,
+
+                        /*new SearchDialogFragment(this, mainPresenter,
                                 etName.getText().toString(),
                                 etAddress.getText().toString(),
                                 R.string.search_dialog_title_ru).show(getSupportFragmentManager(), null);
                         activityMode = MainActivityMode.LAST_LOADED_OBJECT;
-                        Log.d(LOG_TAG, "ActivityMode changed to " + activityMode.toString());
+                        Log.d(LOG_TAG, "ActivityMode changed to " + activityMode.toString());*/
                         break;
                     case LOAD_FROM_STORAGE: // Переделать через модальное окно
                         // to do
@@ -343,7 +345,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {  //section edition
         if(activityMode == MainActivityMode.NEW) { // or pattern
             //EditText etBaseWidth = parent.getChildAt(position).findViewById(R.id.etBaseWidth);
             Log.d(LOG_TAG, "OnItemClick pressed. Building section chosen.");
@@ -378,7 +380,6 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     public void updateView(MainActivityMode activityMode) {
-
         removeAnimatedModel();
         String title = "", id = "", name = "", address = "", type = null, config = null,
                 height = "",  numberOfSections = "";

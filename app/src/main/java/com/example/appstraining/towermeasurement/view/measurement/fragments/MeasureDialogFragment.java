@@ -3,9 +3,12 @@ package com.example.appstraining.towermeasurement.view.measurement.fragments;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,9 +50,9 @@ public class MeasureDialogFragment extends DialogFragment {
         setDefaultFieldData(binding);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle(R.string.title_measurement_dialog_ru)
+        builder.setCustomTitle(getCustomTitle())
                 .setView(binding.getRoot())
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.btn_ok_measure_dialog_frag_measurement_ru, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.d(LOG_TAG, "OK button is pressed.");
@@ -82,7 +85,7 @@ public class MeasureDialogFragment extends DialogFragment {
                         }
                     }
                 })
-        .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        .setNegativeButton(R.string.btn_cancel_measure_dialog_frag_measurement_ru, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -143,5 +146,16 @@ public class MeasureDialogFragment extends DialogFragment {
         binding.etTheoDistanceMeasFrag.setText(String.valueOf(measureDefaultValues[7]));
         binding.etTheoHeightMeasFrag.setText(String.valueOf(measureDefaultValues[8]));
         binding.tvMeasureNumberMeasFrag.setText(String.valueOf(measureDefaultValues[9]));
+    }
+
+    private TextView getCustomTitle() {
+        TextView tvTitle = new TextView(context);
+        tvTitle.setText(R.string.title_measurement_dialog_ru);
+        tvTitle.setTextSize(24);
+        tvTitle.setTypeface(tvTitle.getTypeface(), Typeface.BOLD);
+        tvTitle.setBackgroundColor(getResources().getColor(R.color.light_blue_600));
+        tvTitle.setGravity(Gravity.CENTER);
+        tvTitle.setTextColor(getResources().getColor(R.color.black));
+        return tvTitle;
     }
 }

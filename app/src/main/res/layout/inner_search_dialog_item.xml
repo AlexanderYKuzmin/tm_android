@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="2dp"
         android:orientation="vertical"
-        android:background="@color/white">
+        android:background="#F4F2EC">
         <TableRow
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -36,7 +36,8 @@
                 android:layout_weight=".5"
                 android:paddingLeft="4dp"
                 android:textColor="@color/black"
-                android:background="@color/grey_font" />
+                android:background="@color/white"
+                />
             <TextView
                 android:id="@+id/tvSearchName_inner"
                 android:layout_width="wrap_content"
@@ -52,8 +53,9 @@
                 android:textSize="12dp"
                 android:paddingLeft="4dp"
                 android:textColor="@color/black"
+                android:background="@color/white"
                 android:layout_weight="1"
-                android:background="@color/grey_font"/>
+                />
             <TextView
                 android:id="@+id/tvSearchDate_inner"
                 android:layout_width="wrap_content"
@@ -70,7 +72,7 @@
                 android:textColor="@color/black"
                 android:layout_weight="1"
                 android:textAlignment="center"
-                android:background="@color/grey_font"/>
+                android:background="@color/white"/>
         </TableRow>
         <TableRow
             android:layout_width="match_parent"
@@ -78,13 +80,13 @@
             android:layout_marginTop="6dp"
             android:layout_marginLeft="4dp"
             android:layout_marginRight="4dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="10dp"
             >
             <TextView
                 android:id="@+id/tvSearchAddress_inner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
+
                 android:layout_marginLeft="4dp"
                 android:textSize="12dp"
                 android:textColor="@color/maincolor"
@@ -93,14 +95,14 @@
                 android:id="@+id/valSearchAddress_inner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1.1"
+                android:layout_weight=".9"
                 android:paddingTop="2dp"
                 android:paddingLeft="2dp"
                 android:paddingRight="2dp"
                 android:paddingBottom="2dp"
                 android:textSize="14dp"
                 android:textColor="@color/black"
-                android:background="@color/grey_font" />
+                android:background="@color/white" />
         </TableRow>
     </LinearLayout>
 </LinearLayout>
