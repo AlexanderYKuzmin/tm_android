@@ -17,7 +17,7 @@ public class Measurement implements Parcelable {
 	private Date date;
 	private String contractor;
 
-	private int number;
+	private Integer number;
 	private int side;
 	private CircleTheo circle;
 	private double leftAngle, rightAngle;
@@ -123,7 +123,7 @@ public class Measurement implements Parcelable {
 		this.id = id;
 	}
 
-	public int getNumber() {
+	public Integer getNumber() {
 		return number;
 	}
 

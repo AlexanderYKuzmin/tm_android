@@ -17,6 +17,9 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.model.DegreeSeparated;
+import com.example.appstraining.towermeasurement.model.Measurement;
+import com.example.appstraining.towermeasurement.util.DegreeConverter;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputPresenter;
 import com.example.appstraining.towermeasurement.databinding.MeasureDialogFragmentBinding;
@@ -31,14 +34,14 @@ public class MeasureDialogFragment extends DialogFragment {
     private int[] measureDefaultValues;
 
     private int measureNum;
+    private int positionInListView;
 
-    public MeasureDialogFragment(Context context, MeasureInputPresenter presenter, int measureNum,
-                                 String[] params, int[] defaultValues){
+    public MeasureDialogFragment(Context context, MeasureInputPresenter presenter, int measureNum){
         this.context = context;
         this.mMeasureInputPresenter = presenter;
         this.measureNum = measureNum;
-        measureConstantsStrArr = params;
-        measureDefaultValues = defaultValues;
+        //measureConstantsStrArr = params;
+        //measureDefaultValues = defaultValues;
     }
 
     @NonNull
@@ -47,7 +50,7 @@ public class MeasureDialogFragment extends DialogFragment {
         //View v = getActivity().getLayoutInflater().inflate(R.layout.measure_dialog_fragment, null);
         binding = MeasureDialogFragmentBinding.inflate(LayoutInflater.from(getContext()));
 
-        setDefaultFieldData(binding);
+        setDefaultFieldData();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setCustomTitle(getCustomTitle())
@@ -58,15 +61,19 @@ public class MeasureDialogFragment extends DialogFragment {
                         Log.d(LOG_TAG, "OK button is pressed.");
                         MainPresenter.isMeasuresChanged = true;
                         measureInputAngleFields = getFieldData(); // integer[]
-
+                        Log.d(LOG_TAG, "left angle d m s: "
+                                + measureInputAngleFields[0] + " "
+                                + measureInputAngleFields[1] + " "
+                                + measureInputAngleFields[2] + " "
+                        );
                         if(mMeasureInputPresenter.isAngleDataCorrect(
                                 measureInputAngleFields)) {
-                            double leftAngle = mMeasureInputPresenter.fromDegToDec(
+                            double leftAngle = DegreeConverter.fromDegToDec(
                                     measureInputAngleFields[0], // degree
                                     measureInputAngleFields[1], // minutes
                                     measureInputAngleFields[2]  // seconds
                             );
-                            double rightAngle = mMeasureInputPresenter.fromDegToDec(
+                            double rightAngle = DegreeConverter.fromDegToDec(
                                     measureInputAngleFields[3],
                                     measureInputAngleFields[4],
                                     measureInputAngleFields[5]
@@ -75,9 +82,9 @@ public class MeasureDialogFragment extends DialogFragment {
                             int theoDistance = measureInputAngleFields[7];
                             int theoHeight = measureInputAngleFields[8];
                             Log.d(LOG_TAG, "Left angle double: " + leftAngle);
-                            Log.d(LOG_TAG, "Right angle double: " + rightAngle);
+                            //Log.d(LOG_TAG, "Right angle double: " + rightAngle);
                             mMeasureInputPresenter.updateMeasurement(measureNum, leftAngle, rightAngle,
-                                    azimuth, theoDistance, theoHeight, measureConstantsStrArr);
+                                    azimuth, theoDistance, theoHeight);
 
                         } else {
                             Toast.makeText(context, "Please enter correct data.",
@@ -132,20 +139,26 @@ public class MeasureDialogFragment extends DialogFragment {
         return angleFields;
     }
 
-    private void setDefaultFieldData(MeasureDialogFragmentBinding binding) {
-        Log.d(LOG_TAG, "binding field [0] = " + measureDefaultValues[0]);
+    private void setDefaultFieldData() {
+        Measurement measurement = mMeasureInputPresenter.getMeasurements().get(measureNum - 1);
+        DegreeSeparated degreeSeparated = new DegreeSeparated(
+                DegreeConverter.fromDecToDeg(measurement.getLeftAngle()),
+                DegreeConverter.fromDecToDeg(measurement.getRightAngle())
+        );
+        /*Log.d(LOG_TAG, "binding field [0] = " + measureDefaultValues[0]);
         Log.d(LOG_TAG, "binding field [3] = " + measureDefaultValues[3]);
-
-        binding.etLeftDegMeasFrag.setText(String.valueOf(measureDefaultValues[0]));
-        binding.etLeftMinMeasFrag.setText(String.valueOf(measureDefaultValues[1]));
-        binding.etLeftSecMeasFrag.setText(String.valueOf(measureDefaultValues[2]));
-        binding.etRightDegMeasFrag.setText(String.valueOf(measureDefaultValues[3]));
-        binding.etRightMinMeasFrag.setText(String.valueOf(measureDefaultValues[4]));
-        binding.etRightSecMeasFrag.setText(String.valueOf(measureDefaultValues[5]));
-        binding.etAzimuthMeasFrag.setText(String.valueOf(measureDefaultValues[6]));
-        binding.etTheoDistanceMeasFrag.setText(String.valueOf(measureDefaultValues[7]));
-        binding.etTheoHeightMeasFrag.setText(String.valueOf(measureDefaultValues[8]));
-        binding.tvMeasureNumberMeasFrag.setText(String.valueOf(measureDefaultValues[9]));
+*/
+        binding.etLeftDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeLeft()));
+        binding.etLeftMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteLeft()));
+        binding.etLeftSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondLeft()));
+        binding.etRightDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeRight()));
+        binding.etRightMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteRight()));
+        binding.etRightSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondRight()));
+        binding.etAzimuthMeasFrag.setText(String.valueOf(measurement.getAzimuth()));
+        binding.etTheoDistanceMeasFrag.setText(String.valueOf(measurement.getDistance()));
+        binding.etTheoHeightMeasFrag.setText(String.valueOf(measurement.getTheoHeight()));
+        binding.tvMeasureNumberMeasFrag.setText(String.valueOf(measureNum));
+        binding.tvGroupNumberMeasFrag.setText(String.valueOf(measurement.getSide()));
     }
 
     private TextView getCustomTitle() {

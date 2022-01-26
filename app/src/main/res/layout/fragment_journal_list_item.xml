@@ -63,7 +63,7 @@
         android:background="@color/white"/>
     <TextView
         android:id="@+id/tvDevMm_journal"
-        android:layout_width="65dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"
         android:textSize="16dp"

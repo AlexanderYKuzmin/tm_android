@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.measurement.MeasureInputActivity"
+    android:orientation="vertical"
+    android:background="#EFBA60">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llMeasureGroupData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+            <!--<TextView
+            android:id="@+id/tvMeasureInputTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_marginTop="6dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/title_measure_group_fragment_measurement_ru"
+            android:textColor="#271457"
+            android:textSize="30dp"
+            android:textStyle="bold"
+            android:layout_gravity="center"
+            >
+
+        </TextView>-->
+            <TableLayout
+                android:id="@+id/tlMeasureInputGroupData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp">
+
+                    <EditText
+                        android:id="@+id/etTheoDistance_measureGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.75"
+                        android:background="@drawable/etinnershadow"
+                        android:hint="@string/theo_distance_measure_group_fragment_measurement_ru"
+                        android:paddingLeft="4dp"
+                        android:textSize="24dp" />
+
+                    <EditText
+                        android:id="@+id/etTheoHeight_measureGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.25"
+                        android:background="@drawable/etinnershadow"
+                        android:hint="@string/theo_height_measure_group_fragment_measurement_ru"
+                        android:inputType="date"
+                        android:paddingLeft="4dp"
+                        android:textSize="24dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.6"
+                        android:text="@string/theo_distance_measure_group_fragment_measurement_ru"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.4"
+                        android:text="@string/theo_height_measure_group_fragment_measurement_ru"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp">
+
+                    <EditText
+                        android:id="@+id/etAzimuth_measureGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.75"
+                        android:background="@drawable/etinnershadow"
+                        android:hint="@string/azimuth_measure_group_fragment_measurement_ru"
+                        android:paddingLeft="4dp"
+                        android:textSize="24dp" />
+
+                    <EditText
+                        android:id="@+id/etSide_measureGroup"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.25"
+                        android:background="@drawable/etinnershadow"
+                        android:inputType="none"
+                        android:paddingLeft="4dp"
+                        android:textSize="24dp" />
+                </TableRow>
+
+                <TableRow
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:layout_marginRight="4dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.6"
+                        android:text="@string/azimuth_measure_group_fragment_measurement_ru"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="2dp"
+                        android:layout_marginRight="2dp"
+                        android:layout_weight="0.4"
+                        android:text="@string/side_measure_group_fragment_measurement_ru"
+                        android:textAlignment="center"
+                        android:textSize="12dp" />
+
+                </TableRow>
+            </TableLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="500dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintTop_toBottomOf="@+id/llMeasureGroupData">
+
+            <ListView
+                android:id="@+id/lvMeasures_GroupData"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:layout_marginTop="12dp"
+                android:layout_marginEnd="6dp"
+                android:layout_marginBottom="70dp"></ListView>
+        </LinearLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <!--<Button
+        android:id="@+id/btnMeasureOk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="12dp"
+        android:layout_gravity="bottom|center_horizontal"
+        android:text="Сохранить"
+
+        >
+
+    </Button>-->
+
+</FrameLayout>
