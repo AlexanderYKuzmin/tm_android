@@ -9,8 +9,8 @@
         android:text="@string/search_form_main_title_ru"
         android:textSize="24dp"
         android:textStyle="bold"
-        android:textColor="#AEFBF7F7"
+        android:textColor="@color/black"
         android:textAlignment="center"
-        android:background="#2E45C3">
+        >
     </TextView>
 </LinearLayout>

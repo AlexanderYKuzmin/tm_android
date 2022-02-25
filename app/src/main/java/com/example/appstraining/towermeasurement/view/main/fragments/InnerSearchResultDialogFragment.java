@@ -13,7 +13,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,25 +21,24 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.InnerSearchDialogAdapterHelper;
-import com.example.appstraining.towermeasurement.view.main.MainActivity;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
-import com.example.appstraining.towermeasurement.view.main.MainViewInterface;
+import com.example.appstraining.towermeasurement.view.main.MainView;
 
 import java.util.Map;
 
 public class InnerSearchResultDialogFragment extends DialogFragment implements AdapterView.OnItemClickListener {
     Context context;
     MainPresenter mainPresenter;
-    MainViewInterface mainActivity;
+    MainView mainActivity;
 
     InnerSearchDialogAdapterHelper adapterHelper;
     SimpleAdapter searchDialogSimpleAdapter;
     ListView mLocationList;
     final String LOG_TAG = "InnerSearchDF";
-    Map<Integer, Building> buildingMap;
+    Map<Long, Building> buildingMap;
 
     //int title;
     /*String name;
@@ -54,7 +52,7 @@ public class InnerSearchResultDialogFragment extends DialogFragment implements A
         this.address = address;
         this.mMainPresenter = mainPresenter;
     }*/
-    public InnerSearchResultDialogFragment(Context context, MainPresenter mainPresenter, MainViewInterface mainActivity) {
+    public InnerSearchResultDialogFragment(Context context, MainPresenter mainPresenter, MainView mainActivity) {
         this.context = context;
         this.mainPresenter = mainPresenter;
         this.mainActivity = mainActivity;
@@ -117,7 +115,7 @@ public class InnerSearchResultDialogFragment extends DialogFragment implements A
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(LOG_TAG, "onItemClick pressed");
         TextView building_id_txt = (TextView) view.findViewById(R.id.valSearchId_inner);
-        int building_id = Integer.parseInt(building_id_txt.getText().toString());
+        long building_id = Long.parseLong(building_id_txt.getText().toString());
         Log.d(LOG_TAG, "building_id = " + building_id);
         mainPresenter.setBuilding(buildingMap.get(building_id));
         mainPresenter.mountBuilding(MainActivityMode.SELECTED_OBJECT);

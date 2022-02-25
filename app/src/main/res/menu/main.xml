@@ -37,7 +37,11 @@
         android:title="@string/menuitem7_ru"
         app:showAsAction="never">
     </item>
-
+    <item
+        android:id="@+id/mDelete"
+        android:title="@string/menuitem9_ru"
+        app:showAsAction="never">
+    </item>
     <item
         android:id="@+id/mQuit"
         android:title="@string/menuitem8_ru"

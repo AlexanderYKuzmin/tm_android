@@ -89,6 +89,8 @@ public class GraphFragment extends Fragment {
         Log.d(LOG_TAG, " in CreateView graphPointsData.length = " + graphPointsData.length);
         //DataPoint[] lineDataPointArray = new DataPoint[graphPointsData.length/2];
 
+        //GraphicSeriesCreator seriesCreator = new GraphicSeriesCreator();
+
         DataPoint[] lineDataPoint = new DataPoint[2];
         DataPoint[] pDataPoint = new DataPoint[1];
 
@@ -118,8 +120,10 @@ public class GraphFragment extends Fragment {
             Log.d(LOG_TAG, "i = " + i + "; pDataPoint[0] = " + pDataPoint[0].getX() + " : " + pDataPoint[0].getY());
             pointSeriesList.add(pointsGraphSeries);
         }
-
+        //GraphView graphView0 = new GraphView(getContext());
         GraphView graphView = (GraphView) view.findViewById(R.id.graph);
+        ReportPreparePresenter.graphView = graphView;
+        ReportPreparePresenter.
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setYAxisBoundsManual(true);
         Log.d(LOG_TAG, "Deviation = " + deviation);
@@ -186,7 +190,6 @@ public class GraphFragment extends Fragment {
                     graphRange[ReportPreparePresenter.MAX_Y]/5);
             graphView.getGridLabelRenderer().setNumVerticalLabels(
                     graphRange[ReportPreparePresenter.MAX_Y]/5);
-
 
             graphView.addSeries(getRoundSeries(deviation));
         }

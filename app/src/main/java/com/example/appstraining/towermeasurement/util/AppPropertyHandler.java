@@ -3,6 +3,7 @@ package com.example.appstraining.towermeasurement.util;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.annotation.RequiresApi;
 
@@ -26,6 +27,7 @@ public class AppPropertyHandler {
                     + FILENAME);
             properties.load(inputStream);
             inputStream.close();
+            Log.d("AppPropertyHandler", "property id = " + properties.getProperty(key));
             return properties.getProperty(key);
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,6 +45,7 @@ public class AppPropertyHandler {
             properties.setProperty(key, value);
             properties.store(outputStream, null);
             outputStream.close();
+            Log.d("AppPropertyHandler", "just written property id = " + getProperty(key, context));
             Class.forName("dalvik.system.CloseGuard")
                     .getMethod("setEnabled", boolean.class)
                     .invoke(null, true);

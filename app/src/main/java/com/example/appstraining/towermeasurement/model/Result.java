@@ -14,9 +14,10 @@ public class Result implements Parcelable {
 	private double tanAlfa;
 	private int distanceToSec;
 	private int distanceDelta;
-	private double betaAverage;
+	private double betaAverageLeft;
+	private double betaAverageRight;
 	private double betaI;
-	private double betaDelta;
+	private int betaDelta;
 	
 	private int buildingID;
 	private int sectionID;
@@ -27,8 +28,8 @@ public class Result implements Parcelable {
 	}
 
 	public Result(int id, double averageKL, double averageKR, double averageKLKR, double shiftDegree,
-			int shiftMm, double tanAlfa, int distanceToSec, int distanceDelta, double betaAverage, double betaI,
-			double betaDelta, int buildingID, int sectionID, int measureID) {
+				  int shiftMm, double tanAlfa, int distanceToSec, int distanceDelta, double betaAverageLeft, double betaAverageRight, double betaI,
+				  int betaDelta, int buildingID, int sectionID, int measureID) {
 		super();
 		this.id = id;
 		//this.objName = objName;
@@ -40,7 +41,8 @@ public class Result implements Parcelable {
 		this.tanAlfa = tanAlfa;
 		this.distanceToSec = distanceToSec;
 		this.distanceDelta = distanceDelta;
-		this.betaAverage = betaAverage;
+		this.betaAverageLeft = betaAverageLeft;
+		this.betaAverageRight = betaAverageRight;
 		this.betaI = betaI;
 		this.betaDelta = betaDelta;
 		this.buildingID = buildingID;
@@ -58,9 +60,10 @@ public class Result implements Parcelable {
 		tanAlfa = in.readDouble();
 		distanceToSec = in.readInt();
 		distanceDelta = in.readInt();
-		betaAverage = in.readDouble();
+		betaAverageLeft = in.readDouble();
+		betaAverageRight = in.readDouble();
 		betaI = in.readDouble();
-		betaDelta = in.readDouble();
+		betaDelta = in.readInt();
 		buildingID = in.readInt();
 		sectionID = in.readInt();
 		measureID = in.readInt();
@@ -77,9 +80,10 @@ public class Result implements Parcelable {
 		dest.writeDouble(tanAlfa);
 		dest.writeInt(distanceToSec);
 		dest.writeInt(distanceDelta);
-		dest.writeDouble(betaAverage);
+		dest.writeDouble(betaAverageLeft);
+		dest.writeDouble(betaAverageRight);
 		dest.writeDouble(betaI);
-		dest.writeDouble(betaDelta);
+		dest.writeInt(betaDelta);
 		dest.writeInt(buildingID);
 		dest.writeInt(sectionID);
 		dest.writeInt(measureID);
@@ -179,12 +183,20 @@ public class Result implements Parcelable {
 		this.distanceDelta = distanceDelta;
 	}
 
-	public double getBetaAverage() {
-		return betaAverage;
+	public double getBetaAverageLeft() {
+		return betaAverageLeft;
 	}
 
-	public void setBetaAverage(double betaAverage) {
-		this.betaAverage = betaAverage;
+	public double getBetaAverageRight() {
+		return betaAverageRight;
+	}
+
+	public void setBetaAverageLeft(double betaAverageLeft) {
+		this.betaAverageLeft = betaAverageLeft;
+	}
+
+	public void setBetaAverageRight(double betaAverageRight) {
+		this.betaAverageRight = betaAverageRight;
 	}
 
 	public double getBetaI() {
@@ -199,8 +211,8 @@ public class Result implements Parcelable {
 		return betaDelta;
 	}
 
-	public void setBetaDelta(double betaDelta) {
-		this.betaDelta = (double)Math.round(betaDelta*1000) / 1000;
+	public void setBetaDelta(int betaDelta) {
+		this.betaDelta = Math.round(betaDelta*1000) / 1000;
 	}
 
 	public int getBuildingID() {
@@ -229,7 +241,8 @@ public class Result implements Parcelable {
 	
 	public void updateResult(double averageKL, double averageKR, double averageKLKR,
 							 double shiftDegree, int shiftMm, double tanAlfa,
-							 int distanceToSec, int distanceDelta) {
+							 int distanceToSec, int distanceDelta,
+							 double betaAverageLeft, double betaAverageRight, double betaI, int betaDelta) {
 		setAverageKL(averageKL);
 		setAverageKR(averageKR);
 		setAverageKLKR(averageKLKR);
@@ -238,6 +251,10 @@ public class Result implements Parcelable {
 		setTanAlfa(tanAlfa);
 		setDistanceToSec(distanceToSec);
 		setDistanceDelta(distanceDelta);
+		setBetaAverageLeft(betaAverageLeft);
+		setBetaAverageRight(betaAverageRight);
+		setBetaI(betaI);
+		setBetaDelta(betaDelta);
 	}
 	
 	

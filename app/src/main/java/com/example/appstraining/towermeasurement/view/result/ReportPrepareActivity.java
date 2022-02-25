@@ -10,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 
 import com.example.appstraining.towermeasurement.R;
+//import com.example.appstraining.towermeasurement.data.file.DocCreator;
+import com.example.appstraining.towermeasurement.data.file.DocCreator;
 import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
 import com.example.appstraining.towermeasurement.model.Result;
 
@@ -22,8 +24,8 @@ public class ReportPrepareActivity extends AppCompatActivity {
     private final int YOZ = 2;
     private final int XOY = 3;
     ReportPreparePresenter rpPresenter;
-    ActivityReportPrepareBinding binding;
-    int buildingID;
+    private ActivityReportPrepareBinding binding;
+    Long buildingID;
     int levels[];
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -32,15 +34,15 @@ public class ReportPrepareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_report_prepare);
 
-        buildingID = getIntent().getIntExtra("building_id", 0);
+        buildingID = getIntent().getLongExtra("building_id", 0);
         levels = getIntent().getIntArrayExtra("levels");
-        Log.d(LOG_TAG, " Levels is recieved: Levels[1] = " + levels[1] + "; "
+        /*Log.d(LOG_TAG, " Levels is recieved: Levels[1] = " + levels[1] + "; "
                 + "levels[2] = " + levels[2]
-        );
+        );*/
         rpPresenter = new ReportPreparePresenter(buildingID, levels, this);
-        Log.d(LOG_TAG, "Building name: " + rpPresenter.getReportBuilding().getName() + "\n"
+        /*Log.d(LOG_TAG, "Building name: " + rpPresenter.getReportBuilding().getName() + "\n"
                 + "creation date: " + rpPresenter.getReportBuilding().getCreationDate()
-        );
+        );*/
 
         /*for(Measurement m : rpPresenter.getReportBuilding().getMeasurements()) {
             Log.d(LOG_TAG, "m_id =" + m.getId() + "\n"
@@ -86,7 +88,7 @@ public class ReportPrepareActivity extends AppCompatActivity {
                 for(int x: rpPresenter.getYOZRange()) {
                     Log.d(LOG_TAG, "yozRange[i] = " + x);
                 }
-                //*** Enf test ***
+                //*** End test ***
 
                 startActivity(graphViewPagerIntent);
             }
@@ -108,9 +110,13 @@ public class ReportPrepareActivity extends AppCompatActivity {
         });
 
         binding.imbtnXOY.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-
+                /*DocCreator docCreator = new DocCreator();
+                docCreator.createDocFile(rpPresenter.getReportBuilding());*/
+                rpPresenter.createReportDocFile();
+                // all logic to presenter
             }
         });
     }

@@ -75,14 +75,19 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
         Log.d(LOG_TAG, "MesuareInputPresenter " + measureInputPresenter);
         measureInputPresenter.setMeasurements(
                 getIntent().getParcelableArrayListExtra(getString(R.string.startmeasures)));
-        Log.d(LOG_TAG, "Set measurements is : \n"
-                + "left angle : " + measureInputPresenter.getMeasurements().get(0).getLeftAngle() + "\n"
-                + "right angle : " + measureInputPresenter.getMeasurements().get(0).getRightAngle() + "\n"
-                + "circle : " + measureInputPresenter.getMeasurements().get(0).getCircle() + "\n"
-                + "date : " + measureInputPresenter.getMeasurements().get(0).getDate() + "\n"
-                + "azimuth : " + measureInputPresenter.getMeasurements().get(0).getAzimuth() + "\n"
 
-        );
+
+        if (measureInputPresenter.getMeasurements() != null) {
+            Log.d(LOG_TAG, "Set measurements is : \n"
+                    + "left angle : " + measureInputPresenter.getMeasurements().get(0).getLeftAngle() + "\n"
+                    + "right angle : " + measureInputPresenter.getMeasurements().get(0).getRightAngle() + "\n"
+                    + "circle : " + measureInputPresenter.getMeasurements().get(0).getCircle() + "\n"
+                    + "date : " + measureInputPresenter.getMeasurements().get(0).getDate() + "\n"
+                    + "azimuth : " + measureInputPresenter.getMeasurements().get(0).getAzimuth() + "\n"
+
+            );
+
+        } else Log.d(LOG_TAG, "Measurements is NULL");
 
         /*adapter = adapterHelper.getAdapter(
                 measureInputPresenter.getMeasurements(),

@@ -1,6 +1,5 @@
 package com.example.appstraining.towermeasurement.view.main;
 
-import static com.example.appstraining.towermeasurement.TestData.testBuilding;
 
 
 import com.example.appstraining.towermeasurement.TestData;

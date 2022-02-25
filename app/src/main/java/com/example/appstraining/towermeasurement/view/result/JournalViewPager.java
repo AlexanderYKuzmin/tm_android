@@ -39,10 +39,10 @@ public class JournalViewPager extends AppCompatActivity {
         levels = getIntent().getIntArrayExtra("levels");
         measurements.addAll(getIntent().getParcelableArrayListExtra("measurements"));
         results.addAll(getIntent().getParcelableArrayListExtra("results"));
-        Log.d(LOG_TAG, " measurements getParcelableArrayListExtra " + measurements.get(10).getId());
+        Log.d(LOG_TAG, " measurements getParcelableArrayListExtra " + measurements.get(5).getId());
 
-        int page_count = 3;
-        if(distances[2] == 0) page_count = 2;
+        int page_count = 2;
+        //if(distances[2] == 0) page_count = 2; changed for 2 sides
 
         journalPager = (ViewPager2) findViewById(R.id.journal_pager);
         JournalFragmentPagerAdapter journalFragmentPagerAdapter = new JournalFragmentPagerAdapter(
@@ -94,7 +94,7 @@ public class JournalViewPager extends AppCompatActivity {
         }
 
         private Measurement[] getMeasArray(int position) {
-            Measurement[] measArray = new Measurement[measurements.size() / 3];
+            Measurement[] measArray = new Measurement[measurements.size() / 2]; // changed for 2 sides
             int beginIndex = measArray.length * position;
             int endIndex = beginIndex + measArray.length;
             for (int i = beginIndex, j = 0; i < endIndex; i++, j++) {
@@ -105,7 +105,7 @@ public class JournalViewPager extends AppCompatActivity {
         }
 
         private Result[] getResArray(int position) {
-            Result[] resArray = new Result[results.size() / 3];
+            Result[] resArray = new Result[results.size() / 2]; // changed for 2 sides
             int beginIndex = resArray.length * position;
             int endIndex = beginIndex + resArray.length;
             for (int i = beginIndex, j = 0; i < endIndex; i++, j++) {

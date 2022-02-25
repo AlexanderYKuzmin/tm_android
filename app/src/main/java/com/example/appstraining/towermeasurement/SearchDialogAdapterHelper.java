@@ -31,9 +31,9 @@ public class SearchDialogAdapterHelper {
         this.context = context;
     }
 
-    public LoadBuildingsAdapter getAdapter(Map<Integer, Building> buildingMap){
+    public LoadBuildingsAdapter getAdapter(Map<Long, Building> buildingMap){
 
-        for (Map.Entry<Integer, Building> entry : buildingMap.entrySet()){
+        for (Map.Entry<Long, Building> entry : buildingMap.entrySet()){
             Log.d(LOG_TAG, "creation date:" + entry.getValue().getCreationDate());
             java.sql.Date creationDate = entry.getValue().getCreationDate();
 

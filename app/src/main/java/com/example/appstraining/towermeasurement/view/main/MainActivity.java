@@ -28,6 +28,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.view.main.fragments.DeleteDialogFragment;
 import com.example.appstraining.towermeasurement.view.main.fragments.SearchFormDialogFragment;
 import com.example.appstraining.towermeasurement.model.adapter.main.SectionListAdapterHelper;
 import com.example.appstraining.towermeasurement.model.adapter.main.SpinnerConfigAdapterHelper;
@@ -43,7 +44,7 @@ import com.example.appstraining.towermeasurement.view.TowerModelingFragment;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements MainViewInterface, View.OnClickListener
+public class MainActivity extends AppCompatActivity implements MainView, View.OnClickListener
         , AdapterView.OnItemClickListener {
 
     public Context context = this;
@@ -54,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
     private InnerSearchResultDialogFragment innerSearchResultDialogFragment;
     private SearchFormDialogFragment searchFormDialogFragment;
+    private DeleteDialogFragment deleteDialogFragment;
    // private FragmentTransaction fragmentTransaction;
     private Fragment modelingFragment;
 
@@ -125,7 +127,9 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         spinnerType = (Spinner) findViewById(R.id.spType);
         spinnerConfig = (Spinner) findViewById(R.id.spConfig);
         spinnerType.setAdapter(typeSpinnerAdapter);
+        spinnerType.setSelection(1);
         spinnerConfig.setAdapter(configSpinnerAdapter);
+        spinnerConfig.setSelection(1);
 
         etSectionsNumber.addTextChangedListener(new TextWatcher() {
             @Override
@@ -149,11 +153,9 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
 
             @Override
             public void afterTextChanged(Editable s) {
-                //isTextWatcherOn = false;
+                isTextWatcherOn = false;
                 //updateView(activityMode);
             }
-
-
         });
 
         sectionListAdapterHelper = new SectionListAdapterHelper(context);
@@ -229,22 +231,22 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 break;
             case R.id.mLoadFromStorage:
                 activityMode = MainActivityMode.LOAD_FROM_STORAGE;
-                //mainPresenter.showSearchFormDialogFragment(getSupportFragmentManager());
-                //mainPresenter.showInnerSearchResultDialogFragment(getSupportFragmentManager());
-                //updateView(activityMode);
-                /*new InnerSearchResultDialogFragment(this, R.string.search_dialog_title_ru, mainPresenter)
-                        .show(getSupportFragmentManager(), null);*/
+
                 Log.d(LOG_TAG, "search form dialog = " + searchFormDialogFragment);
                 showSearchFormDialogFragment();
 
                 Log.d(LOG_TAG, "After show method search form dialog");
                 //innerSearchResultDialogFragment.show(getSupportFragmentManager(), null);
-                activityMode = MainActivityMode.SELECTED_OBJECT;
-                updateView(activityMode);
+                //activityMode = MainActivityMode.SELECTED_OBJECT; // И не здесь менять режим
+                updateView(activityMode); // кажется не здесь надо вызывать апдейт
                 break;
             case R.id.mSaveToStorage:
                 mainPresenter.saveToLocalDB();
                 break;
+            case R.id.mDelete:
+                activityMode = MainActivityMode.DELETE;
+                Log.d(LOG_TAG, "(Delete) search form dialog = " + searchFormDialogFragment);
+                showSearchFormDialogFragment();
             case R.id.mQuit:
 
         }
@@ -295,6 +297,8 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                         Log.d(LOG_TAG, "Registration result: " + postResult);
                         Toast.makeText(context, "Registration result : " + postResult, Toast.LENGTH_SHORT)
                                 .show();
+                        activityMode = MainActivityMode.SELECTED_OBJECT;
+                        mainPresenter.mountBuilding(activityMode);
                         break;
                     case LAST_LOADED_OBJECT:
                         // write here update this object in database
@@ -313,6 +317,9 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                     case SELECTED_OBJECT:
                         Intent intent = new Intent(context, MeasureInputActivity.class);
                         intent.putParcelableArrayListExtra(getString(R.string.startmeasures), mainPresenter.getMeasurements());
+                        Log.d(LOG_TAG, "Building from MainPresenter" + mainPresenter.getBuilding().getAddress());
+                        Log.d(LOG_TAG, "Measurements from building from MainPresenter: " + mainPresenter.getBuilding().getMeasurements().get(0).getLeftAngle());
+                        Log.d(LOG_TAG, "Measurements: " + mainPresenter.getMeasurements().get(0).getLeftAngle() + " :: " +  mainPresenter.getMeasurements().get(0).getRightAngle());
                         startActivityForResult(intent, MEASURE_ACTIVITY_REQUEST_CODE);
                         break;
                     case LOAD_FROM_STORAGE:  // OK it is like a createBtn button
@@ -323,6 +330,16 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                                 mainPresenter).show(getSupportFragmentManager(), null);
                         activityMode = MainActivityMode.SELECTED_OBJECT;*/
                         Log.d(LOG_TAG, "Activity mode changed to" + activityMode.toString());
+                        break;
+                    case LOAD_FROM_SERVER:
+
+                        new SearchDialogFragment(this, mainPresenter,
+                                etName.getText().toString(),
+                                etAddress.getText().toString(),
+                                R.string.search_dialog_title_ru).show(getSupportFragmentManager(), null);
+                        activityMode = MainActivityMode.LAST_LOADED_OBJECT;
+                        Log.d(LOG_TAG, "ActivityMode changed to " + activityMode.toString());
+                        break;
                 }
                 break;
 
@@ -447,9 +464,10 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
                 spinnerType.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 spinnerConfig.setBackground(getResources().getDrawable(R.drawable.etinnershadow));
                 id = String.valueOf(mainPresenter.getBuilding().getId());
+                //id = null;
                 //tvId_1.setText(id);
                 Log.d(LOG_TAG, " SELECTED Obj update view id = " + id);
-                //Log.d(LOG_TAG, "tvId_1 get Text: " + tvId_1.getText().toString());
+                Log.d(LOG_TAG, "Building is " + mainPresenter.getBuilding());
                 name = mainPresenter.getBuilding().getName();
                 address = mainPresenter.getBuilding().getAddress();
                 type = String.valueOf(mainPresenter.getBuilding().getType());
@@ -531,6 +549,11 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
         innerSearchResultDialogFragment.show(getSupportFragmentManager(), null);
     }
 
+    public void showDeleteDialogFragment() {
+        deleteDialogFragment = new DeleteDialogFragment(context, mainPresenter, this);
+        deleteDialogFragment.show(getSupportFragmentManager(), null);
+    }
+
     public void showMessage() {
         Toast.makeText(context, "Объекты не найдены", Toast.LENGTH_SHORT);
     }
@@ -538,5 +561,15 @@ public class MainActivity extends AppCompatActivity implements MainViewInterface
     @Override
     public void onPause() {
         super.onPause();
+    }
+
+    @Override
+    public void setActivityMode(MainActivityMode activityMode) {
+
+    }
+
+    @Override
+    public MainActivityMode getActivityMode() {
+        return activityMode;
     }
 }

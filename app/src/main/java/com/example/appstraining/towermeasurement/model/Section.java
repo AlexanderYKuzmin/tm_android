@@ -8,14 +8,14 @@ public class Section {
 	private int height;
 	private int level;
 	private String name;
-	private int building_id;
+	private Long building_id;
 	
 	public Section() {
 		
 	}
 
 	public Section(int id, int number, int widthBottom, int widthTop, int height, int level,
-				   String name, int building_id) {
+				   String name, Long building_id) {
 		super();
 		this.id = id;
 		this.number = number;
@@ -83,11 +83,11 @@ public class Section {
 		this.name = name;
 	}
 
-	public int getBuilding_id() {
+	public Long getBuilding_id() {
 		return building_id;
 	}
 
-	public void setBuilding_id(int building_id) {
+	public void setBuilding_id(Long building_id) {
 		this.building_id = building_id;
 	}
 	

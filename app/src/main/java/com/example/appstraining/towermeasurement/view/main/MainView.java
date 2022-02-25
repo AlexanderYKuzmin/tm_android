@@ -7,7 +7,7 @@ import com.example.appstraining.towermeasurement.model.Section;
 
 import java.util.ArrayList;
 
-public interface MainViewInterface {
+public interface MainView {
 
     void updateView(MainActivityMode activityMode);
 
@@ -26,6 +26,12 @@ public interface MainViewInterface {
 
     void showInnerSearchResultDialogFragment();
 
+    void showDeleteDialogFragment();
+
     void showMessage();
+
+    void setActivityMode(MainActivityMode activityMode);
+
+    MainActivityMode getActivityMode();
 
 }

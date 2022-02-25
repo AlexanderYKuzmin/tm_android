@@ -5,6 +5,9 @@ plugins {
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
+    useLibrary 'android.test.mock'
+    useLibrary 'android.test.base'
+    useLibrary 'android.test.runner'
 
     defaultConfig {
         applicationId "com.example.appstraining.towermeasurement"
@@ -14,6 +17,7 @@ android {
         versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -33,19 +37,29 @@ android {
     buildFeatures {
         viewBinding true
     }
+
+    testOptions {
+        unitTests.includeAndroidResources = true
+    }
 }
 
 dependencies {
     //graphView
     // https://mvnrepository.com/artifact/com.jjoe64/graphview
     implementation group: 'com.jjoe64', name: 'graphview', version: '4.2.1'
+    // https://mvnrepository.com/artifact/javax.xml.stream/stax-api
+    implementation group: 'javax.xml.stream', name: 'stax-api', version: '1.0-2'
+
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'com.google.android.material:material:1.3.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0'
+    implementation 'androidx.test:monitor:1.3.0'
+    implementation 'androidx.test:core:1.3.0'
     testImplementation 'junit:junit:4.+'
+    testImplementation 'org.robolectric:robolectric:4.6'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -57,5 +71,19 @@ dependencies {
     //val fragment_version = "1.4.0"
     implementation 'androidx.fragment:fragment:1.3.6'
 
+    // https://mvnrepository.com/artifact/org.apache.poi/poi
+    //implementation group: 'org.apache.poi', name: 'poi', version: '4.1.2'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas
+    implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-examples
+    implementation group: 'org.apache.poi', name: 'poi-examples', version: '4.1.2'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad
+    implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '4.1.2'
+
+    // https://mvnrepository.com/artifact/org.apache.poi/poi-excelant
+    implementation group: 'org.apache.poi', name: 'poi-excelant', version: '4.1.2'
 
 }

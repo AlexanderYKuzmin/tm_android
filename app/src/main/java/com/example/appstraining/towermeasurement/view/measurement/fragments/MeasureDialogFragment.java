@@ -19,7 +19,7 @@ import androidx.fragment.app.DialogFragment;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.DegreeSeparated;
 import com.example.appstraining.towermeasurement.model.Measurement;
-import com.example.appstraining.towermeasurement.util.DegreeConverter;
+import com.example.appstraining.towermeasurement.util.DegreeNumericConverter;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputPresenter;
 import com.example.appstraining.towermeasurement.databinding.MeasureDialogFragmentBinding;
@@ -68,12 +68,12 @@ public class MeasureDialogFragment extends DialogFragment {
                         );
                         if(mMeasureInputPresenter.isAngleDataCorrect(
                                 measureInputAngleFields)) {
-                            double leftAngle = DegreeConverter.fromDegToDec(
+                            double leftAngle = DegreeNumericConverter.fromDegToDec(
                                     measureInputAngleFields[0], // degree
                                     measureInputAngleFields[1], // minutes
                                     measureInputAngleFields[2]  // seconds
                             );
-                            double rightAngle = DegreeConverter.fromDegToDec(
+                            double rightAngle = DegreeNumericConverter.fromDegToDec(
                                     measureInputAngleFields[3],
                                     measureInputAngleFields[4],
                                     measureInputAngleFields[5]
@@ -142,8 +142,8 @@ public class MeasureDialogFragment extends DialogFragment {
     private void setDefaultFieldData() {
         Measurement measurement = mMeasureInputPresenter.getMeasurements().get(measureNum - 1);
         DegreeSeparated degreeSeparated = new DegreeSeparated(
-                DegreeConverter.fromDecToDeg(measurement.getLeftAngle()),
-                DegreeConverter.fromDecToDeg(measurement.getRightAngle())
+                DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle()),
+                DegreeNumericConverter.fromDecToDeg(measurement.getRightAngle())
         );
         /*Log.d(LOG_TAG, "binding field [0] = " + measureDefaultValues[0]);
         Log.d(LOG_TAG, "binding field [3] = " + measureDefaultValues[3]);

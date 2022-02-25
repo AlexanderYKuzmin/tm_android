@@ -60,6 +60,7 @@ public class JournalFragment extends Fragment {
         measurements = (Measurement[]) getArguments().getParcelableArray(ARGUMENT_MEASUREMENTS);
         results = (Result[]) getArguments().getParcelableArray(ARGUMENT_RESULTS);
         Log.d(LOG_TAG, "theoDistance = " + theoDistance + "; position = " + position);
+        Log.d(LOG_TAG, "Measurements size = " + measurements.length);
         for (int i = 0; i < levels.length; i++) {
             Log.d(LOG_TAG, "levels[i] = " + levels[i]);
         }

@@ -147,7 +147,7 @@ public class DrawPreparation {
             r = a * k;
             //r = R / 2;
             //h0 = h;
-            h = h + (float)building.getSection(i / 12 + 1).getHeight() / (float)(h0/2.9);
+            h = h + (float)building.getSection(i / 12 + 1).getHeight() / (float)(h0/2.4);
 
             towerVertices[i] = -a / 2; // X1
             towerVertices[i + 1] = h; // Y1
@@ -166,9 +166,11 @@ public class DrawPreparation {
             towerVertices[i + 11] = r; // Z4
 
             if(i == (numberOfSections -1) * 12) {
-                a = (float)building.getSection(i / 12 + 1).getWidthTop() / 10000;
+                //a = (float)building.getSection(i / 12 + 1).getWidthTop() / 10000;
+                a = (float)building.getSection(i / 12 + 1).getWidthTop() / (float)(w0*1.1);
                 r = a * k;
-                h = h + (float)building.getSection(i / 12 + 1).getHeight() / 20000;
+
+                h = h + (float)building.getSection(i / 12 + 1).getHeight() / (float)(h0/2.2); //20000
                 towerVertices[i + 12] = -a / 2; // X1
                 towerVertices[i + 13] = h; // Y1
                 towerVertices[i + 14] = -r; // Z1

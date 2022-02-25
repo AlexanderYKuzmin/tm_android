@@ -19,7 +19,7 @@ import java.util.Map;
 public class LoadBuildingsAdapter extends SimpleAdapter {
     private final String LOG_TAG = "LoadBuildingsAdapter";
     Context mContext;
-    ArrayList<Integer> checkedIDs = new ArrayList<>();
+    ArrayList<Long> checkedIDs = new ArrayList<>();
     List<Map<String, Object>> data;
     /**
      * Constructor
@@ -48,11 +48,12 @@ public class LoadBuildingsAdapter extends SimpleAdapter {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    checkedIDs.add((int)data.get(position).get("id"));
+                    Long integer = (long)data.get(position).get("id");
+                    checkedIDs.add(integer.longValue());
                     Log.d(LOG_TAG, "List changed. Added position :" + position +
                             "\nList size = " + checkedIDs.size());
                 } else {
-                    checkedIDs.remove(position);
+                    checkedIDs.remove(position - 1);
                     Log.d(LOG_TAG, "List changed. Removed position :" + position +
                             "\nList size = " + checkedIDs.size());
                 }
@@ -63,7 +64,7 @@ public class LoadBuildingsAdapter extends SimpleAdapter {
         return v;
     }
 
-    public ArrayList<Integer> getCheckedIDs() {
+    public ArrayList<Long> getCheckedIDs() {
         return checkedIDs;
     }
 }

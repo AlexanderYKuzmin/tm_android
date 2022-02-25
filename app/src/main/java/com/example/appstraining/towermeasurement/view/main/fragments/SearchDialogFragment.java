@@ -5,11 +5,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -22,13 +19,13 @@ import com.example.appstraining.towermeasurement.SearchDialogAdapterHelper;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
-import com.example.appstraining.towermeasurement.view.main.MainViewInterface;
+import com.example.appstraining.towermeasurement.view.main.MainView;
 
 import java.util.Map;
 
 public class SearchDialogFragment extends DialogFragment {
     Context mContext;
-    MainViewInterface mActivity;
+    MainView mActivity;
     MainPresenter mMainPresenter;
     SearchDialogAdapterHelper adapterHelper;
     LoadBuildingsAdapter searchDialogSimpleAdapter;
@@ -38,7 +35,7 @@ public class SearchDialogFragment extends DialogFragment {
     int title;
     String name;
     String address;
-    Map<Integer, Building> buildingMap;
+    Map<Long, Building> buildingMap;
 
     /*String[] ids;
     String[] names;
@@ -56,12 +53,13 @@ public class SearchDialogFragment extends DialogFragment {
     this.title = title;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @NonNull
     @Override
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View v = getActivity().getLayoutInflater().inflate(R.layout.search_results_fragment_dialog, null);
         //v.setBackgroundColor(getResources().getColor(R.color.sandyLight));
-        buildingMap = mMainPresenter.getBuildingMap(name, address);
+        buildingMap = mMainPresenter.loadBuildingMap(name, address);
         /*Log.d(LOG_TAG, "Building map is recieved. First building : "
         + buildingMap.get(1).getName() + "\n"
         + "measurement.getLeftAngle = " + buildingMap.get(1).getMeasurements().get(4).getLeftAngle() + "\n"
@@ -87,10 +85,11 @@ public class SearchDialogFragment extends DialogFragment {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Integer[] checkedIds =
-                                searchDialogSimpleAdapter.getCheckedIDs().toArray(new Integer[0]);
+                        Long[] checkedIds =
+                                searchDialogSimpleAdapter.getCheckedIDs().toArray(new Long[0]);
                         mMainPresenter.saveToLocalDB(checkedIds);
-                        mMainPresenter.loadBuilding(checkedIds[checkedIds.length - 1]); //here check for unselected building
+                        //mMainPresenter.loadBuilding(checkedIds[checkedIds.length - 1]); //here check for unselected building
+                        mMainPresenter.setBuilding(buildingMap.get(checkedIds[checkedIds.length - 1]));
                         mMainPresenter.mountBuilding(MainActivityMode.SELECTED_OBJECT);
                         dismiss();
                     }

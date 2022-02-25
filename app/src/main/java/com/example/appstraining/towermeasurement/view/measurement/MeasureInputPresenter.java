@@ -6,20 +6,14 @@ import android.util.Log;
 
 import com.example.appstraining.towermeasurement.model.DegreeSeparated;
 import com.example.appstraining.towermeasurement.model.Measurement;
-import com.example.appstraining.towermeasurement.util.DegreeConverter;
+import com.example.appstraining.towermeasurement.util.DegreeNumericConverter;
 
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.Locale;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static com.example.appstraining.towermeasurement.util.DegreeConverter.fromDecToDeg;
+import static com.example.appstraining.towermeasurement.util.DegreeNumericConverter.fromDecToDeg;
 import static com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity.LEFT_LIST;
 
 import androidx.annotation.RequiresApi;
@@ -84,7 +78,7 @@ public class MeasureInputPresenter {
         //measurement.setContractor(contractor);
         measurement.setAzimuth(azimuth);
         Log.d(LOG_TAG, "Measurements are updated. MeasureNum = " );
-        int[] leftAngleTest = DegreeConverter.fromDecToDeg(measurement.getLeftAngle());
+        int[] leftAngleTest = DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle());
         Log.d(LOG_TAG, "left angle: "
                     + leftAngleTest[0] + " "
                     + leftAngleTest[1] + " "
@@ -92,8 +86,8 @@ public class MeasureInputPresenter {
                 );
         mMeasureInputActivity.getFragment(measurement.getSide())
                 .onItemUpdateMeasureList(measurement, new DegreeSeparated(
-                        DegreeConverter.fromDecToDeg(measurement.getLeftAngle()),
-                        DegreeConverter.fromDecToDeg(measurement.getRightAngle()))
+                        DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle()),
+                        DegreeNumericConverter.fromDecToDeg(measurement.getRightAngle()))
                 );
     }
 
@@ -123,8 +117,8 @@ public class MeasureInputPresenter {
                 .sorted(Comparator.comparing(Measurement::getNumber)).collect(Collectors.toList());
         Log.d(LOG_TAG, "measurementsGroup size = " + measurementsGroup.size());
         for (Measurement m: measurementsGroup) {
-            int[] leftAngle = DegreeConverter.fromDecToDeg(m.getLeftAngle());
-            int[] rightAngle = DegreeConverter.fromDecToDeg(m.getRightAngle());
+            int[] leftAngle = DegreeNumericConverter.fromDecToDeg(m.getLeftAngle());
+            int[] rightAngle = DegreeNumericConverter.fromDecToDeg(m.getRightAngle());
             DegreeSeparated degreeSeparated = new DegreeSeparated(leftAngle[0],leftAngle[1], leftAngle[2],
                     rightAngle[0], rightAngle[1], rightAngle[2]);
             Log.d(LOG_TAG, "degreeSeparated = " + degreeSeparated.toString());

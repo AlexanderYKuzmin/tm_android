@@ -11,7 +11,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,18 +21,20 @@ import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.databinding.SearchFormDialogFragmentBinding;
+import com.example.appstraining.towermeasurement.model.MainActivityMode;
+import com.example.appstraining.towermeasurement.view.main.MainActivity;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
-import com.example.appstraining.towermeasurement.view.main.MainViewInterface;
+import com.example.appstraining.towermeasurement.view.main.MainView;
 
 public class SearchFormDialogFragment extends DialogFragment {
     private final String LOG_TAG = "SearchFormDialogFrag";
 
     private MainPresenter mainPresenter;
     private Context context;
-    private MainViewInterface mainActivity;
+    private MainView mainActivity;
     private SearchFormDialogFragmentBinding binding;
 
-    public SearchFormDialogFragment(Context context, MainPresenter presenter, MainViewInterface mainActivity) {
+    public SearchFormDialogFragment(Context context, MainPresenter presenter, MainView mainActivity) {
         this.context = context;
         this.mainPresenter = presenter;
         this.mainActivity = mainActivity;
@@ -54,9 +55,9 @@ public class SearchFormDialogFragment extends DialogFragment {
         title.setText(R.string.search_form_main_title_ru);
         title.setTextSize(24);
         title.setTypeface(title.getTypeface(), Typeface.BOLD);
-        title.setBackgroundColor(R.color.light_blue_600);
+        title.setBackgroundColor(R.color.teal_200);
         title.setGravity(Gravity.CENTER);
-        title.setTextColor(R.color.maincolor);
+        title.setTextColor(Color.BLACK);
 
         builder.setCustomTitle(title)
                 .setView(binding.getRoot())
@@ -68,7 +69,13 @@ public class SearchFormDialogFragment extends DialogFragment {
                                 binding.etNameSearchFormDialogFragMain.getText().toString(),
                                 binding.etAddressSearchFormDialogFragMain.getText().toString()
                         );
-                        mainActivity.showInnerSearchResultDialogFragment();
+                        switch (mainActivity.getActivityMode()) {
+                            case LOAD_FROM_STORAGE:
+                                mainActivity.showInnerSearchResultDialogFragment();
+                                break;
+                            case DELETE:
+                                mainActivity.showDeleteDialogFragment();
+                        }
                     }
                 })
                 .setNegativeButton(R.string.btn_search_form_main_cancel_ru, new DialogInterface.OnClickListener() {

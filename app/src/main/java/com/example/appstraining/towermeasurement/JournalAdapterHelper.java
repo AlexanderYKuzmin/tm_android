@@ -56,7 +56,7 @@ public class JournalAdapterHelper {
         Log.d(LOG_TAG, "data for SimpleAdapter data.get(0).get(ATTRIBUTE_LEVEL): " +
                 data.get(0).get(ATTRIBUTE_LEVEL));
         Log.d(LOG_TAG, "data for SimpleAdapter data.get(4).get(ATTRIBUTE_LEVEL): " +
-                data.get(4).get(ATTRIBUTE_LEVEL));
+                data.get(2).get(ATTRIBUTE_LEVEL));
 
         return new SimpleAdapter(context, data, R.layout.fragment_journal_list_item, from, to);
     }

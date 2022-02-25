@@ -38,8 +38,8 @@ public class InnerSearchDialogAdapterHelper {
         this.context = context;
     }
 
-    public SimpleAdapter getAdapter(Map<Integer, Building> buildingMap){
-        for (Map.Entry<Integer, Building> entry : buildingMap.entrySet()){
+    public SimpleAdapter getAdapter(Map<Long, Building> buildingMap){
+        for (Map.Entry<Long, Building> entry : buildingMap.entrySet()){
             Log.d(LOG_TAG, "creation date:" + entry.getValue().getCreationDate());
             java.sql.Date creationDate = entry.getValue().getCreationDate();
 
@@ -61,13 +61,13 @@ public class InnerSearchDialogAdapterHelper {
             @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
             @Override
             public boolean setViewValue(View view, Object data, String textRepresentation) {
-                Log.d(LOG_TAG, "setViewValues view.getId = " + view.getId()
-                + "     data = " + data.toString());
+                /*Log.d(LOG_TAG, "setViewValues view.getId = " + view.getId()
+                + "     data = " + data.toString());*/
                 if (view.getId() == R.id.layout_inner_search_item) {
                     /*Log.d(LOG_TAG, "count = " + count);
                     Log.d(LOG_TAG, "data = " + data);
 */
-                    if ((Integer) data % 2 != 0) {
+                    if ((Long) data % 2 != 0) {
                         Log.d(LOG_TAG, "changing color.");
                         view.setBackground(context.getDrawable(R.color.lite_sky));
                     }

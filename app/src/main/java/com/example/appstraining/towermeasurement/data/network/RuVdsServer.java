@@ -29,7 +29,7 @@ public class RuVdsServer {
     static final String URL = "http://194.87.94.207:8080//TowerServlet/TowerMeasurementServlet";
     static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     static String postResponse;
-    static  Type buildingMapType = new TypeToken<Map<Integer, Building>>() {}.getType();
+    static  Type buildingMapType = new TypeToken<Map<Long, Building>>() {}.getType();
 
     OkHttpClient okHttpClient;
 
@@ -127,11 +127,12 @@ public class RuVdsServer {
         return null;
     }
 
-    private static Map<Integer,Building> createMapFromJson(String jsonString){
+    private static Map<Long,Building> createMapFromJson(String jsonString){
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.setDateFormat("yyyy-MM-dd").create();
-        Map<Integer, Building> map = gson.fromJson(jsonString, buildingMapType);
+        Map<Long, Building> map = gson.fromJson(jsonString, buildingMapType);
         Log.d(LOG_TAG, "JSON is: " + jsonString);
+        Log.d(LOG_TAG, "buildingMap is " + map);
         return map;
     }
 

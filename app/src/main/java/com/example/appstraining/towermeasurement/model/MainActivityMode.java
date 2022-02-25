@@ -6,5 +6,6 @@ public enum MainActivityMode {
     LAST_LOADED_OBJECT,
     LOAD_FROM_STORAGE,
     SELECTED_OBJECT,
-    USE_TEMPLATE
+    USE_TEMPLATE,
+    DELETE
 }

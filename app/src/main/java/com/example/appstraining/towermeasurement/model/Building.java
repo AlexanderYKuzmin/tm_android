@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 public class Building {
 	
-	private int id;
+	private Long id;
 	private String name;
 	private String address;
 	private BuildingType type;
@@ -24,7 +24,7 @@ public class Building {
 		
 	}
 
-	public Building(int id, String name, String address, BuildingType type, int config,
+	public Building(Long id, String name, String address, BuildingType type, int config,
 					int numberOfSections, int height, int startLevel, String userName, Date creationDate) {
 		this.id = id;
 		this.name = name;
@@ -38,7 +38,7 @@ public class Building {
 		this.creationDate = creationDate;
 	}
 
-	public Building(int id, String name, String address, BuildingType type, int config, int numberOfSections,
+	public Building(Long id, String name, String address, BuildingType type, int config, int numberOfSections,
 					int height, int startLevel, String userName, Date creationDate, ArrayList<Section> sections,
 					ArrayList<Measurement> measurements, ArrayList<Result> results) {
 		super();
@@ -72,11 +72,11 @@ public class Building {
 		this.userName = userName;
 	}
 
-	public int getId() {
+	public Long getId() {
 		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -196,5 +196,9 @@ public class Building {
 	public void addResultData(Result currentResult) {
 		// TODO Auto-generated method stub
 		results.add(currentResult);
+	}
+
+	public boolean isNew() {
+		return id == 0 ? true : false;
 	}
 }
