@@ -2,14 +2,11 @@ package com.example.appstraining.towermeasurement.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-
-import com.example.appstraining.towermeasurement.model.BaseOrTop;
-import com.example.appstraining.towermeasurement.model.CircleTheo;
+import android.util.Log;
 
 import java.sql.Date;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 
 public class Measurement implements Parcelable {
 	private int id;
@@ -72,6 +69,7 @@ public class Measurement implements Parcelable {
 		circle = CircleTheo.valueOf(in.readString());
 		try {
 			date = new Date(dateFormat.parse(in.readString()).getTime());
+			Log.d("Measurement", "from parcel date : " + date);
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
@@ -94,7 +92,8 @@ public class Measurement implements Parcelable {
 		dest.writeInt(buildingId);
 		dest.writeInt(azimuth);
 		dest.writeString(String.valueOf(circle));
-		dest.writeString(dateFormat.format(date));
+		dest.writeString(dateFormat.format(new Date(date.getTime())));
+		Log.d("Measurement", "In parcel date as String: " + dateFormat.format(new Date(date.getTime())));
 		dest.writeString(String.valueOf(baseOrTop));
 	}
 

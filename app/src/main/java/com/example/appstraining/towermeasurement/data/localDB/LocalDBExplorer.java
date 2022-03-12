@@ -22,6 +22,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -261,13 +262,17 @@ public class LocalDBExplorer {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public long save(Building building) {
+
         if (!localDB.isOpen()) localDB = dbHelper.getWritableDatabase();
         Log.d(LOG_TAG, "Start to insert building ot Local Database");
+        Log.d(LOG_TAG, "Building id = " + building.getId());
         //building.getSections().sort(Comparator.comparing(Section::getId));
         long b_id = 0, s_ids[] = new long[building.getNumberOfSections()], m_ids[] = new long[building.getMeasurements().size()];
         //long lastId = localDB.rawQuery("SELECT MAX(b_id) FROM buildings", null).getInt(0);
+        Log.d(LOG_TAG, "building is new:" + building.isNew());
         if (!building.isNew()) update(building);
 
+        Log.d(LOG_TAG, "localDB is open: " + localDB.isOpen());
         cursor = localDB.query("buildings", new String[]{"b_id"}, "b_id = ?",
                 new String[] {String.valueOf(building.getId())}, null, null, null);
         Log.d(LOG_TAG, "cursor getCount() = " + cursor.getCount() + " ...insert");
@@ -410,7 +415,7 @@ public class LocalDBExplorer {
                 cv.put("m_rightangle", measurement.getRightAngle());
                 cv.put("m_theoheight", measurement.getTheoHeight());
                 cv.put("m_distance", measurement.getDistance());
-                cv.put("m_date", dateFormat.format(measurement.getDate()));
+                cv.put("m_date", measurement.getDate().toString());
                 cv.put("m_contractor", measurement.getContractor());
                 cv.put("m_sideazimuth", measurement.getAzimuth());
                 cv.put("m_number", measurement.getNumber());

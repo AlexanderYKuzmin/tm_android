@@ -22,7 +22,6 @@ import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputPresenter;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,20 +29,20 @@ import java.util.List;
  */
 public class MeasureGroupFragment extends Fragment implements MeasureGroup, AdapterView.OnItemClickListener {
     private final String LOG_TAG = "MeasureGroupFragment";
-    // TODO: Customize parameter argument names
+
     public static final String ARG_GROUP = "group";
     public static final String ARG_MEASUREMENTS = "measurements";
     public static final String ARG_DEGREES = "degrees";
-    // TODO: Customize parameters
+
     private MeasureInputActivity activity;
     private MeasureInputPresenter presenter;
 
     private MeasureListAdapterHelper adapterHelper;
     private SimpleAdapter adapter;
     private int group = 0;
-    int[] defaultValues;
-    //private ArrayList<Measurement> measurementsGroup;
-    //private ArrayList<DegreeSeparated> degreeSeparatedList;
+    private int startPosSecondGroup;
+    private int[] defaultValues;
+    private int[] dhaValues = new int[3]; // distance, height, azimuth
 
     EditText etTheoDistance;
     EditText etTheoHeight;
@@ -57,27 +56,12 @@ public class MeasureGroupFragment extends Fragment implements MeasureGroup, Adap
     public MeasureGroupFragment() {
     }
 
-    /*public MeasureGroupFragment(Context context,
-                                MeasureInputPresenter measureInputPresenter, int side, List groupMeasurements) {
-        this.context = context;
-        this.measureInputActivity = measureInputActivity;
-        this.measureInputPresenter = measureInputPresenter;
-        this.side = side;
-        this.groupMeasurements = groupMeasurements;
-    }*/
-
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
     public static MeasureGroupFragment newInstance(int group) {
         MeasureGroupFragment fragment = new MeasureGroupFragment();
         Bundle args = new Bundle();
         args.putInt(ARG_GROUP, group);
-        /*args.putParcelableArrayList(ARG_MEASUREMENTS, measurementsGroup);
-        args.putParcelableArrayList(ARG_DEGREES, degreeSeparatedList);*/
         fragment.setArguments(args);
         Log.d("MeasureFragmNewInstance", "group = " + group + " something else");
-        /*Log.d("MeasureFragmNewInstance", "degrees = " + degreeSeparatedList.size() + " elements");
-        Log.d("MeasureFragmNewInstance", "measurements = " + measurementsGroup.size() + " elements");*/
         return fragment;
     }
 
@@ -86,11 +70,7 @@ public class MeasureGroupFragment extends Fragment implements MeasureGroup, Adap
         super.onCreate(savedInstanceState);
         Log.d(LOG_TAG, "on create");
         if (getArguments() != null) {
-
             group = getArguments().getInt(ARG_GROUP);
-            /*measurementsGroup = getArguments().getParcelableArrayList(ARG_MEASUREMENTS);
-            degreeSeparatedList = getArguments().getParcelableArrayList(ARG_DEGREES);*/
-            Log.d(LOG_TAG, "on create group = " + group);
         }
     }
 
@@ -100,26 +80,12 @@ public class MeasureGroupFragment extends Fragment implements MeasureGroup, Adap
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_measure_group_list, container, false);
 
-        Log.d(LOG_TAG, "on create view");
         activity = (MeasureInputActivity) getActivity();
-        Log.d(LOG_TAG, "Activity is " + activity.getLocalClassName());
         presenter = activity.getPresenter();
+
         List<Measurement> measurementsGroup = presenter.getMeasurementGroup(group);
-        Log.d(LOG_TAG, "presenter " + presenter);
-        /*groupMeasurements = presenter.getMeasurementGroup(group);
-        degMinSecListLeft = presenter.getDegMinSecArrListByGroup(MeasureInputActivity.LEFT_LIST, group);
-        degMinSecListRight = presenter.getDegMinSecArrListByGroup(MeasureInputActivity.RIGHT_LIST, group);*/
 
-        /*if(getArguments() != null) {
-           // measurementsGroup = getArguments().getParcelableArrayList(ARG_MEASUREMENTS);
-            //degreeSeparatedList = getArguments().getParcelableArrayList(ARG_DEGREES);
-            group = getArguments().getInt(ARG_GROUP);
-            //Log.d(LOG_TAG, "measurements from BUNDLE " + measurementsGroup.get(0).getNumber() + "  " + measurementsGroup.get(0).getContractor());
-            Log.d(LOG_TAG, "group from BUNDLE " + group);
-        }*/
-        //Log.d(LOG_TAG, "arguments " + getArguments());
-        Log.d(LOG_TAG, "group = " + group);
-
+        startPosSecondGroup = measurementsGroup.size() + 1;
 
         etTheoDistance = view.findViewById(R.id.etTheoDistance_measureGroup);
         etTheoDistance.setText(String.valueOf(measurementsGroup.get(0).getDistance()));
@@ -143,25 +109,21 @@ public class MeasureGroupFragment extends Fragment implements MeasureGroup, Adap
         lv.setAdapter(adapter);
         lv.setOnItemClickListener(this);
 
+        fillDhaValues();  // fill array of constants (theoDistance, theoHeight, azimuth)
+
         return view;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(LOG_TAG, "OnItemClick pressed!");
-        //checkConstFields();
-        /*if(binding.etContractor.getText())  binding.etContractor.setText("Noname");
-        if(binding.etContractor.getText() == null)  binding.etMeasureDate.setText("01-01-2001");
-        if(binding.etTheoDistance.getText() == null)  binding.etTheoDistance.setText("0");
-        if(binding.etTheoHeight.getText() == null)  binding.etTheoHeight.setText("0");*/
-        //constants = getConstants(); // Contractor, Date, Distance, Height
 
+        fillDhaValues();
 
-        //defaultValues = presenter.getSingleMeasurementData(position, group);
-        //Log.d(LOG_TAG, "Default Values = " + defaultValues);
-        int measurementNumber = group == 1 ? position + 1 : position + 11;
+        int measurementNumber = group == 1 ? position + 1 : position + startPosSecondGroup;
 
-       activity.showMeasureDialogFragment(measurementNumber, group);
+        activity.showMeasureDialogFragment(measurementNumber, group, dhaValues);
     }
 
     public void updateMeasureList() {
@@ -173,7 +135,7 @@ public class MeasureGroupFragment extends Fragment implements MeasureGroup, Adap
 
     @Override
     public void onItemUpdateMeasureList(Measurement measurement, DegreeSeparated degreeSeparated) {
-        adapterHelper.oneItemUpdateAdapter(measurement, degreeSeparated);
+        adapterHelper.oneItemUpdateAdapter(measurement, degreeSeparated, startPosSecondGroup);
         adapter.notifyDataSetChanged();
     }
 
@@ -183,10 +145,22 @@ public class MeasureGroupFragment extends Fragment implements MeasureGroup, Adap
         adapter.notifyDataSetChanged();
     }
 
-    /*@RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void onResume() {
-        super.onResume();
-        updateAdapter(presenter.getMeasurementGroup(group), presenter.getDegreeSeparatedAngleListByGroup(group));
-    }*/
+    public void fillDhaValues() {
+        if(etTheoDistance.getText() != null)  dhaValues[0] = Integer.parseInt(etTheoDistance.getText().toString());
+        if(etTheoHeight.getText() != null)  dhaValues[1] = Integer.parseInt(etTheoHeight.getText().toString());
+        if(etAzimuth.getText() != null)  dhaValues[2] = Integer.parseInt(etAzimuth.getText().toString());
+    }
+
+    @Override
+    public int[] getDhaValues() {
+        return dhaValues;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.setDhaToMeasurements(group, dhaValues);
+    }
 }

@@ -13,4 +13,8 @@ public interface MeasureGroup {
     void onItemUpdateMeasureList(Measurement measurement, DegreeSeparated degreeSeparated);
 
     void updateAdapter(List<Measurement> measurements, List<DegreeSeparated> degreeSeparatedList);
+
+    void fillDhaValues();
+
+    int[] getDhaValues();
 }

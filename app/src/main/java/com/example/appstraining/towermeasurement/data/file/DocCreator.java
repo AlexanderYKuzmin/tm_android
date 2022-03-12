@@ -157,22 +157,27 @@ public class DocCreator {
     }
 
     private void fillPictureParagraph(XWPFParagraph picParagraph, String[] fileNames) {
+
         XWPFRun run = picParagraph.createRun();
         int x = 200, y = 320;
         //System.out.println("bis available" + bis.available());
+        run.addBreak();
         for (int i = 0; i < fileNames.length; i++) {
             if (i == 2) {
+                run.addBreak();
                 run.addBreak();
                 x = 250;
                 y = 300;
             }
             try(FileInputStream fis = new FileInputStream(filePath + fileNames[i])) {
                 run.addPicture(fis, Document.PICTURE_TYPE_PNG, fileNames[i], Units.toEMU(x), Units.toEMU(y));
+
                 System.out.println("picture added");
             } catch( IOException | InvalidFormatException e) {
                 e.printStackTrace();
             }
         }
+        picParagraph.setAlignment(ParagraphAlignment.CENTER);
     }
 
     private void fillHeaderTable(XWPFTable table) {

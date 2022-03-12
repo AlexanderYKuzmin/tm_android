@@ -70,6 +70,7 @@ public class SearchFormDialogFragment extends DialogFragment {
                                 binding.etAddressSearchFormDialogFragMain.getText().toString()
                         );
                         switch (mainActivity.getActivityMode()) {
+                            case USE_TEMPLATE:
                             case LOAD_FROM_STORAGE:
                                 mainActivity.showInnerSearchResultDialogFragment();
                                 break;

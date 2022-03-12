@@ -220,6 +220,7 @@
                     android:textSize="24dp"
                     android:background="@color/white"
                     android:inputType="number"
+                    android:focusable="false"
                     android:hint="000\u00B0"
                     />
             </LinearLayout>
@@ -256,6 +257,7 @@
                     android:textSize="24dp"
                     android:background="@color/white"
                     android:inputType="number"
+                    android:focusable="false"
                     android:hint="0000"
                     />
             </LinearLayout>
@@ -292,6 +294,7 @@
                     android:textSize="24dp"
                     android:background="@color/white"
                     android:inputType="number"
+                    android:focusable="false"
                     android:hint="0000"
                     />
             </LinearLayout>

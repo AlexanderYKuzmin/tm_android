@@ -8,10 +8,16 @@ import com.example.appstraining.towermeasurement.model.DegreeSeparated;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.util.DegreeNumericConverter;
 
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.stream.Collectors;
+import java.util.zip.DataFormatException;
 
 import static com.example.appstraining.towermeasurement.util.DegreeNumericConverter.fromDecToDeg;
 import static com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity.LEFT_LIST;
@@ -27,6 +33,8 @@ public class MeasureInputPresenter {
     private List<Measurement> measurementsGroup1;
     private List<Measurement> measurementsGroup2;
 
+    DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
+
     public MeasureInputPresenter(Context context, MeasureInput measureInputActivity){
         this.context = context;
         mMeasureInputActivity = measureInputActivity;
@@ -38,6 +46,7 @@ public class MeasureInputPresenter {
     }
 
     public void setMeasurements(ArrayList<Measurement> measurements){
+        Log.d(LOG_TAG, "setting measurements: size = " + measurements.size() + ";  date from 0 pos = " + measurements.get(0).getDate());
         this.measurements = measurements;
         /*measurementsGroup1 = measurements.stream().filter(measurement -> measurement.getSide() == 1).collect(Collectors.toList());
         measurementsGroup2 = measurements.stream().filter(measurement -> measurement.getSide() == 2).collect(Collectors.toList());*/
@@ -207,5 +216,40 @@ public class MeasureInputPresenter {
                 measurement.getTheoHeight(),
                 measurement.getNumber()
         };
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setDhaToMeasurements(int group, int[] dhaValues){
+        getMeasurements().stream()
+            .filter(measurement -> measurement.getSide() == group)
+            .map(measurement -> {
+                measurement.setDistance(dhaValues[0]);
+                measurement.setTheoHeight(dhaValues[1]);
+                measurement.setAzimuth(dhaValues[2]);
+                return measurement;
+            })
+            .collect(Collectors.toList());
+
+        Log.d(LOG_TAG, "size of Measurements: " + getMeasurements().size());
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setCommonConstantsToMeasurements(String[] constants) {
+        try {
+            String contractor = constants[0];
+            Date date = dateFormat.parse(constants[1]);
+            Log.d(LOG_TAG, "util date is: " + date.toString());
+            java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            Log.d(LOG_TAG, "sql date is: " + sqlDate);
+
+            getMeasurements().forEach(measurement -> {
+                measurement.setContractor(contractor);
+                measurement.setDate(sqlDate);
+            });
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Log.d(LOG_TAG, "The SQL date from measurement is: " + getMeasurements().get(0).getDate());
     }
 }

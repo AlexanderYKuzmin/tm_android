@@ -55,6 +55,7 @@ public class MainPresenter implements LifecycleObserver {
     DrawPreparation drawPreparation;
 
     private Building building;
+    private ArrayList<Section> patternSections = new ArrayList<>();
     private String[] searchParameters;
     Map<Long, Building> buildingMap;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
@@ -72,6 +73,10 @@ public class MainPresenter implements LifecycleObserver {
     public void setBuilding(Building building) {
         Log.d(LOG_TAG, "set building/ Building is: " + building);
         this.building = building;
+    }
+
+    public void setPatternSections(ArrayList<Section> sections){
+        this.patternSections = sections;
     }
 
     //@OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -127,12 +132,17 @@ public class MainPresenter implements LifecycleObserver {
         int level = 0;
 
         // ******** Add sections ************
-        for(int i = 0; i < numberOfSections; i++) {
-            sectionNumber = i + 1;
-            building.addSection(new Section(0, sectionNumber, widthBottom, widthTop,
-                    sectionHeight, level, name, id));
-            System.out.println("******" + building.getSection(i+1).toString());
+        if (mMainActivity.getActivityMode() == MainActivityMode.USE_TEMPLATE) {
+            building.setSections(patternSections);
+        } else {
+            for(int i = 0; i < numberOfSections; i++) {
+                sectionNumber = i + 1;
+                building.addSection(new Section(0, sectionNumber, widthBottom, widthTop,
+                        sectionHeight, level, name, id));
+                System.out.println("******" + building.getSection(i+1).toString());
+            }
         }
+
         Log.d(LOG_TAG, "Sections created. Example Section #1 " + building.getSection(1).getNumber());
 
         // ******** Add measurements **********
@@ -389,6 +399,7 @@ public class MainPresenter implements LifecycleObserver {
     public String registerObject() {
         /*OkHttpClient okHttpClient = new OkHttpClient();
         return  RuVdsServer.POST(okHttpClient, building, RequestCode.REGISTER);*/
+        building.setId(0L);
         long id = dbExplorer.save(building);
         building.setId(id);
         return id > 0 ? "Объект сохранен id = " + id : "Объект не сохранен";
@@ -457,7 +468,7 @@ public class MainPresenter implements LifecycleObserver {
     public void saveToLocalDB() {
         //LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
         dbExplorer.update(building);
-        dbExplorer.closeDB();
+        //dbExplorer.closeDB();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

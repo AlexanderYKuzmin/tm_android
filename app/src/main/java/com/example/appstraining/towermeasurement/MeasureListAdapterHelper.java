@@ -76,6 +76,8 @@ public class MeasureListAdapterHelper {
     public void updateAdapter(List<Measurement> measurements,
                               List<DegreeSeparated> degreeSeparatedList) {
         //data = new ArrayList<Map<String, Integer>>(sections.size());
+        Log.d(LOG_TAG, "measurements data: distance = " + measurements.get(0).getDistance() + "\n"
+        + " height = " + measurements.get(0).getTheoHeight());
         Map<String, Object> m;
         for (int i = 0; i < measurements.size(); i++) {
             m = new HashMap<String, Object>();
@@ -96,7 +98,7 @@ public class MeasureListAdapterHelper {
         }
     }
 
-    public void oneItemUpdateAdapter(Measurement measurement, DegreeSeparated degreeSeparated) {
+    public void oneItemUpdateAdapter(Measurement measurement, DegreeSeparated degreeSeparated, int startPosSecondGroup) {
         Map<String, Object> m = new HashMap<>();
         m.put(ATTRIBUTE_MEASURE_NUMBER, measurement.getNumber());
         m.put(ATTRIBUTE_LEFTANGLE_DD, degreeSeparated.getDegreeLeft() + "\u00B0");
@@ -111,7 +113,7 @@ public class MeasureListAdapterHelper {
         m.put(ATTRIBUTE_SECTION_NUMBER, measurement.getSectionNumber());
         m.put(ATTRIBUTE_THEO_DISTANCE, measurement.getDistance());
         m.put(ATTRIBUTE_THEO_HEIGHT, measurement.getTheoHeight());
-        data.set(measurement.getNumber() - (measurement.getSide() == 1 ? 1 : 11), m);
+        data.set(measurement.getNumber() - (measurement.getSide() == 1 ? 1 : startPosSecondGroup), m);
         /*Log.d(LOG_TAG, "List data is updated, set data position: "
                 + (measurement.getNumber() - 1));*/
         /*Log.d(LOG_TAG, "LEFT ANGLE :"

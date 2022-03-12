@@ -117,8 +117,16 @@ public class InnerSearchResultDialogFragment extends DialogFragment implements A
         TextView building_id_txt = (TextView) view.findViewById(R.id.valSearchId_inner);
         long building_id = Long.parseLong(building_id_txt.getText().toString());
         Log.d(LOG_TAG, "building_id = " + building_id);
+
         mainPresenter.setBuilding(buildingMap.get(building_id));
-        mainPresenter.mountBuilding(MainActivityMode.SELECTED_OBJECT);
+        mainPresenter.setPatternSections(buildingMap.get(building_id).getSections());
+        // change smth
+        if (mainActivity.getActivityMode() == MainActivityMode.USE_TEMPLATE) {
+            mainPresenter.mountBuilding(MainActivityMode.USE_TEMPLATE);
+        } else {
+            mainPresenter.mountBuilding(MainActivityMode.SELECTED_OBJECT);
+        }
+
         dismiss();
     }
 

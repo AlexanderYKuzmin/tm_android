@@ -11,7 +11,7 @@
     <LinearLayout
         android:id="@+id/linearLayout01"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
         android:background="#EFBA60"
         android:orientation="vertical"
@@ -147,11 +147,11 @@
 
             </FrameLayout>
 
-            <LinearLayout
+            <TableLayout
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:orientation="vertical">
+                >
 
                 <TableRow
                     android:id="@+id/trType"
@@ -164,13 +164,14 @@
 
                     <TextView
                         android:id="@+id/tvType"
-                        android:layout_width="50dp"
+                        android:layout_width="30dp"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="0dp"
                         android:layout_marginRight="6dp"
                         android:gravity="right"
                         android:paddingTop="2dp"
                         android:text="@string/type_ru"
+                        android:layout_weight=".75"
                         android:textSize="14dp" />
 
                     <Spinner
@@ -204,6 +205,7 @@
                         android:gravity="right"
                         android:paddingTop="2dp"
                         android:text="@string/conf_ru"
+                        android:layout_weight=".75"
                         android:textSize="14dp" />
 
                     <Spinner
@@ -237,6 +239,7 @@
                         android:gravity="right"
                         android:paddingTop="2dp"
                         android:text="@string/section_height_ru"
+                        android:layout_weight=".75"
                         android:textSize="14dp" />
 
                     <EditText
@@ -260,30 +263,30 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="right"
                     android:layout_marginLeft="2dp"
-                    android:layout_marginTop="2dp"
+                    android:layout_marginTop="4dp"
                     android:layout_marginRight="2dp"
                     android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/tvAmountSec"
-                        android:layout_width="60dp"
+                        android:layout_width="147dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="0dp"
                         android:layout_marginTop="3dp"
-                        android:layout_marginRight="6dp"
+                        android:layout_marginRight="9dp"
                         android:gravity="right"
                         android:paddingTop="4dp"
                         android:text="@string/sections_ru"
+                        android:layout_weight=".75"
                         android:textSize="14dp" />
 
                     <EditText
                         android:id="@+id/etAmountSec"
-                        android:layout_width="56dp"
+                        android:layout_width="46dp"
                         android:layout_height="28dp"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="6dp"
+                        android:layout_marginLeft="4dp"
                         android:layout_marginTop="0dp"
-                        android:layout_marginRight="6dp"
+                        android:layout_marginRight="2dp"
                         android:layout_marginBottom="1dp"
                         android:background="@drawable/etinnershadow"
                         android:gravity="left"
@@ -293,7 +296,7 @@
                         android:textColor="@color/black"
                         android:textSize="16dp" />
 
-                    <Button
+                    <!--<Button
                         android:id="@+id/btnCreateSections"
                         android:layout_width="74dp"
                         android:layout_height="40dp"
@@ -302,9 +305,9 @@
                         android:layout_marginRight="2dp"
                         android:layout_weight="1"
                         android:text="@string/btn_main_get"
-                        android:textSize="8dp" />
+                        android:textSize="8dp" />-->
                 </TableRow>
-            </LinearLayout>
+            </TableLayout>
 
         </TableRow>
     </LinearLayout>

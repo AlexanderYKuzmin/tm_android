@@ -3,7 +3,6 @@ package com.example.appstraining.towermeasurement.view.measurement;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import android.content.Context;
@@ -12,11 +11,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
-import android.widget.TextView;
 
 import com.example.appstraining.towermeasurement.MeasureListAdapterHelper;
 import com.example.appstraining.towermeasurement.R;
@@ -28,6 +24,7 @@ import com.example.appstraining.towermeasurement.view.measurement.fragments.Meas
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class MeasureInputActivity extends AppCompatActivity implements MeasureInput, View.OnClickListener {
     private final String LOG_TAG = "MeasureInputActivity";
@@ -43,7 +40,7 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
     public static final int GROUP_1 = 1;
     public static final int GROUP_2 = 2;
 
-    private String[] constants;
+    private String[] constants = new String[2];
     private int[] defaultValues;
     SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
@@ -53,12 +50,6 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
     private MeasureGroup measureGroupFragment1;
     private MeasureGroup measureGroupFragment2;
     private FragmentManager fragmentManager;
-
-    TextView title;
-    EditText etDistance;
-    EditText etHeight;
-    EditText etAzimuth;
-    EditText etSide;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -76,59 +67,29 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
         measureInputPresenter.setMeasurements(
                 getIntent().getParcelableArrayListExtra(getString(R.string.startmeasures)));
 
-
+        // ***** TEST ***********
         if (measureInputPresenter.getMeasurements() != null) {
             Log.d(LOG_TAG, "Set measurements is : \n"
                     + "left angle : " + measureInputPresenter.getMeasurements().get(0).getLeftAngle() + "\n"
                     + "right angle : " + measureInputPresenter.getMeasurements().get(0).getRightAngle() + "\n"
                     + "circle : " + measureInputPresenter.getMeasurements().get(0).getCircle() + "\n"
-                    + "date : " + measureInputPresenter.getMeasurements().get(0).getDate() + "\n"
+                    + "date : " + dateFormat.format(measureInputPresenter.getMeasurements().get(0).getDate()) + "\n"
                     + "azimuth : " + measureInputPresenter.getMeasurements().get(0).getAzimuth() + "\n"
 
             );
-
         } else Log.d(LOG_TAG, "Measurements is NULL");
-
-        /*adapter = adapterHelper.getAdapter(
-                measureInputPresenter.getMeasurements(),
-                measureInputPresenter.getDegMinSecArrList(LEFT_LIST),
-                measureInputPresenter.getDegMinSecArrList(RIGHT_LIST));*/
-        /*binding.lvMeasures.setAdapter(adapter);
-        binding.lvMeasures.setOnItemClickListener(this);*/
-        //title = (TextView) findViewById(R.id.tvMeasureInputTitle);
-       /* etDistance = (EditText) findViewById(R.id.etTheoDistance_measureGroup);
-        etHeight = (EditText) findViewById(R.id.etTheoHeight_measureGroup);
-        etAzimuth = (EditText) findViewById(R.id.etAzimuth_measureGroup);
-        etSide = (EditText) findViewById(R.id.etSide_measureGroup);*/
-
-        //title.setShadowLayer(3,4,4, getResources().getColor(R.color.text_shadow));
-
+        // ***********************
 
         binding.tvMeasureInputTitle.setShadowLayer(3,4,4, getResources().getColor(R.color.text_shadow));
         binding.etContractor.setText(measureInputPresenter.getMeasurements().get(0).getContractor());
-        binding.etMeasureDate.setText(
-                dateFormat.format(measureInputPresenter.getMeasurements().get(0).getDate()));
 
-        //binding.btnMeasureGroup1.setPressed(true);
+        Date utilDate = new Date(measureInputPresenter.getMeasurements().get(0).getDate().getTime());
+        Log.d(LOG_TAG, "util date to set text is: " + utilDate);
+        binding.etMeasureDate.setText(dateFormat.format(utilDate));
+        Log.d(LOG_TAG, "Date: " + measureInputPresenter.getMeasurements().get(0).getDate());
 
-
-       /* measureGroupFragment1 = MeasureGroupFragment.newInstance(GROUP_1, measureInputPresenter.getMeasurementGroup(GROUP_1),
-                measureInputPresenter.getDegreeSeparatedAngleListByGroup(GROUP_1));
-
-        measureGroupFragment2 = MeasureGroupFragment.newInstance(GROUP_2, measureInputPresenter.getMeasurementGroup(GROUP_2),
-                measureInputPresenter.getDegreeSeparatedAngleListByGroup(GROUP_2));*/
         measureGroupFragment1 = MeasureGroupFragment.newInstance(GROUP_1);
         measureGroupFragment2 = MeasureGroupFragment.newInstance(GROUP_2);
-
-
-        //.d(LOG_TAG, "fragment created " + measureGroupFragment1 + " get Arguments = " + measureGroupFragment1.getArguments().getInt(MeasureGroupFragment.ARG_GROUP));
-        /*measureGroupFragment1 = new MeasureGroupFragment();
-        Bundle bundle = new Bundle();
-        bundle.putInt(MeasureGroupFragment.ARG_GROUP, GROUP_1);
-        *//*bundle.putParcelableArrayList(MeasureGroupFragment.ARG_MEASUREMENTS, measureInputPresenter.getMeasurementGroup(GROUP_1));
-        bundle.putParcelableArrayList(MeasureGroupFragment.ARG_DEGREES, measureInputPresenter.getDegreeSeparatedAngleListByGroup(measurements, GROUP_1));*//*
-        measureGroupFragment1.setArguments(bundle);*/
-
 
         fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction()
@@ -136,34 +97,6 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
                 .addToBackStack("myBackStack")
                 .commit();
 
-        /*binding.btnMeasureGroup1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                binding.btnMeasureGroup2.setPressed(false);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.measureGroup_container, (Fragment) measureGroupFragment1)  // Сделать сохранение данных при переключении
-                        .addToBackStack("myBackStack")
-                        .commit();
-
-                binding.btnMeasureGroup1.setPressed(true);
-            }
-        });
-
-        binding.btnMeasureGroup2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               // fragmentManager.beginTransaction()
-                binding.btnMeasureGroup1.setPressed(false);
-
-                fragmentManager.beginTransaction()
-                        .replace(R.id.measureGroup_container, (Fragment) measureGroupFragment2)  // Сделать сохранение данных при переключении
-                        .addToBackStack("myBackStack")
-                        .commit();
-
-                binding.btnMeasureGroup2.setPressed(true);
-            }
-        });*/
         binding.radioMeasureGroup1MeasureInput.setOnClickListener(this);
         binding.radioMeasureGroup2MeasureInput.setOnClickListener(this);
 
@@ -178,6 +111,19 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
                     + " right anlgle = " + measureInputPresenter.getMeasurements().get(0).getRightAngle() +"\n"
 
                 );
+
+                measureInputPresenter.setCommonConstantsToMeasurements(getCommonConstants());
+
+                if (binding.radioMeasureGroup1MeasureInput.isChecked()) {   // sve constants from fragment
+                    measureGroupFragment1.fillDhaValues();
+                    measureInputPresenter.setDhaToMeasurements(GROUP_1, measureGroupFragment1.getDhaValues());
+                }
+
+                if (binding.radioMeasureGroup2MeasureInput.isChecked()) {   // sve constants from fragment
+                    measureGroupFragment2.fillDhaValues();
+                    measureInputPresenter.setDhaToMeasurements(GROUP_2, measureGroupFragment2.getDhaValues());
+                }
+
                 intent.putParcelableArrayListExtra(getString(R.string.measureslist), measureInputPresenter.getMeasurements());
                 //intent.putExtra(getString(R.string.ismeasureschanged), true);
                 setResult(RESULT_OK, intent);
@@ -201,7 +147,7 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
                             measureInputPresenter.getDegreeSeparatedAngleListByGroup(GROUP_2));
                     fragmentManager.beginTransaction()
                             .replace(R.id.measureGroup_container, (Fragment) measureGroupFragment1)  // Сделать сохранение данных при переключении
-                            .addToBackStack("myBackStack")
+                            //.addToBackStack("myBackStack")
                             .commit();
                     break;
             case R.id.radio_measureGroup2_measureInput:
@@ -211,47 +157,16 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
                             measureInputPresenter.getDegreeSeparatedAngleListByGroup(GROUP_1));
                     fragmentManager.beginTransaction()
                             .replace(R.id.measureGroup_container, (Fragment) measureGroupFragment2)  // Сделать сохранение данных при переключении
-                            .addToBackStack("myBackStack")
+                            //.addToBackStack("myBackStack")
                             .commit();
                     break;
         }
     }
-    /*@Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        Log.d(LOG_TAG, "OnItemClick pressed!");
-        //checkConstFields();
-        *//*if(binding.etContractor.getText())  binding.etContractor.setText("Noname");
-        if(binding.etContractor.getText() == null)  binding.etMeasureDate.setText("01-01-2001");
-        if(binding.etTheoDistance.getText() == null)  binding.etTheoDistance.setText("0");
-        if(binding.etTheoHeight.getText() == null)  binding.etTheoHeight.setText("0");*//*
-        constants = getConstants(); // Contractor, Date, Distance, Height
-        defaultValues = measureInputPresenter.getSingleMeasurementData(position);
-        Log.d(LOG_TAG, "Default Values = " + defaultValues);
-        new MeasureDialogFragment(this, measureInputPresenter, position + 1, constants, defaultValues)
-                .show(getSupportFragmentManager(), null);
-    }
 
-    public void updateMeasureList() {
-        adapterHelper.updateAdapter(measureInputPresenter.getMeasurements(),
-                measureInputPresenter.getDegMinSecArrList(LEFT_LIST),
-                measureInputPresenter.getDegMinSecArrList(RIGHT_LIST));
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void oneItemUpdateMeasureList(Measurement measurement, int[] leftAngle,
-                                         int[] rightAngle) {
-
-        adapterHelper.oneItemUpdateAdapter(measurement, leftAngle, rightAngle);
-        adapter.notifyDataSetChanged();
-    }*/
-
-    private String[] getConstants(){
+    private String[] getCommonConstants(){
         String[] constants = {
                 binding.etContractor.getText().toString(),
                 binding.etMeasureDate.getText().toString()};
-                //binding.etTheoDistance.getText().toString(),
-               // binding.etTheoHeight.getText().toString() };
         return constants;
     }
 
@@ -267,8 +182,15 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
         return null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    public void showMeasureDialogFragment(int measurementNumber, int group) {
+    public void showMeasureDialogFragment(int measurementNumber, int group, int[] dhaValues) {
+        Log.d(LOG_TAG, "dhaValues height: " + dhaValues[1]);
+        measureInputPresenter.setDhaToMeasurements(group, dhaValues); /// ПЕРЕДЕЛАТЬ !! Индивидуально на каждый фрагмент. Изменить список  целиком.
+
+        // Test
+        //transMeasurements.forEach(measurement -> System.out.println(measurement.getSide() + "::" + measurement.getTheoHeight()));
+
         new MeasureDialogFragment(context, measureInputPresenter, measurementNumber).show(getSupportFragmentManager(), null);
     }
 }

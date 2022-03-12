@@ -4,16 +4,18 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.appstraining.towermeasurement.R;
 //import com.example.appstraining.towermeasurement.data.file.DocCreator;
 import com.example.appstraining.towermeasurement.data.file.DocCreator;
-import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
 import com.example.appstraining.towermeasurement.model.Result;
+import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -59,6 +61,8 @@ public class ReportPrepareActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
         updateView();
+
+        binding.tvTitleReport.setShadowLayer(3,4,4, getResources().getColor(R.color.text_shadow));
 
         binding.imbtnXOZ.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -119,7 +123,19 @@ public class ReportPrepareActivity extends AppCompatActivity {
                 // all logic to presenter
             }
         });
+
+        binding.btnSendEmail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            Intent intent = getIntent();
+            setResult(RESULT_OK);
+            finish();
+                //sendEmail();
+            }
+        });
     }
+
+
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void updateView() {
@@ -135,5 +151,27 @@ public class ReportPrepareActivity extends AppCompatActivity {
         binding.tvFactDeviation.setText(String.valueOf(reportResults.get(reportResults.size() -1).getShiftMm()));
 
         //rpPresenter.get
+    }
+
+    public void sendEmail() {
+        Log.i("Send email", "");
+        String[] TO = {""};
+        String[] CC = {""};
+        Intent emailIntent = new Intent(Intent.ACTION_SEND);
+
+        emailIntent.setData(Uri.parse("mailto:"));
+        emailIntent.setType("text/plain");
+        emailIntent.putExtra(Intent.EXTRA_EMAIL, TO);
+        emailIntent.putExtra(Intent.EXTRA_CC, CC);
+        emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Your subject");
+        emailIntent.putExtra(Intent.EXTRA_TEXT, "Email message goes here");
+
+        try {
+            startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+            finish();
+            Log.i(LOG_TAG, "Send email");
+        } catch (android.content.ActivityNotFoundException ex) {
+            Toast.makeText(ReportPrepareActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
+        }
     }
 }

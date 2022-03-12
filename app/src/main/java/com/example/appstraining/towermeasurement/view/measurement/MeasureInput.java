@@ -12,7 +12,7 @@ public interface MeasureInput {
     //void oneItemUpdateMeasureList(Measurement measurement, int[] leftAngle, int[] rightAngle);
     MeasureInputPresenter getPresenter();
 
-    void showMeasureDialogFragment(int measurementNumber, int group);
+    void showMeasureDialogFragment(int measurementNumber, int group, int[] dhaValues);
 
     MeasureGroup getFragment(int group);
 }

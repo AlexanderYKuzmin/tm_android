@@ -127,6 +127,7 @@
                         android:layout_weight="0.25"
                         android:background="@drawable/etinnershadow"
                         android:inputType="none"
+                        android:focusable="false"
                         android:paddingLeft="4dp"
                         android:textSize="24dp" />
                 </TableRow>

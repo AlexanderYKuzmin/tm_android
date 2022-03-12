@@ -74,11 +74,11 @@
     -->
 
 
-<!-- ***************** -->
+    <!-- ***************** -->
     <!-- Main Screen  RU-->
     <!-- TextView -->
-    <string name="sections_ru">Секции: </string>
-    <string name="conf_ru">Конфиг: </string>
+    <string name="sections_ru">Секции:</string>
+    <string name="conf_ru">Конфиг:</string>
 
     <string name="main_screen_id_ru">ID</string>
     <string name="main_screen_name_ru">Код / Название</string>
@@ -124,12 +124,12 @@
     <string name="continue_btn_ru">Продолжить</string>
     <string name="reset_btn_ru">Сброс</string>
     <string name="update_btn_ru">Обновить</string>
-    <string name="measure_btn_ru">Измерния</string>
+    <string name="measure_btn_ru">Измерения</string>
     <string name="ok_btn_ru">Ок</string>
     <string name="cancel_btn_ru">Отмена</string>
     <string name="report_btn_ru">Отчет</string>
 
-<!-- ***************** -->
+    <!-- ***************** -->
     <!-- Measurement screen -->
 
     <string name="title_measure_activity_ru">Ввод измерений</string>
@@ -147,7 +147,7 @@
     <string name="azimuth_ru">Азимут:</string>
     <string name="position_ru">Поз:</string>
     <string name="date_hint_ru">ДД-ММ-ГГГГ</string>
-    
+
     <!-- Measurement fragment dialog-->
     <string name="title_measure_group_fragment_measurement_ru">Группа измерений № %1$d</string>
     <string name="theo_distance_measure_group_fragment_measurement_ru">Дистанция, мм</string>
@@ -165,7 +165,7 @@
     <string name="theo_height_measurement_dialog_ru">Тео высота:</string>
     <string name="btn_cancel_measure_dialog_frag_measurement_ru">Отмена</string>
     <string name="btn_ok_measure_dialog_frag_measurement_ru">ОК</string>
-<!-- ****************************** -->
+    <!-- ****************************** -->
 
     <!-- Report Screen -->
 
@@ -178,8 +178,7 @@
 
     <!-- Buttons -->
     <string name="full_info_ru">Подробнее</string>
-    <string name="create_report_ru">Сформировать отчет</string>
-
+    <string name="create_report_ru">E-Mail</string>
 
 
     <!-- Common messages-->
