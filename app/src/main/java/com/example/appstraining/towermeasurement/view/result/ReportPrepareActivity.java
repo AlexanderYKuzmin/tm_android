@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.example.appstraining.towermeasurement.R;
 //import com.example.appstraining.towermeasurement.data.file.DocCreator;
-import com.example.appstraining.towermeasurement.data.file.DocCreator;
+import com.example.appstraining.towermeasurement.data.file.GraphViewCreator;
 import com.example.appstraining.towermeasurement.model.Result;
 import com.example.appstraining.towermeasurement.databinding.ActivityReportPrepareBinding;
 
@@ -26,9 +26,16 @@ public class ReportPrepareActivity extends AppCompatActivity {
     private final int YOZ = 2;
     private final int XOY = 3;
     ReportPreparePresenter rpPresenter;
+    GraphViewCreator graphViewCreator;
     private ActivityReportPrepareBinding binding;
     Long buildingID;
     int levels[];
+
+    private boolean isXozBtnPressed = false;
+    private boolean isJournalBtnPressed = false;
+    private boolean isReportBtnPressed = false;
+
+    private boolean isReportCreationFinished = false;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
@@ -42,6 +49,13 @@ public class ReportPrepareActivity extends AppCompatActivity {
                 + "levels[2] = " + levels[2]
         );*/
         rpPresenter = new ReportPreparePresenter(buildingID, levels, this);
+        graphViewCreator = GraphViewCreator.getInstance(this,
+                rpPresenter.getGraphViewData().get("points"),
+                rpPresenter.getGraphViewData().get("range"),
+                rpPresenter.countDeviation());
+        rpPresenter.createGraphView(graphViewCreator);
+
+
         /*Log.d(LOG_TAG, "Building name: " + rpPresenter.getReportBuilding().getName() + "\n"
                 + "creation date: " + rpPresenter.getReportBuilding().getCreationDate()
         );*/
@@ -65,9 +79,22 @@ public class ReportPrepareActivity extends AppCompatActivity {
         binding.tvTitleReport.setShadowLayer(3,4,4, getResources().getColor(R.color.text_shadow));
 
         binding.imbtnXOZ.setOnClickListener(new View.OnClickListener() {
+
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View v) {
+                if (!isXozBtnPressed) {
+                    binding.imbtnXOZ.setImageDrawable(getDrawable(R.drawable.xozpressed));
+                    isXozBtnPressed = true;
+                }
+
+                try {
+                    Thread.sleep(200);
+                    //binding.imbtnXOZ.setImageDrawable(getDrawable(R.drawable.testcube));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 Intent graphViewPagerIntent = new Intent(ReportPrepareActivity.this, GraphViewPager.class);
                 graphViewPagerIntent.putExtra("graphtype", XOZ);
                 /*Log.d(LOG_TAG, "rpPresenter.getXOZArray = " + "\n"
@@ -93,14 +120,26 @@ public class ReportPrepareActivity extends AppCompatActivity {
                     Log.d(LOG_TAG, "yozRange[i] = " + x);
                 }
                 //*** End test ***
-
                 startActivity(graphViewPagerIntent);
+                //binding.imbtnXOZ.setImageDrawable(getDrawable(R.drawable.testcube));
             }
         });
 
         binding.imbtnJournal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isJournalBtnPressed) {
+                    binding.imbtnJournal.setImageDrawable(getDrawable(R.drawable.tablepressed));
+                    isJournalBtnPressed = true;
+                }
+
+                try {
+                    Thread.sleep(200);
+                    //binding.imbtnXOZ.setImageDrawable(getDrawable(R.drawable.testcube));
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
                 Intent journalViewPagerIntent = new Intent(ReportPrepareActivity.this, JournalViewPager.class);
                 //journalViewPagerIntent.putExtra("", XOZ);
                 journalViewPagerIntent.putExtra("theodistances", rpPresenter.getTheoDistances());
@@ -113,14 +152,23 @@ public class ReportPrepareActivity extends AppCompatActivity {
             }
         });
 
-        binding.imbtnXOY.setOnClickListener(new View.OnClickListener() {
+        binding.imbtnReport.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.O)
             @Override
             public void onClick(View v) {
-                /*DocCreator docCreator = new DocCreator();
-                docCreator.createDocFile(rpPresenter.getReportBuilding());*/
-                rpPresenter.createReportDocFile();
-                // all logic to presenter
+                if (!isReportBtnPressed) {
+                    binding.imbtnReport.setImageDrawable(getDrawable(R.drawable.titlepressed));
+                    isReportBtnPressed = true;
+                }
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        rpPresenter.createReportDocFile(graphViewCreator);
+                    }
+                }).start();
+
+                Toast.makeText(ReportPrepareActivity.this, "Отчет сохранен в папку \"Загрузки\"", Toast.LENGTH_LONG).show();
             }
         });
 
@@ -150,6 +198,10 @@ public class ReportPrepareActivity extends AppCompatActivity {
         binding.tvPossibleDeviation.setText(String.valueOf(deviationPoss));
         binding.tvFactDeviation.setText(String.valueOf(reportResults.get(reportResults.size() -1).getShiftMm()));
 
+        if (isReportBtnPressed) {
+            binding.imbtnReport.setImageDrawable(getDrawable(R.drawable.title));
+            isReportBtnPressed = false;
+        }
         //rpPresenter.get
     }
 
@@ -173,5 +225,17 @@ public class ReportPrepareActivity extends AppCompatActivity {
         } catch (android.content.ActivityNotFoundException ex) {
             Toast.makeText(ReportPrepareActivity.this, "There is no email client installed.", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        isXozBtnPressed = false;
+        isJournalBtnPressed = false;
+        isReportBtnPressed = false;
+        binding.imbtnXOZ.setImageDrawable(getDrawable(R.drawable.testcube));
+        binding.imbtnJournal.setImageDrawable(getDrawable(R.drawable.table));
+        binding.imbtnReport.setImageDrawable(getDrawable(R.drawable.title));
     }
 }

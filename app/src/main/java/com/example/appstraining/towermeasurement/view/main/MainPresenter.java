@@ -236,7 +236,7 @@ public class MainPresenter implements LifecycleObserver {
         bundle.putFloatArray("toweredges", drawPreparation.getDrawingSequence(TOWER_EDGES));
         bundle.putInt("config", building.getConfig());
         bundle.putInt("levels", building.getNumberOfSections() + 1);
-        //mMainActivity.showAnimatedModel(bundle);
+        mMainActivity.showAnimatedModel(bundle);
 
     }
 

@@ -44,15 +44,15 @@
 
         <ImageButton
             android:id="@+id/imbtnXOZ"
-            android:layout_width="150dp"
-            android:layout_height="138dp"
-            android:layout_marginLeft="34dp"
+            android:layout_width="180dp"
+            android:layout_height="160dp"
+            android:layout_marginLeft="12dp"
             android:layout_marginRight="14dp"
             android:layout_marginTop="4dp"
             android:layout_gravity="center"
             android:background="@drawable/imbtnshape"
             android:scaleType="centerInside"
-            android:src="@drawable/graphics" />
+            android:src="@drawable/testcube" />
 
         <ImageButton
             android:id="@+id/imbtnJournal"
@@ -60,17 +60,17 @@
             android:layout_height="150dp"
             android:layout_marginTop="4dp"
             android:layout_marginRight="6dp"
-            android:layout_marginLeft="14dp"
+            android:layout_marginLeft="10dp"
             android:layout_gravity="center"
             android:background="@drawable/imbtnshape"
             android:scaleType="centerInside"
-            android:src="@drawable/tables" />
+            android:src="@drawable/table" />
     </TableRow>
 
     <TableRow
         android:id="@+id/trReportInfo"
         android:layout_width="match_parent"
-        android:layout_height="180dp"
+        android:layout_height="200dp"
         android:layout_marginTop="36dp"
         app:layout_constraintTop_toBottomOf="@id/trGraphJournal"
         app:layout_constraintBottom_toTopOf="@id/btnFullInfoReport"
@@ -79,14 +79,14 @@
         >
 
         <ImageButton
-            android:id="@+id/imbtnXOY"
-            android:layout_width="120dp"
-            android:layout_height="180dp"
+            android:id="@+id/imbtn_report"
+            android:layout_width="140dp"
+            android:layout_height="195dp"
             android:layout_marginLeft="36dp"
             android:layout_marginBottom="190dp"
             android:background="@drawable/imbtnshape"
             android:scaleType="centerInside"
-            android:src="@drawable/report_title"
+            android:src="@drawable/title"
             />
 
         <TableLayout
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
 
             android:layout_marginTop="4dp"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp">
             <TableRow
                 android:layout_width="match_parent"

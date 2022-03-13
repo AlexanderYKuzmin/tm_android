@@ -56,6 +56,8 @@ public class ReportPreparePresenter {
     private int[] yozRange = {0, 0, 0, 0};
     private int[] xoyRange = {0, 0, 0, 0}; // min x, max x, min y, max y;
 
+    private int deviation;
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     public ReportPreparePresenter (Long buildingID, int[] levels, ReportPrepareActivity reportPrepareActivity) {
         this.reportPrepareActivity = reportPrepareActivity;
@@ -195,6 +197,11 @@ public class ReportPreparePresenter {
         return theoDistances;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public int countDeviation() {
+        return getXOZArray()[getXOZArray().length - 1]/1000;
+    }
+
     public int[] getXOZRange() {
         return xozRange;
     }
@@ -208,7 +215,7 @@ public class ReportPreparePresenter {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
-    public void createReportDocFile() {
+    public void createReportDocFile(GraphViewCreator graphViewCreator) {
         String fileNameDoc = String.format("%s_report.docx", reportBuilding.getName());
         String[] fileNamesPng = new String[] {
                 String.format("%s_XOZ_pic.png", reportBuilding.getName()),
@@ -223,10 +230,28 @@ public class ReportPreparePresenter {
         DocCreator docCreator = new DocCreator();
         FileLoader fileLoader = FileLoader.getInstance();
 
+
+
+        //GraphViewCreator graphViewCreator = GraphViewCreator.getInstance(reportPrepareActivity, pointsDataArraysMap, rangeMap, deviation);
+
+        docCreator.createDocFile(reportBuilding);
+
+        fileLoader.saveGraphPng(fileNamesPng[0], graphViewCreator.get(GraphicType.XOZ));
+        fileLoader.saveGraphPng(fileNamesPng[1], graphViewCreator.get(GraphicType.YOZ));
+        fileLoader.saveGraphPng(fileNamesPng[2], graphViewCreator.get(GraphicType.XOY));
+
+        docCreator.addPictures(fileNamesPng);
+        docCreator.saveDocument(fileNameDoc);
+        reportPrepareActivity.updateView();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public Map<String, Map<GraphicType, int[]>> getGraphViewData() {
+        Map<String, Map<GraphicType, int[]>> data = new HashMap<>();
         Map<GraphicType, int[]> pointsDataArraysMap = new HashMap<>();
         Map<GraphicType, int[]> rangeMap = new HashMap<>();
         GraphicType[] graphTypes = GraphicType.values();
-        int deviation = getXOZArray()[getXOZArray().length - 1]/1000;
+        //int deviation = getXOZArray()[getXOZArray().length - 1]/1000;
         for (int i = 0; i < 3; i++) {
             switch (graphTypes[i]) {
                 case XOZ:
@@ -242,20 +267,15 @@ public class ReportPreparePresenter {
                     rangeMap.put(graphTypes[i], getXOYRange());
             }
         }
+        data.put("points", pointsDataArraysMap);
+        data.put("range", rangeMap);
 
-        GraphViewCreator graphViewCreator = GraphViewCreator.getInstance(reportPrepareActivity, pointsDataArraysMap, rangeMap, deviation);
+        return data;
+    }
 
-        docCreator.createDocFile(reportBuilding);
-
+    public void createGraphView(GraphViewCreator graphViewCreator) {
         graphViewCreator.create(GraphicType.XOZ);
         graphViewCreator.create(GraphicType.YOZ);
         graphViewCreator.create(GraphicType.XOY);
-
-        fileLoader.saveGraphPng(fileNamesPng[0], graphViewCreator.get(GraphicType.XOZ));
-        fileLoader.saveGraphPng(fileNamesPng[1], graphViewCreator.get(GraphicType.YOZ));
-        fileLoader.saveGraphPng(fileNamesPng[2], graphViewCreator.get(GraphicType.XOY));
-
-        docCreator.addPictures(fileNamesPng);
-        docCreator.saveDocument(fileNameDoc);
     }
 }

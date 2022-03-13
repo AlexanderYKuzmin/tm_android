@@ -59,7 +59,7 @@
     <string name="search_dialog_title_ru">Перечень доступных объектов</string>
     <string name="search_request_title_ru">Введите параметры поиска</string>
     <string name="title_view_selected_ru">Выбранный объект</string>
-    <string name="title_report_ru">Отчет</string>
+    <string name="title_report_ru">Создание отчета</string>
     <string name="title_new_ru">Новое сооружение</string>
     <string name="title_last_loaded_building_ru">Последний объект</string>
     <string name="sign_in">Авторизация:</string>
@@ -123,7 +123,7 @@
     <string name="register_btn_ru">Регистрация</string>
     <string name="continue_btn_ru">Продолжить</string>
     <string name="reset_btn_ru">Сброс</string>
-    <string name="update_btn_ru">Обновить</string>
+    <string name="update_btn_ru">Принять</string>
     <string name="measure_btn_ru">Измерения</string>
     <string name="ok_btn_ru">Ок</string>
     <string name="cancel_btn_ru">Отмена</string>

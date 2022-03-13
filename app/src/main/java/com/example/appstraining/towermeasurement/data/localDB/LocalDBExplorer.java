@@ -322,11 +322,8 @@ public class LocalDBExplorer {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public long[] save(List<Building> buildings){
         long[] savedIds = new long[buildings.size()];
-        Log.d(LOG_TAG, "buildings size = " + buildings.size());
-        Log.d(LOG_TAG, "Building from buildings " + buildings.get(0));
         for(int i = 0; i < buildings.size(); i++) {
             if(buildings.get(i) != null) {
-                Log.d(LOG_TAG, "buildings id, name to save " + buildings.get(i).getId() + ", " + buildings.get(i).getName());
                 savedIds[i] = save(buildings.get(i));
             }
         }
@@ -378,7 +375,6 @@ public class LocalDBExplorer {
                 cv.put("b_username", building.getUserName());
                 cv.put("b_creationdate", dateFormat.format(building.getCreationDate()));
         }
-
         return cv;
     }
 

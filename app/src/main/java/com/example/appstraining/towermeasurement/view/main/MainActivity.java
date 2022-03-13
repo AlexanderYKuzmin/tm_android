@@ -243,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 Log.d(LOG_TAG, "After show method search form dialog");
                 //innerSearchResultDialogFragment.show(getSupportFragmentManager(), null);
                 //activityMode = MainActivityMode.SELECTED_OBJECT; // И не здесь менять режим
-                updateView(activityMode); // кажется не здесь надо вызывать апдейт
+                //updateView(activityMode); // кажется не здесь надо вызывать апдейт
                 break;
             case R.id.mSaveToStorage:
                 mainPresenter.saveToLocalDB();
@@ -292,7 +292,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                         break;
                     case LOAD_FROM_STORAGE: // Cancel
                         activityMode = MainActivityMode.LAST_LOADED_OBJECT;
-                        updateView(activityMode);
+                        mainPresenter.mountBuilding(activityMode);
+                        //updateView(activityMode);
                 }
                 break;
 
