@@ -20,7 +20,7 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
-import com.example.appstraining.towermeasurement.InnerSearchDialogAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.InnerSearchDialogAdapterHelper;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Building;
@@ -111,6 +111,7 @@ public class InnerSearchResultDialogFragment extends DialogFragment implements A
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         Log.d(LOG_TAG, "onItemClick pressed");

@@ -15,7 +15,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.R;
-import com.example.appstraining.towermeasurement.SearchDialogAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.SearchDialogAdapterHelper;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;

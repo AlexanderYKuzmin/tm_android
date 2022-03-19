@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.model.adapter;
 
 import android.content.Context;
 import android.os.Build;
@@ -8,6 +8,7 @@ import android.widget.SimpleAdapter;
 
 import androidx.annotation.RequiresApi;
 
+import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Building;
 
 import java.text.SimpleDateFormat;

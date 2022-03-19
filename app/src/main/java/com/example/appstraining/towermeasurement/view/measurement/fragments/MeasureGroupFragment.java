@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 
-import com.example.appstraining.towermeasurement.MeasureListAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.MeasureListAdapterHelper;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.DegreeSeparated;
 import com.example.appstraining.towermeasurement.model.Measurement;

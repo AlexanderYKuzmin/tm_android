@@ -133,7 +133,7 @@ public class ReportPreparePresenter {
         reportMeasurements.sort(Comparator.comparing(Measurement::getId));
         //int size = reportBuilding.getResults().size()/reportBuilding.getConfig() * 2;
         int size = reportBuilding.getResults().size() / 2 * 2; // changed for 2 sides
-        double k = 0.866; // cos 30
+        double k = reportBuilding.getConfig() == 3 ? 0.866 : 1; // cos 30 or 1 if square
         yozArray = new int[size];
         yozArray[0] = 0;
         yozArray[1] = levels[0];
@@ -236,9 +236,9 @@ public class ReportPreparePresenter {
 
         docCreator.createDocFile(reportBuilding);
 
-        fileLoader.saveGraphPng(fileNamesPng[0], graphViewCreator.get(GraphicType.XOZ));
-        fileLoader.saveGraphPng(fileNamesPng[1], graphViewCreator.get(GraphicType.YOZ));
-        fileLoader.saveGraphPng(fileNamesPng[2], graphViewCreator.get(GraphicType.XOY));
+        fileLoader.saveGraphPng(fileNamesPng[0], graphViewCreator.get(GraphicType.XOZ), reportBuilding.getNumberOfSections());
+        fileLoader.saveGraphPng(fileNamesPng[1], graphViewCreator.get(GraphicType.YOZ), reportBuilding.getNumberOfSections());
+        fileLoader.saveGraphPng(fileNamesPng[2], graphViewCreator.get(GraphicType.XOY), reportBuilding.getNumberOfSections());
 
         docCreator.addPictures(fileNamesPng);
         docCreator.saveDocument(fileNameDoc);

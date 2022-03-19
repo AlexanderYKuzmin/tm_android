@@ -1,8 +1,9 @@
-package com.example.appstraining.towermeasurement;
+package com.example.appstraining.towermeasurement.model.adapter;
 
 import android.content.Context;
 import android.util.Log;
 
+import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.view.main.fragments.LoadBuildingsAdapter;
 

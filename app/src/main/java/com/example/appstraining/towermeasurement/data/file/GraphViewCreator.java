@@ -42,7 +42,7 @@ public class GraphViewCreator {
     }
 
     public static GraphViewCreator getInstance(Context context, @NonNull Map<GraphicType, int[]> pointsDataMap, @NonNull Map<GraphicType, int[]> rangeMap, int deviation) {
-        if(instance == null) {
+        if(instance == null || instance.pointsDataMap != pointsDataMap || instance.rangeMap != rangeMap) {
             instance = new GraphViewCreator(context, pointsDataMap, rangeMap, deviation);
         }
         return instance;

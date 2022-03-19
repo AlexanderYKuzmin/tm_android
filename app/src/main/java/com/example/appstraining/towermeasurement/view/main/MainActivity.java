@@ -30,9 +30,9 @@ import android.widget.Toast;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.view.main.fragments.DeleteDialogFragment;
 import com.example.appstraining.towermeasurement.view.main.fragments.SearchFormDialogFragment;
-import com.example.appstraining.towermeasurement.model.adapter.main.SectionListAdapterHelper;
-import com.example.appstraining.towermeasurement.model.adapter.main.SpinnerConfigAdapterHelper;
-import com.example.appstraining.towermeasurement.model.adapter.main.SpinnerTypeAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.SectionListAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.SpinnerConfigAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.SpinnerTypeAdapterHelper;
 import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.model.Section;
 import com.example.appstraining.towermeasurement.view.main.fragments.InnerSearchResultDialogFragment;
@@ -254,8 +254,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 showSearchFormDialogFragment();
                 break;
             case R.id.mQuit:
-                //onDestroy();
-
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }

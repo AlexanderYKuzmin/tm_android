@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.example.appstraining.towermeasurement.JournalAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.JournalAdapterHelper;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.Result;

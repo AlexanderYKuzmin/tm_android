@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.model.adapter.main;
+package com.example.appstraining.towermeasurement.model.adapter;
 
 import android.content.Context;
 import android.util.Log;

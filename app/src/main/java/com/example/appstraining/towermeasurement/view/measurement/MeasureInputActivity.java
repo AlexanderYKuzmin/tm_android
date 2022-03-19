@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.RadioButton;
 import android.widget.SimpleAdapter;
 
-import com.example.appstraining.towermeasurement.MeasureListAdapterHelper;
+import com.example.appstraining.towermeasurement.model.adapter.MeasureListAdapterHelper;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.databinding.ActivityMeasureInputBinding;
 import com.example.appstraining.towermeasurement.model.Measurement;

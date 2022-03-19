@@ -219,25 +219,29 @@ public class MainPresenter implements LifecycleObserver {
     }
 
     //*** Mount building on MainActivity  3d model***
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void mountBuilding(MainActivityMode activityMode) {
-        //this.building = building;
-        //mMainActivity.updateSectionList(getSections());
-        //mMainActivity.removeAnimatedModel();
+
         mMainActivity.updateView(activityMode);
 
-        /*mMainActivity.updateView(context.getString(R.string.title_view_selected)
-                , String.valueOf(building.getId())
-                , building.getName(), building.getAddress()
-                , String.valueOf(building.getType()), String.valueOf(building.getConfig())
-                , String.valueOf(building.getHeight()), String.valueOf(building.getNumberOfSections())
-        );*/
-        Bundle bundle = new Bundle();
-        bundle.putFloatArray("towerflats", drawPreparation.getDrawingSequence(TOWER_FLATS));
-        bundle.putFloatArray("toweredges", drawPreparation.getDrawingSequence(TOWER_EDGES));
-        bundle.putInt("config", building.getConfig());
-        bundle.putInt("levels", building.getNumberOfSections() + 1);
-        mMainActivity.showAnimatedModel(bundle);
+        if (building != null) {
+            /*mMainActivity.updateView(context.getString(R.string.title_view_selected)
+                    , String.valueOf(building.getId())
+                    , building.getName(), building.getAddress()
+                    , String.valueOf(building.getType()), String.valueOf(building.getConfig())
+                    , String.valueOf(building.getHeight()), String.valueOf(building.getNumberOfSections())
+            );*/
+            Bundle bundle = new Bundle();
+            bundle.putFloatArray("towerflats", drawPreparation.getDrawingSequence(TOWER_FLATS));
+            bundle.putFloatArray("toweredges", drawPreparation.getDrawingSequence(TOWER_EDGES));
+            bundle.putInt("config", building.getConfig());
+            bundle.putInt("levels", building.getNumberOfSections() + 1);
 
+            if (building.getMeasurements() != null) {
+                setResults();
+            }
+            mMainActivity.showAnimatedModel(bundle);
+        }
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -327,6 +331,7 @@ public class MainPresenter implements LifecycleObserver {
 
         ArrayList<Measurement> locUsingMeasurements = getMeasurements();
         locUsingMeasurements.sort(Comparator.comparing(Measurement::getId));
+
         ArrayList<Result> locUsingResults = getResults();
         locUsingResults.sort(Comparator.comparing(Result::getMeasureID));
 
@@ -352,6 +357,7 @@ public class MainPresenter implements LifecycleObserver {
                     betaDelta = (int)((betaI - betaIPrev) * 3600);
                     //betaIPrev = betaI;
 
+
                 } else {
                     averageKL =
                             (getMeasurements().get(i).getLeftAngle() + getMeasurements().get(i).getRightAngle()) / 2;
@@ -373,6 +379,12 @@ public class MainPresenter implements LifecycleObserver {
                         tanAlfa, distanceToPoint, 0, betaAverageLeft, betaAverageRight,
                         betaI, betaDelta
                 );
+                Log.d(LOG_TAG, "Results parameters: " + "\n" +
+                        " average KLKR: " + averageKLKR + "\n" +
+                        " shift degree: " + shiftDegree + "\n" +
+                        " tan alfa: " + tanAlfa + "\n" +
+                        " shift mm: " + shiftMm + "\n" +
+                        " beta delta: " + betaDelta);
             }
         }
     }
@@ -388,7 +400,7 @@ public class MainPresenter implements LifecycleObserver {
             if(idStr != null) id = Long.parseLong(idStr);
             Log.d(LOG_TAG, "id = " + id);
         } finally {
-            if(id != null) {
+            if(id != 0) {
                 setBuilding(getFromLocalDB(id));
                 mountBuilding(MainActivityMode.LAST_LOADED_OBJECT);
             }
@@ -438,6 +450,7 @@ public class MainPresenter implements LifecycleObserver {
         //int buildingStartLevel = building.getStartLevel(); // gonna playing with theoheight according building startlevel
         //double r1; // previous section inner circle radius
         double r2; // current section inner circle radius
+
         double k = Math.sqrt(3) / 6; //
         //int a1; // previous section widthBottom
         //int a2; // current section widthBottom
@@ -459,9 +472,11 @@ public class MainPresenter implements LifecycleObserver {
             r2 = section.getWidthTop() * k;
             distanceToPoint = (int) Math.sqrt(
                     Math.pow(((section.getNumber())*section.getHeight() - theoHeight), 2) +
-                            Math.pow((theoDistance - r2), 2)
+                            Math.pow((theoDistance - r2), 2) // +r2 or -r2 depends on what the start distance to the tower is. To axis( - r2) or to edge (+r2)
             );
         }
+        Log.d(LOG_TAG, "Distance to point is: " + distanceToPoint);
+        Log.d(LOG_TAG, "r2 = " + r2);
         return distanceToPoint;
     }
 

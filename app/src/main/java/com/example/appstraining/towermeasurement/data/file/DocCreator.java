@@ -67,6 +67,8 @@ public class DocCreator {
     private String[] headerDataSecondary;
     private String[] headerDataPrimary;
 
+    private int sections = 0;
+
     public XWPFDocument document;
 
     public XWPFDocument getDocument() {
@@ -159,15 +161,18 @@ public class DocCreator {
     private void fillPictureParagraph(XWPFParagraph picParagraph, String[] fileNames) {
 
         XWPFRun run = picParagraph.createRun();
-        int x = 200, y = 320;
+
+        int k = sections;
+        int x = 220, y = 300 + (k * 15);
+
         //System.out.println("bis available" + bis.available());
         run.addBreak();
         for (int i = 0; i < fileNames.length; i++) {
             if (i == 2) {
                 run.addBreak();
                 run.addBreak();
-                x = 250;
-                y = 300;
+                x = 300 + k * 15;
+                y = 300 + k * 15;
             }
             try(FileInputStream fis = new FileInputStream(filePath + fileNames[i])) {
                 run.addPicture(fis, Document.PICTURE_TYPE_PNG, fileNames[i], Units.toEMU(x), Units.toEMU(y));
@@ -424,6 +429,8 @@ public class DocCreator {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("DefaultLocale")
     private void initializeData(Building building) {
+        sections = building.getSections().size();
+
         title = new String[] {"Журнал угловых измерений"};
 
         String typeStringRu = null;

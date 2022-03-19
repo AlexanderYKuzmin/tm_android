@@ -86,10 +86,10 @@ public class FileLoader {
         }
     }
 
-    public void saveGraphPng(String fileName, GraphView graphView) {
+    public void saveGraphPng(String fileName, GraphView graphView, int expandKoef) {
         String filePath = path + File.separator + fileName;
         try(FileOutputStream fos = new FileOutputStream(filePath)) {
-            Bitmap bitmap = BitmapConverter.getBitmapFromView(graphView);
+            Bitmap bitmap = BitmapConverter.getBitmapFromView(graphView, expandKoef);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
         } catch (IOException e) {
             e.printStackTrace();
