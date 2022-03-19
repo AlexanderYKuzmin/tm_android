@@ -14,9 +14,13 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.util.PermissionUtils;
 import com.example.appstraining.towermeasurement.view.main.MainActivity;
 
 public class StartActivity extends AppCompatActivity implements AuthView {
+    private static final String LOG_TAG = "StartActivity";
+    private static final int PERMISSION_STORAGE = 101;
+
     TextView tvGreating;
     EditText etEmail;
     EditText etPassword;
@@ -67,5 +71,12 @@ public class StartActivity extends AppCompatActivity implements AuthView {
     @Override
     public void showPasswordError() {
 
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (PermissionUtils.hasPermissions(this)) return;
+        PermissionUtils.requestPermissions(this, PERMISSION_STORAGE);
     }
 }

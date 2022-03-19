@@ -1,9 +1,13 @@
 package com.example.appstraining.towermeasurement.view.result;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -48,7 +52,7 @@ public class ReportPrepareActivity extends AppCompatActivity {
         /*Log.d(LOG_TAG, " Levels is recieved: Levels[1] = " + levels[1] + "; "
                 + "levels[2] = " + levels[2]
         );*/
-        rpPresenter = new ReportPreparePresenter(buildingID, levels, this);
+        rpPresenter = new ReportPreparePresenter(buildingID, levels, this, this);
         graphViewCreator = GraphViewCreator.getInstance(this,
                 rpPresenter.getGraphViewData().get("points"),
                 rpPresenter.getGraphViewData().get("range"),
@@ -237,5 +241,29 @@ public class ReportPrepareActivity extends AppCompatActivity {
         binding.imbtnXOZ.setImageDrawable(getDrawable(R.drawable.testcube));
         binding.imbtnJournal.setImageDrawable(getDrawable(R.drawable.table));
         binding.imbtnReport.setImageDrawable(getDrawable(R.drawable.title));
+    }
+
+    /*@Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }*/
+
+    public boolean isStoragePermissionGranted() {
+        String TAG = "Storage Permission";
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (this.checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                Log.v(TAG, "Permission is granted");
+                return true;
+            } else {
+                Log.v(TAG, "Permission is revoked");
+                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else { //permission is automatically granted on sdk<23 upon installation
+            Log.v(TAG,"Permission is granted");
+            return true;
+        }
     }
 }

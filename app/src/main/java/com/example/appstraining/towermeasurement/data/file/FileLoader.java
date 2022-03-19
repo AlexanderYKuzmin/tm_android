@@ -1,9 +1,15 @@
 package com.example.appstraining.towermeasurement.data.file;
 
+import android.Manifest;
+import android.app.Application;
+import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.DocumentsProvider;
 import android.util.Log;
 
 import androidx.annotation.RequiresApi;
@@ -12,6 +18,7 @@ import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.GraphicType;
 import com.example.appstraining.towermeasurement.util.BitmapConverter;
 import com.example.appstraining.towermeasurement.util.JsonConverter;
+import com.example.appstraining.towermeasurement.view.result.ReportPrepareActivity;
 import com.jjoe64.graphview.GraphView;
 
 import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -29,18 +36,21 @@ import java.nio.file.Paths;
 public class FileLoader {
     final String LOG_TAG = "FileLoader";
     private final File path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+    Context context;
+
+    //private final File path = ;
     //String  filePath;
 
     private static FileLoader instance;
 
-    private FileLoader() {
-        //mContext = context;
+    private FileLoader(Context context) {
+        this.context = context;
         //lastInputObjectPath = mContext.getFilesDir().getAbsolutePath() + "/lastObject.json";
     }
 
-    public static FileLoader getInstance() {
+    public static FileLoader getInstance(Context context) {
         if(instance == null) {
-            instance = new FileLoader();
+            instance = new FileLoader(context);
         }
         return instance;
     }
@@ -79,6 +89,10 @@ public class FileLoader {
 
     public void saveReportDocx(String fileName, XWPFDocument document) {
         String filePath = path + File.separator + fileName;
+        //File appSpecificExternalDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileName);
+        /*ContentResolver contentResolver = context.getContentResolver();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put();*/
         try(FileOutputStream fos = new FileOutputStream(filePath)) {
             document.write(fos);
         } catch (IOException e) {
@@ -88,6 +102,7 @@ public class FileLoader {
 
     public void saveGraphPng(String fileName, GraphView graphView, int expandKoef) {
         String filePath = path + File.separator + fileName;
+        //File appSpecificExternalDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileName);
         try(FileOutputStream fos = new FileOutputStream(filePath)) {
             Bitmap bitmap = BitmapConverter.getBitmapFromView(graphView, expandKoef);
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, fos);
@@ -95,5 +110,7 @@ public class FileLoader {
             e.printStackTrace();
         }
     }
+
+
 }
 

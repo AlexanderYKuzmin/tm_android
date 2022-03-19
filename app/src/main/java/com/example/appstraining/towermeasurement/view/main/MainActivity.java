@@ -523,13 +523,17 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void updateFocusable(boolean fId, boolean fName, boolean fAddress, boolean fType, boolean fConfig
             , boolean fHeight, boolean fNumberOfSections) {
-        etId.setFocusable(fId);
+        /*etId.setFocusable(fId);
         etName.setFocusable(fName);
         etAddress.setFocusable(fAddress);
         etHeight.setFocusable(fHeight);
-        etSectionsNumber.setFocusable(fNumberOfSections);
+        etSectionsNumber.setFocusable(fNumberOfSections);*/
         spinnerType.setEnabled(fType);
         spinnerConfig.setEnabled(fConfig);
+        etName.setEnabled(fName);
+        etAddress.setEnabled(fAddress);
+        etHeight.setEnabled(fHeight);
+        etSectionsNumber.setEnabled(fNumberOfSections);
 
     }
 

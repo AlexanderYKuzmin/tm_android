@@ -59,10 +59,11 @@ public class ReportPreparePresenter {
     private int deviation;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public ReportPreparePresenter (Long buildingID, int[] levels, ReportPrepareActivity reportPrepareActivity) {
+    public ReportPreparePresenter (Long buildingID, int[] levels, ReportPrepareActivity reportPrepareActivity, Context context) {
         this.reportPrepareActivity = reportPrepareActivity;
         this.buildingID = buildingID;
         this.levels = levels;
+        this.mContext = context;
 
         localDBExplorer = new LocalDBExplorer(reportPrepareActivity.getApplicationContext());
         reportBuilding = localDBExplorer.get(buildingID, true);
@@ -227,8 +228,8 @@ public class ReportPreparePresenter {
         String fileNamePngXOY = String.format("%s_XOY_pic.png", reportBuilding.getName());*/
         //File pathName = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 
-        DocCreator docCreator = new DocCreator();
-        FileLoader fileLoader = FileLoader.getInstance();
+        DocCreator docCreator = new DocCreator(mContext);
+        FileLoader fileLoader = FileLoader.getInstance(mContext);
 
 
 

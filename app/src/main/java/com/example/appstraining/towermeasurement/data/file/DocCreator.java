@@ -53,6 +53,7 @@ import java.util.List;
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
 public class DocCreator {
     private final String LOG_TAG = "DocCreator";
+    private Context context;
     private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     private final static int NUMBER_OF_TITLE_ROWS = 4;
     private final static int NUMBER_OF_LEVEL_ROWS = 4;
@@ -71,12 +72,16 @@ public class DocCreator {
 
     public XWPFDocument document;
 
+    public DocCreator(Context context) {
+        this.context = context;
+    }
+
     public XWPFDocument getDocument() {
         return document;
     }
 
     public void saveDocument(String fileName) {
-        FileLoader fileLoader = FileLoader.getInstance();
+        FileLoader fileLoader = FileLoader.getInstance(context);
         fileLoader.saveReportDocx(fileName, document);
     }
 
@@ -174,6 +179,7 @@ public class DocCreator {
                 x = 300 + k * 15;
                 y = 300 + k * 15;
             }
+            //File appSpecificExternalDir = new File(context.getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS), fileNames[i]);
             try(FileInputStream fis = new FileInputStream(filePath + fileNames[i])) {
                 run.addPicture(fis, Document.PICTURE_TYPE_PNG, fileNames[i], Units.toEMU(x), Units.toEMU(y));
 
