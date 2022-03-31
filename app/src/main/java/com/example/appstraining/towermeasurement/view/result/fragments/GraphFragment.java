@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view.result;
+package com.example.appstraining.towermeasurement.view.result.fragments;
 
 import android.graphics.Color;
 import android.graphics.DashPathEffect;
@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.view.result.ReportPreparePresenter;
 import com.jjoe64.graphview.GraphView;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -41,8 +42,8 @@ public class GraphFragment extends Fragment {
     public ArrayList<LineGraphSeries> lineSeriesList = new ArrayList<>();
     public ArrayList<PointsGraphSeries> pointSeriesList = new ArrayList<>();
 
-    static GraphFragment newInstance(int position, String title, int[] currentGraph,
-                                     int[] currentGraphRange, int deviation) {
+    public static GraphFragment newInstance(int position, String title, int[] currentGraph,
+                                            int[] currentGraphRange, int deviation) {
         GraphFragment graphFragment = new GraphFragment();
         Bundle arguments = new Bundle();
         arguments.putInt(ARGUMENT_GRAPH_NUMBER, position);

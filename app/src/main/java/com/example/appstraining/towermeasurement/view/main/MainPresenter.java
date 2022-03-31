@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.FragmentManager;
@@ -24,6 +25,7 @@ import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.RequestCode;
 import com.example.appstraining.towermeasurement.model.Result;
 import com.example.appstraining.towermeasurement.model.Section;
+import com.example.appstraining.towermeasurement.util.BuildingStructureValidation;
 
 import java.io.IOException;
 import java.sql.Date;
@@ -121,9 +123,7 @@ public class MainPresenter implements LifecycleObserver {
 
         building = new Building(id, name, address, type, config, numberOfSections,
                 height, startLevel, userName, creationDate); // parameters from activity
-        Log.d(LOG_TAG, "Building created. Name : " + building.getName()
-                + " Address : " + building.getAddress()
-                + " Creation date : " + dateFormat.format(building.getCreationDate()));
+
         // set sections
         int sectionId = 0;
         int sectionNumber;
@@ -139,11 +139,8 @@ public class MainPresenter implements LifecycleObserver {
                 sectionNumber = i + 1;
                 building.addSection(new Section(0, sectionNumber, widthBottom, widthTop,
                         sectionHeight, level, name, id));
-                System.out.println("******" + building.getSection(i+1).toString());
             }
         }
-
-        Log.d(LOG_TAG, "Sections created. Example Section #1 " + building.getSection(1).getNumber());
 
         // ******** Add measurements **********
         int measureNumber = 0;
@@ -154,9 +151,6 @@ public class MainPresenter implements LifecycleObserver {
                         0.0, 0.0, 0, 0,
                         sectionNum, BaseOrTop.BASE, 0, 0,
                         measureDate, contractor, 0));
-                Log.d(LOG_TAG, "measurement added: id = "
-                        + building.getMeasurement(1, 1, BaseOrTop.BASE));
-
                 if(sectionNum == building.getNumberOfSections()) {
                     measureNumber++;
                     building.addMeasurement(new Measurement(0, measureNumber, side, CircleTheo.KL,
@@ -174,17 +168,8 @@ public class MainPresenter implements LifecycleObserver {
                 building.addResultData(new Result(0, 0.0, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, 0.0, 0.0, 0.0, 0,
                 0, 0, 0));
-                Log.d(LOG_TAG, "result added :" );
             }
         }
-        Log.d(LOG_TAG, "Building created. building_id = " + building.getId() + "\n"
-                + "measurements size = " + building.getMeasurements().size() + "\n"
-                + "results size = " + building.getResults().size()
-        );
-    }
-
-    public void getBuildingFromFile(){ // get rid of it
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -224,7 +209,7 @@ public class MainPresenter implements LifecycleObserver {
 
         mMainActivity.updateView(activityMode);
 
-        if (building != null) {
+        if (building != null && building.getId() != null) {
             /*mMainActivity.updateView(context.getString(R.string.title_view_selected)
                     , String.valueOf(building.getId())
                     , building.getName(), building.getAddress()
@@ -297,12 +282,20 @@ public class MainPresenter implements LifecycleObserver {
     }
 
     public void updateSection(int secNum, String widthBottom, String widthTop, String height){
-        int wb = Integer.parseInt(widthBottom);
+
+        /*int wb = Integer.parseInt(widthBottom);
         int wt = Integer.parseInt(widthTop);
-        int h = Integer.parseInt(height);
-        building.getSection(secNum).setWidthBottom(wb);
+        int h = Integer.parseInt(height);*/
+        int[] bth = toIntegerValue(widthBottom, widthTop, height); // bottom, top, height
+        Section updateSection = new Section(0, secNum, bth[0], bth[1], bth[2], 0, null, 0L);
+        if(BuildingStructureValidation.isSectionDataConsistent(updateSection)) {
+            building.updateSection(updateSection);
+        } else {
+            Toast.makeText(context, "Несоответствие параметров секции", Toast.LENGTH_SHORT);
+        }
+        /*building.getSection(secNum).setWidthBottom(wb);
         building.getSection(secNum).setWidthTop(wt);
-        building.getSection(secNum).setHeight(h);
+        building.getSection(secNum).setHeight(h);*/
         Log.d(LOG_TAG, "Section #" + secNum + " is updated!");
         Log.d(LOG_TAG, "Height = " + building.getSection(secNum).getHeight());
 
@@ -411,10 +404,13 @@ public class MainPresenter implements LifecycleObserver {
     public String registerObject() {
         /*OkHttpClient okHttpClient = new OkHttpClient();
         return  RuVdsServer.POST(okHttpClient, building, RequestCode.REGISTER);*/
-        building.setId(0L);
-        long id = dbExplorer.save(building);
-        building.setId(id);
-        return id > 0 ? "Объект сохранен id = " + id : "Объект не сохранен";
+        if (BuildingStructureValidation.isSectionListConsistent(building.getSections(), building.getHeight())) {
+            building.setId(0L);
+            long id = dbExplorer.save(building);
+            building.setId(id);
+            return id > 0 ? "Объект сохранен id = " + id : "Объект не сохранен";
+        }
+        return "Нарушена структура объекта";
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -436,7 +432,7 @@ public class MainPresenter implements LifecycleObserver {
 
     public int checkSectionValues(int secNum) {
         Section section = getSections().get(secNum - 1);
-        if ( section.getWidthBottom() > 0 && section.getWidthTop() > 0 && section.getHeight() > 0) {
+        if (BuildingStructureValidation.isSectionDataConsistent(section)) {
             return RESULT_SECTION_VALUES_OK;
         }
         return -1;
@@ -530,6 +526,19 @@ public class MainPresenter implements LifecycleObserver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public int deleteFromLocalDB(Long[] ids) {
         return dbExplorer.delete(ids);
+    }
+
+    private int[] toIntegerValue(String... stringValues) {
+        int[] integerValues = new int[stringValues.length];
+        for (int i = 0; i < integerValues.length; i++) {
+            if (stringValues[i] != null) {
+                integerValues[i] = Integer.parseInt(stringValues[i]);
+            } else {
+                integerValues[i] = 0;
+            }
+
+        }
+        return integerValues;
     }
 
     public void showInnerSearchResultDialogFragment(FragmentManager fragmentManager) {

@@ -17,21 +17,26 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.model.MainActivityMode;
 import com.example.appstraining.towermeasurement.model.Section;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
+
+import java.util.stream.Collectors;
 
 public class SectionDialogFragment extends DialogFragment {
     private final String LOG_TAG = "SectionDialogFragment";
     private Context context;
     private MainPresenter mainPresenter;
+    private MainActivityMode activityMode;
     private int secNum;
     private TextView tvSecNum;
     private EditText etWidthBottom, etWidthTop, etHeight;
 
-    public SectionDialogFragment(Context context, MainPresenter presenter, int secNum){
+    public SectionDialogFragment(Context context, MainPresenter presenter, int secNum, MainActivityMode activityMode){
         this.context = context;
         this.mainPresenter = presenter;
         this.secNum = secNum;
+        this.activityMode = activityMode;
     }
 
     @NonNull
@@ -72,11 +77,34 @@ public class SectionDialogFragment extends DialogFragment {
     }
 
     private void setDefaultFieldData() {
-        Section section = mainPresenter.getSections().get(secNum - 1);
+        switch (activityMode) {
+            case NEW:
+                if (secNum == 1) {
+                    //etWidthBottom.setText("0");
+                    //etHeight.setText("0");
+                } else if (secNum == mainPresenter.getSections().size()){
+                    Section prevSection = mainPresenter.getSections().get(secNum - 2);
+                    int sumHeightOfPrevSections =
+                            mainPresenter.getSections().stream().map(Section::getHeight).mapToInt(Integer::intValue).sum();
+                    etWidthBottom.setText(String.valueOf(prevSection.getWidthTop()));
+                    etWidthBottom.setEnabled(false);
+                    etHeight.setText(String.valueOf(mainPresenter.getBuilding().getHeight() - sumHeightOfPrevSections));
+                    etHeight.setEnabled(false);
+                } else {
+                    Section prevSection = mainPresenter.getSections().get(secNum - 2);
+                    etWidthBottom.setText(String.valueOf(prevSection.getWidthTop()));
+                    etWidthBottom.setEnabled(false);
+                    //etHeight.setText("0");
+                }
+                //etWidthTop.setText("0");
+                break;
+            case USE_TEMPLATE:
+                Section section = mainPresenter.getSections().get(secNum - 1);
+                etWidthBottom.setText(String.valueOf(section.getWidthBottom()));
+                etWidthTop.setText(String.valueOf(section.getWidthTop()));
+                etHeight.setText(String.valueOf(section.getHeight()));
+        }
 
-        etWidthBottom.setText(String.valueOf(section.getWidthBottom()));
-        etWidthTop.setText(String.valueOf(section.getWidthTop()));
-        etHeight.setText(String.valueOf(section.getHeight()));
     }
 
     private TextView getCustomTitle() {

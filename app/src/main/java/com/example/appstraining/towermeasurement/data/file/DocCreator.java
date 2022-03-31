@@ -15,8 +15,10 @@ import androidx.annotation.RequiresApi;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.BaseOrTop;
 import com.example.appstraining.towermeasurement.model.Building;
+import com.example.appstraining.towermeasurement.model.BuildingType;
 import com.example.appstraining.towermeasurement.model.GraphicType;
 import com.example.appstraining.towermeasurement.model.Result;
+import com.example.appstraining.towermeasurement.util.CustomMath;
 import com.example.appstraining.towermeasurement.util.DegreeNumericConverter;
 import com.example.appstraining.towermeasurement.view.result.ReportPrepareActivity;
 import com.example.appstraining.towermeasurement.view.result.ReportPreparePresenter;
@@ -48,6 +50,7 @@ import java.math.BigInteger;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
@@ -67,6 +70,12 @@ public class DocCreator {
     private String[] tableTitleDataSecond;
     private String[] headerDataSecondary;
     private String[] headerDataPrimary;
+    private String[] tableResultTitleData;
+    private String[] tableResultHeaderData;
+
+    private Building building;
+    List<Result> resultsForTabOne;
+    List<Result> resultsForTabTwo;
 
     private int sections = 0;
 
@@ -111,7 +120,17 @@ public class DocCreator {
         tableTwo.setWidth(9072);
 
         XWPFTable table2Body = document.createTable();
-        table1Body.setWidth(9072);
+        table2Body.setWidth(9072);
+
+        XWPFParagraph titleParagraphTableResult = document.createParagraph();
+        //titleParagraphTableResult.setAlignment(ParagraphAlignment.CENTER);
+
+        XWPFTable tableResult = document.createTable(1, 5);
+        tableResult.setWidth(9072);
+
+        int tableResultBodyRows = building.getNumberOfSections() + 1;
+        XWPFTable tableResultBody = document.createTable();
+        tableResultBody.setWidth(9072);
 
         fillTitleParagraph(titleParagraph);
         fillParagraph(commonDataParagraph, commonData,12, false, ParagraphAlignment.LEFT);
@@ -119,8 +138,10 @@ public class DocCreator {
 
         /*List<Measurement> measurementsForTabOne = building.getMeasurements().stream().filter(m -> m.getSide() == 1).collect(Collectors.toList());
         List<Result> resultsForTabOne = building.getResults().stream().filter(r -> measurementsForTabOne.co)*/
-        List<Result> resultsForTabOne = filterResultsBySide(building, 1);
-        List<Result> resultsForTabTwo = filterResultsBySide(building, 2);
+        resultsForTabOne = filterResultsBySide(building, 1);
+        resultsForTabOne.sort(Comparator.comparing(Result::getId));
+        resultsForTabTwo = filterResultsBySide(building, 2);
+        resultsForTabTwo.sort(Comparator.comparing(Result::getId));
 
         fillParagraph(tableOneTitleParagraph, tableTitleDataFirst,12, false, ParagraphAlignment.RIGHT);
         fillHeaderTable(tableOne);
@@ -130,6 +151,13 @@ public class DocCreator {
         fillParagraph(tableTwoTitleParagraph, tableTitleDataSecond,12, false, ParagraphAlignment.RIGHT);
         fillHeaderTable(tableTwo);
         fillBodyTable(table2Body, resultsForTabTwo, tableBodyRows);
+
+        List<Result> results = building.getResults();
+
+        fillParagraph(titleParagraphTableResult, tableResultTitleData, 12, false, ParagraphAlignment.CENTER);
+        fillHeaderTableResult(tableResult);
+        fillBodyTableResult(tableResultBody, tableResultBodyRows);
+
 
         this.document = document;
         /*return document;*/
@@ -161,6 +189,21 @@ public class DocCreator {
         run.setBold(true);
         run.setText(title[0]);
         run.addBreak();
+    }
+
+    private void fillParagraph(XWPFParagraph paragraph, String[] text, int fontSize, boolean bold, ParagraphAlignment alignment) {
+        paragraph.setAlignment(alignment);
+        paragraph.setSpacingBefore(80);
+        XWPFRun run = paragraph.createRun();
+        run.setFontSize(fontSize);
+        run.setFontFamily("Times New Roman");
+        run.setBold(bold);
+        for (int i = 0; i < text.length; i++) {
+            run.setText(text[i]);
+            if( i != text.length -1) {
+                run.addBreak();
+            }
+        }
     }
 
     private void fillPictureParagraph(XWPFParagraph picParagraph, String[] fileNames) {
@@ -224,6 +267,11 @@ public class DocCreator {
 
     }
 
+    private void fillHeaderTableResult(XWPFTable table) {
+        XWPFTableRow firstRow = table.getRows().get(0);
+        fillRow(firstRow, tableResultHeaderData, 0, 4, true);
+    }
+
     private void fillBodyTable(XWPFTable table, List<Result> results, int tableBodyRows) {
         int levels = results.size();
         for (int cellNum = 0; cellNum < 14; cellNum ++) {
@@ -239,20 +287,32 @@ public class DocCreator {
         }
     }
 
-    private void fillParagraph(XWPFParagraph paragraph, String[] text, int fontSize, boolean bold, ParagraphAlignment alignment) {
-        paragraph.setAlignment(alignment);
-        paragraph.setSpacingBefore(80);
-        XWPFRun run = paragraph.createRun();
-        run.setFontSize(fontSize);
-        run.setFontFamily("Times New Roman");
-        run.setBold(bold);
-        for (int i = 0; i < text.length; i++) {
-            run.setText(text[i]);
-            if( i != text.length -1) {
-                run.addBreak();
-            }
+    private void fillBodyTableResult(XWPFTable table, int tableBodyRows) {
+        List<Result> resultsSideOne = resultsForTabOne;
+        //resultsSideOne.sort(Comparator.comparing(Result::getId));
+        List<Result> resultsSideTwo = resultsForTabTwo;
+        //resultsSideTwo.sort(Comparator.comparing(Result::getId));
+        //*********** TEST *************
+        resultsSideTwo.forEach(result -> Log.d(LOG_TAG, result.toString()));
+
+
+        for (int cellNum = 0; cellNum < 4; cellNum++) {
+            table.getRow(0).createCell();
+        }
+        String[] cellData = getCellDataResultTable(0, resultsSideOne, resultsSideTwo);
+        fillRow(table.getRow(0), cellData, 0, 4, false);
+
+        for (int rowNum = 1; rowNum < tableBodyRows; rowNum++) {    // create and fill rows from 1 to max
+            table.createRow();
+            /*for (int cellNum = 0; cellNum < 5; cellNum++) {
+                table.getRow(rowNum).createCell();
+            }*/
+            cellData = getCellDataResultTable(rowNum, resultsSideOne, resultsSideTwo);
+            fillRow(table.getRow(rowNum), cellData, 0, 4, false);
         }
     }
+
+
 
     private void fillRow(XWPFTableRow row, String[] cellsData, int from, int to, boolean isTitle) {
         List<XWPFTableCell> cellsList = row.getTableCells();
@@ -423,6 +483,19 @@ public class DocCreator {
 
     }
 
+    private String[] getCellDataResultTable(int rowNum, List<Result> resultTableSideOne, List<Result> resultTableSideTwo) {
+        String[] cellDataResultTable = new String[5];
+
+        cellDataResultTable[0] = String.valueOf(building.getLevels()[rowNum]);
+        cellDataResultTable[1] = String.valueOf(building.getShiftLimitBySection(rowNum + 1));
+        cellDataResultTable[2] = String.valueOf(resultTableSideOne.get(rowNum).getShiftMm());
+        cellDataResultTable[3] = String.valueOf(resultTableSideTwo.get(rowNum).getShiftMm());
+        cellDataResultTable[4] = String.valueOf(CustomMath.getHypotenuse(
+                resultTableSideOne.get(rowNum).getShiftMm(), resultTableSideTwo.get(rowNum).getShiftMm()));
+
+        return cellDataResultTable;
+    }
+
     private void setTableColumnsWidth(XWPFTableRow row) {
         row.getCell(0).setWidth("8%");
         row.getCell(1).setWidth("8%");
@@ -435,6 +508,7 @@ public class DocCreator {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @SuppressLint("DefaultLocale")
     private void initializeData(Building building) {
+        this.building = building;
         sections = building.getSections().size();
 
         title = new String[] {"Журнал угловых измерений"};
@@ -490,6 +564,19 @@ public class DocCreator {
                 "\'",
                 "\"",
                 "\""
+        };
+
+        tableResultTitleData = new String[] {
+                ""
+        };
+
+        tableResultHeaderData = new String[] {
+                "Отметка",
+                "Допуск",
+                "По X",
+                "По Y",
+                "Расчетное",
+
         };
     }
 

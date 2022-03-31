@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view.result;
+package com.example.appstraining.towermeasurement.view.result.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -37,8 +37,8 @@ public class JournalFragment extends Fragment {
 
     private SimpleAdapter adapter;
     private JournalAdapterHelper jah;
-    static JournalFragment newInstance(int position, int distance, Measurement[] measurements,
-                                       Result[] results, int[] levels) {
+    public static JournalFragment newInstance(int position, int distance, Measurement[] measurements,
+                                              Result[] results, int[] levels) {
         JournalFragment journalFragment = new JournalFragment();
         Bundle arguments = new Bundle();
         arguments.putInt(ARGUMENT_POSITION, position);

@@ -145,9 +145,7 @@ public class MeasureDialogFragment extends DialogFragment {
                 DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle()),
                 DegreeNumericConverter.fromDecToDeg(measurement.getRightAngle())
         );
-        /*Log.d(LOG_TAG, "binding field [0] = " + measureDefaultValues[0]);
-        Log.d(LOG_TAG, "binding field [3] = " + measureDefaultValues[3]);
-*/
+
         binding.etLeftDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeLeft()));
         binding.etLeftMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteLeft()));
         binding.etLeftSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondLeft()));

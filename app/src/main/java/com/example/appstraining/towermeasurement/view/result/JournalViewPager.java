@@ -15,6 +15,7 @@ import android.util.Log;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.Result;
+import com.example.appstraining.towermeasurement.view.result.fragments.JournalFragment;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -99,7 +100,6 @@ public class JournalViewPager extends AppCompatActivity {
             int endIndex = beginIndex + measArray.length;
             for (int i = beginIndex, j = 0; i < endIndex; i++, j++) {
                 measArray[j] = measurements.get(i);
-                Log.d(LOG_TAG, "measArray[j] = " + measArray[j].getId() + ";  i = " + i);
             }
             return measArray;
         }

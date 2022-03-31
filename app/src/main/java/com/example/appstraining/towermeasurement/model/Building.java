@@ -144,6 +144,12 @@ public class Building {
 		this.sections = sections;
 	}
 
+	public void updateSection(Section updateSection) {
+		getSection(updateSection.getNumber()).setHeight(updateSection.getHeight());
+		getSection(updateSection.getNumber()).setWidthBottom(updateSection.getWidthBottom());
+		getSection(updateSection.getNumber()).setWidthTop(updateSection.getWidthTop());
+	}
+
 	public ArrayList<Measurement> getMeasurements() {
 		return measurements;
 	}
@@ -194,11 +200,37 @@ public class Building {
 	}
 
 	public void addResultData(Result currentResult) {
-		// TODO Auto-generated method stub
 		results.add(currentResult);
 	}
 
 	public boolean isNew() {
-		return id == 0 ? true : false;
+		return id == 0;
+	}
+
+	public int[] getLevels() {
+		int[] levels = new int[getNumberOfSections() + 1];
+		for (int sectionNum = 1; sectionNum < getNumberOfSections() + 1; sectionNum++) {
+			levels[sectionNum - 1] = getSection(sectionNum).getLevel();
+			if (sectionNum == getNumberOfSections()) {
+				levels[sectionNum] = getSection(sectionNum).getLevel() + getSection(sectionNum).getHeight();
+			}
+		}
+		return levels;
+	}
+
+	public int getShiftLimitBySection(int sectionNum) {
+		double shiftLimitForBuildingType = 0.0;
+		switch (getType()) {
+			case TOWER:
+				shiftLimitForBuildingType = 1 / 1000.0;
+				break;
+			case MAST:
+				shiftLimitForBuildingType = 1 / 1500.0;
+				break;
+		}
+
+		if (sectionNum > getNumberOfSections()) return (int)Math.round(getHeight() * shiftLimitForBuildingType);
+
+		return (int)Math.round(getSection(sectionNum).getLevel() * shiftLimitForBuildingType);
 	}
 }

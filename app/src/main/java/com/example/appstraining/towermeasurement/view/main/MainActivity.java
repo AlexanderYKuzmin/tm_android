@@ -40,7 +40,7 @@ import com.example.appstraining.towermeasurement.view.main.fragments.SearchDialo
 import com.example.appstraining.towermeasurement.view.main.fragments.SectionDialogFragment;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity;
 import com.example.appstraining.towermeasurement.view.result.ReportPrepareActivity;
-import com.example.appstraining.towermeasurement.view.TowerModelingFragment;
+import com.example.appstraining.towermeasurement.view.main.fragments.TowerModelingFragment;
 
 import java.util.ArrayList;
 
@@ -140,22 +140,30 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(isTextWatcherOn) {
-                    //Log.d(LOG_TAG, "spinnertype :" + spinnerType.);
-                    mainPresenter.createBuilding(etName.getText().toString(),
-                            etAddress.getText().toString(),
-                            spinnerType.getSelectedItem().toString(),
-                            spinnerConfig.getSelectedItem().toString(),
-                            s.toString(),
-                            etHeight.getText().toString());
-                    sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
-                    simpleAdapter.notifyDataSetChanged();
-                }
+
             }
 
             @Override
             public void afterTextChanged(Editable s) {
+                //if(isTextWatcherOn) {
+                if(activityMode == MainActivityMode.NEW) {
+                    if (etHeight.getText().length() > 0 && s.length() > 0) {
+                        Log.d(LOG_TAG, "TextWatcher is ON. Starting to create building. Editable s = " + s.toString());
+                        sendDataToCreateObj(s);
+                    /*mainPresenter.createBuilding(etName.getText().toString(),
+                            etAddress.getText().toString(),
+                            spinnerType.getSelectedItem().toString(),
+                            spinnerConfig.getSelectedItem().toString(),
+                            s.toString(),
+                            etHeight.getText().toString());*/
+                        sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
+                        simpleAdapter.notifyDataSetChanged();
+                        //}
+                    }
+                }
+
                 isTextWatcherOn = false;
+
                 //updateView(activityMode);
             }
         });
@@ -207,43 +215,31 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override                                                           // ActionBarMenu
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        isTextWatcherOn = false;
+        //isTextWatcherOn = false;
         switch (item.getItemId()){
             case R.id.mHelp:
                 break;
             case R.id.mNew:
                 activityMode = MainActivityMode.NEW;
-                Log.d(LOG_TAG, "ACTIVITY_MODE = " + String.valueOf(activityMode) + " and "
-                        + activityMode.toString()
-                );
                 updateView(activityMode);
                 break;
             case R.id.mPattern:
                 activityMode = MainActivityMode.USE_TEMPLATE;
                 showSearchFormDialogFragment();
-                //updateView(activityMode);
                 break;
-            case R.id.mLoadFromServer:
+            /*case R.id.mLoadFromServer:
                 activityMode = MainActivityMode.LOAD_FROM_SERVER;
 
                 if(modelingFragment != null) {
                     removeAnimatedModel();
                 }
-
                 updateView(activityMode);
                 break;
             case R.id.mSaveToServer:
-                break;
+                break;*/
             case R.id.mLoadFromStorage:
                 activityMode = MainActivityMode.LOAD_FROM_STORAGE;
-
-                Log.d(LOG_TAG, "search form dialog = " + searchFormDialogFragment);
                 showSearchFormDialogFragment();
-
-                Log.d(LOG_TAG, "After show method search form dialog");
-                //innerSearchResultDialogFragment.show(getSupportFragmentManager(), null);
-                //activityMode = MainActivityMode.SELECTED_OBJECT; // И не здесь менять режим
-                //updateView(activityMode); // кажется не здесь надо вызывать апдейт
                 break;
             case R.id.mSaveToStorage:
                 mainPresenter.saveToLocalDB();
@@ -334,6 +330,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 Log.d(LOG_TAG, "Button REPORT is pressed. Activity MODE is " + activityMode);
                 switch (activityMode) {
                     case NEW:  // btnThird name is RESET
+                        updateView(activityMode);
                         break;
                     case LOAD_FROM_SERVER: // btnThird name is REPORT
                         break;
@@ -353,7 +350,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
         if(activityMode == MainActivityMode.NEW || activityMode == MainActivityMode.USE_TEMPLATE) { // or pattern
             //EditText etBaseWidth = parent.getChildAt(position).findViewById(R.id.etBaseWidth);
             Log.d(LOG_TAG, "OnItemClick pressed. Building section chosen.");
-            new SectionDialogFragment(this, mainPresenter, position + 1)
+            new SectionDialogFragment(this, mainPresenter, position + 1, getActivityMode())
                     .show(getSupportFragmentManager(), null);
         }
     }
@@ -385,8 +382,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
     @Override
     public void updateView(MainActivityMode activityMode) {
         removeAnimatedModel();
-        String title = "", id = "", name = "", address = "", type = null, config = null,
-                height = "",  numberOfSections = "";
+        String title = "", id = "", name = " ", address = " ", type = "Башня", config = "4",
+                height = "10000",  numberOfSections = "1";
 
         switch (activityMode) {
             case NEW:
@@ -429,8 +426,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 height = String.valueOf(mainPresenter.getBuilding().getHeight());
                 numberOfSections = String.valueOf(mainPresenter.getBuilding().getNumberOfSections());
 
-                updateFocusable(false,true, true, true, true
-                        , true,true
+                updateFocusable(false,true, true, false, false
+                        , false,false
                 );
 
                 btnFirst.setText(R.string.register_btn_ru);
@@ -553,6 +550,17 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
             fragmentTransaction.remove(modelingFragment);
             fragmentTransaction.commit();
         }
+    }
+
+    private void sendDataToCreateObj(Editable s) {
+        mainPresenter.createBuilding(
+                etName.getText() != null ? etName.getText().toString() : "No name",
+                etAddress.getText() != null ? etAddress.getText().toString() : "No address",
+                spinnerType.getSelectedItem().toString(),
+                spinnerConfig.getSelectedItem().toString(),
+                s != null ? s.toString() : "1",
+                etHeight.getText() != null ? etHeight.getText().toString() : "10000"
+        );
     }
 
     public void showSearchFormDialogFragment() {

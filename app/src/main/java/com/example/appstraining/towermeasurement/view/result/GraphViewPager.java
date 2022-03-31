@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.appstraining.towermeasurement.R;
+import com.example.appstraining.towermeasurement.view.result.fragments.GraphFragment;
 
 import java.util.ArrayList;
 

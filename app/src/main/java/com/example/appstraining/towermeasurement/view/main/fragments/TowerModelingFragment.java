@@ -1,4 +1,4 @@
-package com.example.appstraining.towermeasurement.view;
+package com.example.appstraining.towermeasurement.view.main.fragments;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.openGL.TowerGLRenderer;
+import com.example.appstraining.towermeasurement.view.main.fragments.TowerModelingFragment;
 
 public class TowerModelingFragment extends Fragment {
     private final String LOG_TAG = "TowerFragment";

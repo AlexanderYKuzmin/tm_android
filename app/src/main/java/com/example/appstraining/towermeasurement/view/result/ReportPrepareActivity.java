@@ -1,6 +1,5 @@
 package com.example.appstraining.towermeasurement.view.result;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -200,7 +199,7 @@ public class ReportPrepareActivity extends AppCompatActivity {
         binding.tvConfigReport.setText(String.valueOf(rpPresenter.getReportBuilding().getConfig()));
         binding.tvHeightReport.setText(String.valueOf(rpPresenter.getReportBuilding().getHeight()));
         binding.tvPossibleDeviation.setText(String.valueOf(deviationPoss));
-        binding.tvFactDeviation.setText(String.valueOf(reportResults.get(reportResults.size() -1).getShiftMm()));
+        binding.tvFactDeviation.setText(String.valueOf(rpPresenter.getResultShiftMax()));
 
         if (isReportBtnPressed) {
             binding.imbtnReport.setImageDrawable(getDrawable(R.drawable.title));

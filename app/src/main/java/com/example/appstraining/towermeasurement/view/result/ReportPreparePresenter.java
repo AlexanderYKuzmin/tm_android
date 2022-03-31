@@ -18,6 +18,7 @@ import com.example.appstraining.towermeasurement.model.GraphicType;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.model.Result;
 import com.example.appstraining.towermeasurement.util.BitmapConverter;
+import com.example.appstraining.towermeasurement.util.CustomMath;
 import com.jjoe64.graphview.GraphView;
 
 //import org.apache.poi.xwpf.usermodel.XWPFDocument;
@@ -88,37 +89,27 @@ public class ReportPreparePresenter {
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public int[] getXOZArray() {        // { shift, height, shift2, height2 ....}
-        //Log.d(LOG_TAG, "Get XOZ Array.");
         ArrayList<Result> reportResults = reportBuilding.getResults();
         reportResults.sort(Comparator.comparing(Result::getId));
-        //Log.d(LOG_TAG, "reportBuilding.getResults().size() = " + reportResults.size());
         ArrayList<Measurement> reportMeasurements = reportBuilding.getMeasurements();
         reportMeasurements.sort(Comparator.comparing(Measurement::getId));
-        //int size = reportBuilding.getResults().size()/reportBuilding.getConfig() * 2;
         int size = reportBuilding.getResults().size() / 2 * 2;  // changed for 2 sides
         xozArray = new int[size];
         xozArray[0] = 0;
         xozArray[1] = levels[0];
         for(int i = 2, j = 1; i < (size - 2); i += 2, j++){
             int sectionNumber = reportMeasurements.get(j).getSectionNumber();
-            /*Log.d(LOG_TAG, "results size = " + size + "\n"
-                    + " j = " + j + "; i = " + i + "\n"
-                    + "current section number = " + sectionNumber
-                    + " current level = " + levels[j]
-            );*/
             xozArray[i] = reportResults.get(j).getShiftMm();
             xozArray[i + 1] = levels[j];
 
             if(xozRange[MIN_X] > xozArray[i]) xozRange[MIN_X] = xozArray[i]; // set new minX in XOZ
             if(xozRange[MAX_X] < xozArray[i]) xozRange[MAX_X] = xozArray[i]; // set new max X in XOZ
-            //Log.d(LOG_TAG, " xoz[i] = " + xozArray[i] + "; xoz[i+1] = " + xozArray[i + 1]);
             if( i == size -2 -2) {
                 xozArray[i + 2] = reportResults.get(j + 1).getShiftMm();
                 xozArray[i + 3] = reportBuilding.getHeight();
                 if(xozRange[MIN_X] > xozArray[i + 2]) xozRange[MIN_X] = xozArray[i + 2]; // set new minX in XOZ
                 if(xozRange[MAX_X] < xozArray[i + 2]) xozRange[MAX_X] = xozArray[i + 2]; // set new max X in XOZ
                 xozRange[MAX_Y] = xozArray[i + 3];
-                //Log.d(LOG_TAG, " xoz[i + 2] = " + xozArray[i + 2] + "; xoz[i+3] = " + xozArray[i + 3]);
             }
         }
         xoyRange[MIN_X] = xozRange[MIN_X];
@@ -140,24 +131,16 @@ public class ReportPreparePresenter {
         yozArray[1] = levels[0];
         for(int i = 2, j = size/2 +1; i < (size - 2); i += 2, j++){
             int sectionNumber = reportMeasurements.get(j - size/2).getSectionNumber();
-            Log.d(LOG_TAG, "results size = " + size + "\n"
-                    + " j = " + j + "; i = " + i + "\n"
-                    + "current section number = " + sectionNumber
-                    + " current level = " + levels[j - size/2] + "\n"
-                    + "shifMm = " + reportResults.get(j).getShiftMm()
-            );
             yozArray[i] = (int) Math.round(reportResults.get(j).getShiftMm() * k);
             yozArray[i + 1] = levels[j - size/2];
             if(yozRange[MIN_X] > yozArray[i]) yozRange[MIN_X] = yozArray[i]; // set new minX in YOZ
             if(yozRange[MAX_X] < yozArray[i]) yozRange[MAX_X] = yozArray[i]; // set new max X in YOZ
-            Log.d(LOG_TAG, " yoz[i] = " + yozArray[i] + "; yoz[i+1] = " + yozArray[i + 1]);
             if( i == (size -2 -2)) {
                 yozArray[i + 2] = (int) Math.round(reportResults.get(j + 1).getShiftMm() * k);
                 yozArray[i + 3] = reportBuilding.getHeight();
                 if(yozRange[MIN_X] > yozArray[i + 2]) yozRange[MIN_X] = yozArray[i + 2]; // set new minX in YOZ
                 if(yozRange[MAX_X] < yozArray[i + 2]) yozRange[MAX_X] = yozArray[i + 2]; // set new max X in YOZ
                 yozRange[MAX_Y] = yozArray[i + 3];
-                Log.d(LOG_TAG, " yoz[i + 2] = " + yozArray[i + 2] + "; yoz[i+3] = " + yozArray[i + 3]);
             }
         }
 
@@ -278,5 +261,22 @@ public class ReportPreparePresenter {
         graphViewCreator.create(GraphicType.XOZ);
         graphViewCreator.create(GraphicType.YOZ);
         graphViewCreator.create(GraphicType.XOY);
+    }
+
+    public int getResultShiftMax() {
+        List<Result> results = reportBuilding.getResults();
+        results.sort(Comparator.comparing(Result::getId));
+        results.forEach(result -> Log.d(LOG_TAG, result.toString() ));
+        Log.d(LOG_TAG, "\nкатет1 = " + results.get(results.size() -1).getShiftMm() +
+                        "\nкатет2 = " + results.get(results.size() / 2 - 1).getShiftMm() +
+                        "Гипотенуза = " +  CustomMath.getHypotenuse(
+                results.get(results.size() -1).getShiftMm(),
+                results.get(results.size() / 2 - 1).getShiftMm()));
+
+
+        return CustomMath.getHypotenuse(
+                results.get(results.size() -1).getShiftMm(),
+                results.get(results.size() / 2 - 1).getShiftMm()
+        );
     }
 }

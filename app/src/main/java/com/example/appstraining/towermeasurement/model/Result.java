@@ -1,7 +1,10 @@
 package com.example.appstraining.towermeasurement.model;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import androidx.annotation.NonNull;
 
 public class Result implements Parcelable {
 	private int id;
@@ -256,6 +259,13 @@ public class Result implements Parcelable {
 		setBetaI(betaI);
 		setBetaDelta(betaDelta);
 	}
-	
-	
+
+	@SuppressLint("DefaultLocale")
+	@NonNull
+	@Override
+	public String toString() {
+		//super.toString();
+		return String.format("Result: id = %d, beta average left = %5.4f, beta average right = %5.4f, beta I = %5.4f, shift mm = %d, section id = %d",
+				getId(), getBetaAverageLeft(), getBetaAverageRight(), getBetaI(), getShiftMm(), getSectionID());
+	}
 }

@@ -17,7 +17,7 @@
         android:title="@string/menuitem3_ru"
         app:showAsAction="never">
     </item>
-    <item
+    <!--<item
         android:id="@+id/mLoadFromServer"
         android:title="@string/menuitem4_ru"
         app:showAsAction="never">
@@ -26,7 +26,7 @@
         android:id="@+id/mSaveToServer"
         android:title="@string/menuitem5_ru"
         app:showAsAction="never">
-    </item>
+    </item>-->
     <item
         android:id="@+id/mLoadFromStorage"
         android:title="@string/menuitem6_ru"
