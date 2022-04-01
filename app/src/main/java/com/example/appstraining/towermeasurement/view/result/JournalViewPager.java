@@ -43,7 +43,6 @@ public class JournalViewPager extends AppCompatActivity {
         Log.d(LOG_TAG, " measurements getParcelableArrayListExtra " + measurements.get(5).getId());
 
         int page_count = 2;
-        //if(distances[2] == 0) page_count = 2; changed for 2 sides
 
         journalPager = (ViewPager2) findViewById(R.id.journal_pager);
         JournalFragmentPagerAdapter journalFragmentPagerAdapter = new JournalFragmentPagerAdapter(
@@ -67,24 +66,17 @@ public class JournalViewPager extends AppCompatActivity {
         ) {
             super(fragmentActivity);
             this.page_count = page_count;
-            Log.d(LOG_TAG, "Constructor is running.");
             this.measurements = measurements;
             this.measurements.sort(Comparator.comparing(Measurement::getId));
             this.results = results;
             this.results.sort(Comparator.comparing(Result::getId));
-            for(Result r : results){
-                Log.d(LOG_TAG, "result id = " + r.getId());
-            }
-            Log.d(LOG_TAG, "Constructor is running. After collections");
             this.distances = distances;
             this.levels = levels;
-            Log.d(LOG_TAG, "Constructor is running. After all");
         }
 
         @NonNull
         @Override
         public Fragment createFragment(int position) {
-            Log.d(LOG_TAG, "create fragment. Position = " + position);
             return JournalFragment.newInstance(position, distances[position], getMeasArray(position),
                     getResArray(position), levels);
         }
@@ -110,7 +102,6 @@ public class JournalViewPager extends AppCompatActivity {
             int endIndex = beginIndex + resArray.length;
             for (int i = beginIndex, j = 0; i < endIndex; i++, j++) {
                 resArray[j] = results.get(i);
-                Log.d(LOG_TAG, "resArray[j] = " + resArray[j].getId() + ";  i = " + i);
             }
             return resArray;
         }

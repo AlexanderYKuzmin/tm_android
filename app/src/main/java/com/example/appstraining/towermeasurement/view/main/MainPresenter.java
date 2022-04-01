@@ -81,20 +81,8 @@ public class MainPresenter implements LifecycleObserver {
         this.patternSections = sections;
     }
 
-    //@OnLifecycleEvent(Lifecycle.Event.ON_START)
-    /*@RequiresApi(api = Build.VERSION_CODES.N)
-    public void setBuildingOnStart(int id) {
-        getFromLocalDB(id);
-    }*/
-
     public Building getBuilding(){
         return building;
-    }
-
-    public void getSectionListAdapter() {
-        //Intent intent = new Intent(context, SectionsViewPager.class);
-       // mMainActivity.start
-
     }
 
     public void setSearchParameters(String... parameters) { // from search dialog fragment
@@ -172,7 +160,7 @@ public class MainPresenter implements LifecycleObserver {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    /*@RequiresApi(api = Build.VERSION_CODES.N)
     public synchronized void loadBuilding(Long building_id){
         int b_id = building_id.intValue();
         Log.d(LOG_TAG, "Load Building started! Building ID = " + building_id);
@@ -201,7 +189,7 @@ public class MainPresenter implements LifecycleObserver {
         building.getSections().sort(Comparator.comparing(Section::getId));
         building.getMeasurements().sort(Comparator.comparing(Measurement::getId));
         building.getResults().sort(Comparator.comparing(Result::getId));
-    }
+    }*/
 
     //*** Mount building on MainActivity  3d model***
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -229,7 +217,7 @@ public class MainPresenter implements LifecycleObserver {
         }
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+   /* @RequiresApi(api = Build.VERSION_CODES.N)
     public synchronized Map<Long, Building> loadBuildingMap(String objectName, String address) {
         Log.d(LOG_TAG, "Getting MAP started!");
         buildingMap = null;
@@ -257,7 +245,7 @@ public class MainPresenter implements LifecycleObserver {
             return buildingMap;
         }
         return null;
-    }
+    }*/
 
     public ArrayList<Section> getSections() {
         return building.getSections();
@@ -282,10 +270,6 @@ public class MainPresenter implements LifecycleObserver {
     }
 
     public void updateSection(int secNum, String widthBottom, String widthTop, String height){
-
-        /*int wb = Integer.parseInt(widthBottom);
-        int wt = Integer.parseInt(widthTop);
-        int h = Integer.parseInt(height);*/
         int[] bth = toIntegerValue(widthBottom, widthTop, height); // bottom, top, height
         Section updateSection = new Section(0, secNum, bth[0], bth[1], bth[2], 0, null, 0L);
         if(BuildingStructureValidation.isSectionDataConsistent(updateSection)) {
@@ -293,12 +277,6 @@ public class MainPresenter implements LifecycleObserver {
         } else {
             Toast.makeText(context, "Несоответствие параметров секции", Toast.LENGTH_SHORT);
         }
-        /*building.getSection(secNum).setWidthBottom(wb);
-        building.getSection(secNum).setWidthTop(wt);
-        building.getSection(secNum).setHeight(h);*/
-        Log.d(LOG_TAG, "Section #" + secNum + " is updated!");
-        Log.d(LOG_TAG, "Height = " + building.getSection(secNum).getHeight());
-
         mMainActivity.updateSectionList(getSections());
     }
 
@@ -332,7 +310,6 @@ public class MainPresenter implements LifecycleObserver {
             // mathematics will be here!!
             for(int i = 0; i < locUsingMeasurements.size(); i++) {
                 int sectionNumber = locUsingMeasurements.get(i).getSectionNumber();
-
 
                 if(i != 0 && i != locUsingMeasurements.size() / 2) {
                     //distanceToPoint = getMeasures().get(i).getDistance();
@@ -372,12 +349,6 @@ public class MainPresenter implements LifecycleObserver {
                         tanAlfa, distanceToPoint, 0, betaAverageLeft, betaAverageRight,
                         betaI, betaDelta
                 );
-                Log.d(LOG_TAG, "Results parameters: " + "\n" +
-                        " average KLKR: " + averageKLKR + "\n" +
-                        " shift degree: " + shiftDegree + "\n" +
-                        " tan alfa: " + tanAlfa + "\n" +
-                        " shift mm: " + shiftMm + "\n" +
-                        " beta delta: " + betaDelta);
             }
         }
     }
@@ -385,13 +356,10 @@ public class MainPresenter implements LifecycleObserver {
     @RequiresApi(api = Build.VERSION_CODES.O)
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     public void getLastInputObject() {
-        Log.d(LOG_TAG, "get last input object");
         Long id = 0L;
         try {
             String idStr = AppPropertyHandler.getProperty("id", context);
-            Log.d(LOG_TAG, "id string = " + idStr);
             if(idStr != null) id = Long.parseLong(idStr);
-            Log.d(LOG_TAG, "id = " + id);
         } finally {
             if(id != 0) {
                 setBuilding(getFromLocalDB(id));
@@ -417,10 +385,7 @@ public class MainPresenter implements LifecycleObserver {
     @OnLifecycleEvent(Lifecycle.Event.ON_DESTROY)
     public void setLastInputObject() {                                            // save last edit object id to property
         //new FileLoader(context).saveBuildingToFile(building);
-        Log.d(LOG_TAG, "Method quit started set id = " + building.getId());
-
         String idStr = building.getId() != null ? String.valueOf(building.getId()) : null;
-        Log.d(LOG_TAG, "idStr = " + idStr);
         try {
             if (idStr != null) {
                 AppPropertyHandler.setProperty("id", idStr, context);
@@ -440,14 +405,13 @@ public class MainPresenter implements LifecycleObserver {
 
     private int getDistanceToPoint(Measurement measurement){
         Section section = building.getSection(measurement.getSectionNumber());
-        //Section prevSection;
         int theoDistance = measurement.getDistance();
         int theoHeight = measurement.getTheoHeight();
         //int buildingStartLevel = building.getStartLevel(); // gonna playing with theoheight according building startlevel
         //double r1; // previous section inner circle radius
         double r2; // current section inner circle radius
 
-        double k = Math.sqrt(3) / 6; //
+        double k = building.getConfig() == 3 ? Math.sqrt(3) / 6 : 0.5; //
         //int a1; // previous section widthBottom
         //int a2; // current section widthBottom
 
@@ -471,15 +435,11 @@ public class MainPresenter implements LifecycleObserver {
                             Math.pow((theoDistance - r2), 2) // +r2 or -r2 depends on what the start distance to the tower is. To axis( - r2) or to edge (+r2)
             );
         }
-        Log.d(LOG_TAG, "Distance to point is: " + distanceToPoint);
-        Log.d(LOG_TAG, "r2 = " + r2);
         return distanceToPoint;
     }
 
     public void saveToLocalDB() {
-        //LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
         dbExplorer.update(building);
-        //dbExplorer.closeDB();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -489,21 +449,11 @@ public class MainPresenter implements LifecycleObserver {
         buildingMap.forEach((k, v) -> {
             if (Arrays.stream(ids).anyMatch(id -> id == k.longValue())) chosenBuildings.add(v);
         });
-        Log.d(LOG_TAG, "buildings size after filtering by stream is " + chosenBuildings.size());
-        /*for(int i = 0; i < ids.length; i++) {
-            Log.d(LOG_TAG, "buildingMap in Main Presenter is " + buildingMap);
-            Building building = buildingMap.get(2);
-            Log.d(LOG_TAG, "building from buildingMap " + building.getId() + " : " + building.getName());
-            chosenBuildings.add(building);
-            Log.d(LOG_TAG, "Building added ot LocalDatabase id = " + ids[i] + " from list building is " + chosenBuildings.get(i));
-            Log.d(LOG_TAG, "building = " + buildingMap.get(ids[i].intValue()).getName());
-            //if(i == (ids.length - 1)) building = chosenBuildings.get(i);
-        }*/
+
         long[] savedIds = dbExplorer.save(chosenBuildings);
         setBuilding(chosenBuildings.get(chosenBuildings.size() - 1));
         building.setId(savedIds[savedIds.length - 1]);
         setLastInputObject();
-        //dbExplorer.closeDB();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -511,15 +461,12 @@ public class MainPresenter implements LifecycleObserver {
         LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
         buildingMap = localDBExplorer.getBuildingMap(searchParameters);
         localDBExplorer.closeDB();
-        Log.d(LOG_TAG, "building map from local: " + buildingMap);
         return buildingMap;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public Building getFromLocalDB(long building_id) {
         LocalDBExplorer localDBExplorer = new LocalDBExplorer(context);
-        //building = localDBExplorer.get(building_id);
-        //localDBExplorer.closeDB();
         return localDBExplorer.get(building_id, true);
     }
 
@@ -548,12 +495,4 @@ public class MainPresenter implements LifecycleObserver {
     public void showSearchFormDialogFragment(FragmentManager fragmentManager) {
         //searchFormDialogFragment.show(fragmentManager, null);
     }
-
-    /*public void setMainActivityMode (MainActivityMode mode) {
-
-    }
-
-    public void getActivityMode() {
-        mMainActivity.
-    }*/
 }

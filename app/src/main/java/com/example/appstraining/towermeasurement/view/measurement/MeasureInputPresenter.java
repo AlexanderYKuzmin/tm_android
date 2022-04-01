@@ -3,10 +3,13 @@ package com.example.appstraining.towermeasurement.view.measurement;
 import android.content.Context;
 import android.os.Build;
 import android.util.Log;
+import android.widget.Toast;
 
+import com.example.appstraining.towermeasurement.model.Building;
 import com.example.appstraining.towermeasurement.model.DegreeSeparated;
 import com.example.appstraining.towermeasurement.model.Measurement;
 import com.example.appstraining.towermeasurement.util.DegreeNumericConverter;
+import com.example.appstraining.towermeasurement.util.MeasurementsValidationData;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -33,6 +36,9 @@ public class MeasureInputPresenter {
     private List<Measurement> measurementsGroup1;
     private List<Measurement> measurementsGroup2;
 
+    private int widthBottom;
+    private int config;
+
     DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.ENGLISH);
 
     public MeasureInputPresenter(Context context, MeasureInput measureInputActivity){
@@ -58,10 +64,17 @@ public class MeasureInputPresenter {
         final String DEFAULT_DATE = "01-01-2001";
         final String REGEX_DATE = "([1-3][0-9]-){2}20\\d{2}";
 
+        int side = measurements.get(measureNum - 1).getSide();
+        int sectionNumber = measurements.get(measureNum - 1).getSectionNumber();
+        Measurement updateMeasurement = new Measurement(0, measureNum, side, null, leftAngle, rightAngle,
+                theoHeight, theoDistance, sectionNumber, null, 0, 0, null, null, azimuth);
+
+        if (MeasurementsValidationData.isMeasurementConsistent(updateMeasurement, widthBottom, config)) {
+
         /*String contractor = params[0];
         String dateStr = params[1];*/
-        //int theoHeight = t;
-        //int distance = Integer.parseInt(params[2]);
+            //int theoHeight = t;
+            //int distance = Integer.parseInt(params[2]);
 
         /*Pattern datePattern = Pattern.compile(REGEX_DATE);
         Matcher matcher = datePattern.matcher(dateStr);
@@ -76,34 +89,33 @@ public class MeasureInputPresenter {
             e.printStackTrace();
         }*/
 
-        //java.sql.Date sqlDate = new java.sql.Date(date.getTime());
+            //java.sql.Date sqlDate = new java.sql.Date(date.getTime());
 
-        Measurement measurement = measurements.get(measureNum - 1);
-        measurement.setLeftAngle(leftAngle);
-        measurement.setRightAngle(rightAngle);
-        measurement.setTheoHeight(theoHeight);
-        measurement.setDistance(theoDistance); // distance to axis building
-        //measurement.setDate(sqlDate);
-        //measurement.setContractor(contractor);
-        measurement.setAzimuth(azimuth);
-        Log.d(LOG_TAG, "Measurements are updated. MeasureNum = " );
-        int[] leftAngleTest = DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle());
-        Log.d(LOG_TAG, "left angle: "
+            Measurement measurement = measurements.get(measureNum - 1);
+            measurement.setLeftAngle(leftAngle);
+            measurement.setRightAngle(rightAngle);
+            measurement.setTheoHeight(theoHeight);
+            measurement.setDistance(theoDistance); // distance to axis building
+            //measurement.setDate(sqlDate);
+            //measurement.setContractor(contractor);
+            measurement.setAzimuth(azimuth);
+            Log.d(LOG_TAG, "Measurements are updated. MeasureNum = ");
+            int[] leftAngleTest = DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle());
+            Log.d(LOG_TAG, "left angle: "
                     + leftAngleTest[0] + " "
                     + leftAngleTest[1] + " "
                     + leftAngleTest[2]
-                );
-        mMeasureInputActivity.getFragment(measurement.getSide())
-                .onItemUpdateMeasureList(measurement, new DegreeSeparated(
-                        DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle()),
-                        DegreeNumericConverter.fromDecToDeg(measurement.getRightAngle()))
-                );
-    }
+            );
+            mMeasureInputActivity.getFragment(measurement.getSide())
+                    .onItemUpdateMeasureList(measurement, new DegreeSeparated(
+                            DegreeNumericConverter.fromDecToDeg(measurement.getLeftAngle()),
+                            DegreeNumericConverter.fromDecToDeg(measurement.getRightAngle()))
+                    );
+        } else {
+            Toast.makeText(context, "Текущее измерение некорректно!", Toast.LENGTH_LONG).show();
+        }
 
-    /*public void setMeasurement(int measureNum, double leftAngle, double rightAngle,
-                               int azimuth){
-        measurements.get(measureNum).
-    }*/
+    }
 
     public ArrayList<Measurement> getMeasurements() {
         return measurements;
@@ -174,29 +186,9 @@ public class MeasureInputPresenter {
         return degArrayList;
     }
 
-    public boolean isAngleDataCorrect(int... params) {
-            //if(Integer.)
-        if(params[0] > 360 || params[0] < -360) return false;
-        if(params[1] > 60 || params[1] < -60) return false;
-        if(params[2] > 60 || params[2] < -60) return false;
-        if(params[3] > 360 || params[3] < -360) return false;
-        if(params[4] > 60 || params[4] < -60) return false;
-        if(params[5] > 60 || params[5] < -60) return false;
-        if(params[6] > 360 || params[6] < -360) return false;
-
-        return true;
-    }
-
     public boolean isConstantsCorrect(String... params) {
         return false;
     }
-
-    /*public void checkAndUpdateMeasurement(int measureNum, String... fields) {
-        int leftDeg = Integer.parseInt(fields[0]);
-        int leftMin = Integer.parseInt(fields[1]);
-        int leftSec = Integer.parseInt(fields[2]);
-        int rightDeg = Integer.parseInt(fields)
-    }*/
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public int[] getSingleMeasurementData(int position, int group) {
@@ -251,5 +243,21 @@ public class MeasureInputPresenter {
         }
 
         Log.d(LOG_TAG, "The SQL date from measurement is: " + getMeasurements().get(0).getDate());
+    }
+
+    public int getWidthBottom() {
+        return widthBottom;
+    }
+
+    public void setWidthBottom(int widthBottom) {
+        this.widthBottom = widthBottom;
+    }
+
+    public int getConfig() {
+        return config;
+    }
+
+    public void setConfig(int config) {
+        this.config = config;
     }
 }

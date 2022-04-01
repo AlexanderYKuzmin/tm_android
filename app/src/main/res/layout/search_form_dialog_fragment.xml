@@ -94,7 +94,7 @@
             android:layout_margin="2dp"
             android:textSize="18dp"
             android:background="@color/white"
-            android:inputType="number"
+            android:inputType="text"
             android:hint="Адрес"
             />
      </LinearLayout>

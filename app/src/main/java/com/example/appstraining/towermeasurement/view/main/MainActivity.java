@@ -300,6 +300,9 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                     case SELECTED_OBJECT:
                         Intent intent = new Intent(context, MeasureInputActivity.class);
                         intent.putParcelableArrayListExtra(getString(R.string.startmeasures), mainPresenter.getMeasurements());
+                        intent.putExtra("widthbottom", mainPresenter.getSections().get(0).getWidthBottom());
+                        intent.putExtra("config", mainPresenter.getBuilding().getConfig());
+
                         Log.d(LOG_TAG, "Building from MainPresenter" + mainPresenter.getBuilding().getAddress());
                         Log.d(LOG_TAG, "Measurements from building from MainPresenter: " + mainPresenter.getBuilding().getMeasurements().get(0).getLeftAngle());
                         Log.d(LOG_TAG, "Measurements: " + mainPresenter.getMeasurements().get(0).getLeftAngle() + " :: " +  mainPresenter.getMeasurements().get(0).getRightAngle());
@@ -314,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                         activityMode = MainActivityMode.SELECTED_OBJECT;*/
                         Log.d(LOG_TAG, "Activity mode changed to" + activityMode.toString());
                         break;
-                    case LOAD_FROM_SERVER:
+                    /*case LOAD_FROM_SERVER:
 
                         new SearchDialogFragment(this, mainPresenter,
                                 etName.getText().toString(),
@@ -322,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                                 R.string.search_dialog_title_ru).show(getSupportFragmentManager(), null);
                         activityMode = MainActivityMode.LAST_LOADED_OBJECT;
                         Log.d(LOG_TAG, "ActivityMode changed to " + activityMode.toString());
-                        break;
+                        break;*/
                 }
                 break;
 
@@ -466,8 +469,7 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 id = String.valueOf(mainPresenter.getBuilding().getId());
                 //id = null;
                 //tvId_1.setText(id);
-                Log.d(LOG_TAG, " SELECTED Obj update view id = " + id);
-                Log.d(LOG_TAG, "Building is " + mainPresenter.getBuilding());
+
                 name = mainPresenter.getBuilding().getName();
                 address = mainPresenter.getBuilding().getAddress();
                 type = String.valueOf(mainPresenter.getBuilding().getType());

@@ -67,6 +67,9 @@ public class MeasureInputActivity extends AppCompatActivity implements MeasureIn
         measureInputPresenter.setMeasurements(
                 getIntent().getParcelableArrayListExtra(getString(R.string.startmeasures)));
 
+        measureInputPresenter.setWidthBottom(getIntent().getIntExtra("widthbottom", -1));
+        measureInputPresenter.setConfig(getIntent().getIntExtra("config", -1));
+
         // ***** TEST ***********
         if (measureInputPresenter.getMeasurements() != null) {
             Log.d(LOG_TAG, "Set measurements is : \n"

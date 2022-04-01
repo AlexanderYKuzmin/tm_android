@@ -59,11 +59,8 @@ public class SearchDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
         View v = getActivity().getLayoutInflater().inflate(R.layout.search_results_fragment_dialog, null);
         //v.setBackgroundColor(getResources().getColor(R.color.sandyLight));
-        buildingMap = mMainPresenter.loadBuildingMap(name, address);
-        /*Log.d(LOG_TAG, "Building map is recieved. First building : "
-        + buildingMap.get(1).getName() + "\n"
-        + "measurement.getLeftAngle = " + buildingMap.get(1).getMeasurements().get(4).getLeftAngle() + "\n"
-        + "measurement.getRightAngle = " + buildingMap.get(1).getMeasurements().get(4).getLeftAngle());*/
+        //buildingMap = mMainPresenter.loadBuildingMap(name, address);
+
         adapterHelper = new SearchDialogAdapterHelper(mContext);
         searchDialogSimpleAdapter = adapterHelper.getAdapter(buildingMap);
 

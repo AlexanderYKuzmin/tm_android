@@ -2,13 +2,13 @@ package com.example.appstraining.towermeasurement.model;
 
 public enum BuildingType {
 	TOWER("Башня"),
-	MAST("Мачта"),
-	POLE("Столб");
+	MAST("Мачта");
+	//POLE("Столб");
 
 	private static final String[] allTypes = {
 			TOWER.buildingTypeRu,
 			MAST.buildingTypeRu,
-			POLE.buildingTypeRu
+			//POLE.buildingTypeRu
 	};
 
 	private String buildingTypeRu;
@@ -18,7 +18,7 @@ public enum BuildingType {
 		switch (buildingTypeRu) {
 			case "Башня": return TOWER;
 			case "Мачта": return MAST;
-			case "Столб": return POLE;
+			//case "Столб": return POLE;
 		}
 		return null;
 	}

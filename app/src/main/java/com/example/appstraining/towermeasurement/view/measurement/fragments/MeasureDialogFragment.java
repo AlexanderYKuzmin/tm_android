@@ -19,7 +19,9 @@ import androidx.fragment.app.DialogFragment;
 import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.model.DegreeSeparated;
 import com.example.appstraining.towermeasurement.model.Measurement;
+import com.example.appstraining.towermeasurement.util.CustomMath;
 import com.example.appstraining.towermeasurement.util.DegreeNumericConverter;
+import com.example.appstraining.towermeasurement.util.MeasurementsValidationData;
 import com.example.appstraining.towermeasurement.view.main.MainPresenter;
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputPresenter;
 import com.example.appstraining.towermeasurement.databinding.MeasureDialogFragmentBinding;
@@ -66,7 +68,7 @@ public class MeasureDialogFragment extends DialogFragment {
                                 + measureInputAngleFields[1] + " "
                                 + measureInputAngleFields[2] + " "
                         );
-                        if(mMeasureInputPresenter.isAngleDataCorrect(
+                        if(MeasurementsValidationData.isAngleDataCorrect(
                                 measureInputAngleFields)) {
                             double leftAngle = DegreeNumericConverter.fromDegToDec(
                                     measureInputAngleFields[0], // degree
@@ -88,7 +90,7 @@ public class MeasureDialogFragment extends DialogFragment {
 
                         } else {
                             Toast.makeText(context, "Please enter correct data.",
-                                    Toast.LENGTH_SHORT);
+                                    Toast.LENGTH_SHORT).show();
                         }
                     }
                 })
@@ -146,12 +148,34 @@ public class MeasureDialogFragment extends DialogFragment {
                 DegreeNumericConverter.fromDecToDeg(measurement.getRightAngle())
         );
 
-        binding.etLeftDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeLeft()));
-        binding.etLeftMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteLeft()));
-        binding.etLeftSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondLeft()));
-        binding.etRightDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeRight()));
-        binding.etRightMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteRight()));
-        binding.etRightSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondRight()));
+        if((measurement.getSectionNumber() == 1)
+            && (measurement.getLeftAngle() == 0 && measurement.getRightAngle() == 0)) {
+            double defaultLeftAngle = 20.0;
+            DegreeSeparated degreeSeparatedDefault = new DegreeSeparated(
+                    DegreeNumericConverter.fromDecToDeg(defaultLeftAngle),
+                    DegreeNumericConverter.fromDecToDeg(CustomMath.getDefaultAngle(
+                            mMeasureInputPresenter.getWidthBottom(),
+                            measurement.getDistance(),
+                            measurement.getTheoHeight(),
+                            measurement.getSide(),
+                            mMeasureInputPresenter.getConfig())
+                            + defaultLeftAngle)
+            );
+            binding.etLeftDegMeasFrag.setText(String.valueOf(degreeSeparatedDefault.getDegreeLeft()));
+            binding.etLeftMinMeasFrag.setText(String.valueOf(degreeSeparatedDefault.getMinuteLeft()));
+            binding.etLeftSecMeasFrag.setText(String.valueOf(degreeSeparatedDefault.getSecondLeft()));
+            binding.etRightDegMeasFrag.setText(String.valueOf(degreeSeparatedDefault.getDegreeRight()));
+            binding.etRightMinMeasFrag.setText(String.valueOf(degreeSeparatedDefault.getMinuteRight()));
+            binding.etRightSecMeasFrag.setText(String.valueOf(degreeSeparatedDefault.getSecondRight()));
+        } else {
+            binding.etLeftDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeLeft()));
+            binding.etLeftMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteLeft()));
+            binding.etLeftSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondLeft()));
+            binding.etRightDegMeasFrag.setText(String.valueOf(degreeSeparated.getDegreeRight()));
+            binding.etRightMinMeasFrag.setText(String.valueOf(degreeSeparated.getMinuteRight()));
+            binding.etRightSecMeasFrag.setText(String.valueOf(degreeSeparated.getSecondRight()));
+        }
+
         binding.etAzimuthMeasFrag.setText(String.valueOf(measurement.getAzimuth()));
         binding.etTheoDistanceMeasFrag.setText(String.valueOf(measurement.getDistance()));
         binding.etTheoHeightMeasFrag.setText(String.valueOf(measurement.getTheoHeight()));
