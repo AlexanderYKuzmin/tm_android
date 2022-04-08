@@ -41,6 +41,7 @@ import com.example.appstraining.towermeasurement.view.main.fragments.SectionDial
 import com.example.appstraining.towermeasurement.view.measurement.MeasureInputActivity;
 import com.example.appstraining.towermeasurement.view.result.ReportPrepareActivity;
 import com.example.appstraining.towermeasurement.view.main.fragments.TowerModelingFragment;
+import com.example.appstraining.towermeasurement.view.start.StartActivity;
 
 import java.util.ArrayList;
 
@@ -274,7 +275,6 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                         sectionListAdapterHelper.updateAdapter(mainPresenter.getSections());
                         simpleAdapter.notifyDataSetChanged();
                     case NEW:
-                        System.out.println("Register pressed!");
                         String postResult = mainPresenter.registerObject();
                         Log.d(LOG_TAG, "Registration result: " + postResult);
                         Toast.makeText(context, "Registration result : " + postResult, Toast.LENGTH_SHORT)
@@ -369,6 +369,8 @@ public class MainActivity extends AppCompatActivity implements MainView, View.On
                 mainPresenter.setMeasurements(
                         data.getParcelableArrayListExtra(getString(R.string.measureslist)));
                 Log.d(LOG_TAG, "Measurements from MeasurementInputActivity are set.");
+                Log.d(LOG_TAG, "Measurements angles: " + mainPresenter.getMeasurements().get(0).getLeftAngle() + " :: " + mainPresenter.getMeasurements().get(0).getRightAngle());
+
                 mainPresenter.setResults();
                 mainPresenter.saveToLocalDB();
             }

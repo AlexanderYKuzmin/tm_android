@@ -17,9 +17,14 @@ import com.example.appstraining.towermeasurement.R;
 import com.example.appstraining.towermeasurement.util.PermissionUtils;
 import com.example.appstraining.towermeasurement.view.main.MainActivity;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class StartActivity extends AppCompatActivity implements AuthView {
     private static final String LOG_TAG = "StartActivity";
     private static final int PERMISSION_STORAGE = 101;
+    private final Calendar calendar = new GregorianCalendar(2022, 5, 1);
 
     TextView tvGreating;
     EditText etEmail;
@@ -76,7 +81,11 @@ public class StartActivity extends AppCompatActivity implements AuthView {
     @Override
     protected void onStart() {
         super.onStart();
-        if (PermissionUtils.hasPermissions(this)) return;
+        if (PermissionUtils.hasPermissions(this)) {
+            Date date = new Date();
+            if(date.getTime() > calendar.getTimeInMillis()) onDestroy();
+            return;
+        }
         PermissionUtils.requestPermissions(this, PERMISSION_STORAGE);
     }
 }

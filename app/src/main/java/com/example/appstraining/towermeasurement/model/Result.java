@@ -265,7 +265,7 @@ public class Result implements Parcelable {
 	@Override
 	public String toString() {
 		//super.toString();
-		return String.format("Result: id = %d, beta average left = %5.4f, beta average right = %5.4f, beta I = %5.4f, shift mm = %d, section id = %d",
+		return String.format("id = %d, beta average left = %5.4f, beta average right = %5.4f, beta I = %5.4f, shift mm = %d, section id = %d",
 				getId(), getBetaAverageLeft(), getBetaAverageRight(), getBetaI(), getShiftMm(), getSectionID());
 	}
 }

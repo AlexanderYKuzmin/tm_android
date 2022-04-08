@@ -127,6 +127,8 @@ public class MainPresenter implements LifecycleObserver {
                 sectionNumber = i + 1;
                 building.addSection(new Section(0, sectionNumber, widthBottom, widthTop,
                         sectionHeight, level, name, id));
+
+                //level = sectionHeight
             }
         }
 
@@ -198,12 +200,6 @@ public class MainPresenter implements LifecycleObserver {
         mMainActivity.updateView(activityMode);
 
         if (building != null && building.getId() != null) {
-            /*mMainActivity.updateView(context.getString(R.string.title_view_selected)
-                    , String.valueOf(building.getId())
-                    , building.getName(), building.getAddress()
-                    , String.valueOf(building.getType()), String.valueOf(building.getConfig())
-                    , String.valueOf(building.getHeight()), String.valueOf(building.getNumberOfSections())
-            );*/
             Bundle bundle = new Bundle();
             bundle.putFloatArray("towerflats", drawPreparation.getDrawingSequence(TOWER_FLATS));
             bundle.putFloatArray("toweredges", drawPreparation.getDrawingSequence(TOWER_EDGES));
@@ -213,7 +209,7 @@ public class MainPresenter implements LifecycleObserver {
             if (building.getMeasurements() != null) {
                 setResults();
             }
-            mMainActivity.showAnimatedModel(bundle);
+            //mMainActivity.showAnimatedModel(bundle);
         }
     }
 
@@ -372,6 +368,7 @@ public class MainPresenter implements LifecycleObserver {
     public String registerObject() {
         /*OkHttpClient okHttpClient = new OkHttpClient();
         return  RuVdsServer.POST(okHttpClient, building, RequestCode.REGISTER);*/
+        BuildingStructureValidation.checkAndRepairSectionListSecondaryData(building.getSections());
         if (BuildingStructureValidation.isSectionListConsistent(building.getSections(), building.getHeight())) {
             building.setId(0L);
             long id = dbExplorer.save(building);

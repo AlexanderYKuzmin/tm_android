@@ -1,8 +1,11 @@
 package com.example.appstraining.towermeasurement.model;
 
+import android.annotation.SuppressLint;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
+
+import androidx.annotation.NonNull;
 
 import java.sql.Date;
 import java.text.ParseException;
@@ -235,6 +238,12 @@ public class Measurement implements Parcelable {
 	public void setAzimuth(int azimuth) {
 		this.azimuth = azimuth;
 	}
-	
-	
+
+	@SuppressLint("DefaultLocale")
+	@NonNull
+	@Override
+	public String toString() {
+		return String.format("id = %d, leftAngle = %6.4f, rightAngle = %6.4f, date = %s",
+				getId(), getLeftAngle(), getRightAngle(), dateFormat.format(new Date(date.getTime())) );
+	}
 }

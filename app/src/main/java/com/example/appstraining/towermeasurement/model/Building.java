@@ -1,5 +1,9 @@
 package com.example.appstraining.towermeasurement.model;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+
 import java.sql.Date;
 import java.util.ArrayList;
 
@@ -233,4 +237,20 @@ public class Building {
 
 		return (int)Math.round(getSection(sectionNum).getLevel() * shiftLimitForBuildingType);
 	}
+
+	@SuppressLint("DefaultLocale")
+	@NonNull
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
+		sb.append(String.format("id = %d, name = %s, height = %d, number of sections = %d\n", getId(), getName(), getHeight(), getNumberOfSections()));
+		if (!measurements.isEmpty()) {
+			for(int i = 0; i < measurements.size(); i++) {
+				sb.append(String.format("measurement_id = %d, sec_num = %d, left = %6.4f, right = %6.4f \n",
+						measurements.get(i).getId(), measurements.get(i).getSectionNumber(), measurements.get(i).getLeftAngle(), measurements.get(i).getRightAngle()));
+			}
+		}
+		return sb.toString();
+	}
+
 }

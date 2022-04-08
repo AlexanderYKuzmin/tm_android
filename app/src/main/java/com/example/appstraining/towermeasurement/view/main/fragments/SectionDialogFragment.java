@@ -63,7 +63,6 @@ public class SectionDialogFragment extends DialogFragment {
                         etWidthTop.getText().toString(),
                         etHeight.getText().toString()
                 );
-                Log.d(LOG_TAG, "OK pressed!!");
             }
         })
                 .setNegativeButton(R.string.btn_section_dialog_fragment_main_cancel_ru, new DialogInterface.OnClickListener() {

@@ -8,18 +8,20 @@ import java.util.List;
 public class BuildingStructureValidation {
 
     public static boolean isSectionDataConsistent(Section section) {
-        if (section.getWidthBottom() > 0 && section.getWidthTop() > 0 && section.getHeight() > 0) {
-            return true;
-        }
-        return false;
+        return section.getWidthBottom() > 0 && section.getWidthTop() > 0 && section.getHeight() > 0;
     }
 
     public static boolean isSectionListConsistent(List<Section> sectionList, int buildingHeight) {
         int sumOfSectionHeight = sectionList.stream().mapToInt(Section::getHeight).sum();
-        if (buildingHeight == sumOfSectionHeight) {
-            return true;
+        return buildingHeight == sumOfSectionHeight;
+    }
+
+    public static void checkAndRepairSectionListSecondaryData(List<Section> sectionList) {
+        int level = 0;
+        for (int i = 0; i < sectionList.size(); i++) {
+            sectionList.get(i).setLevel(level);
+            level += sectionList.get(i).getHeight();
         }
-        return false;
     }
 
     public static boolean isBuildingStructureConsistent(Building building) {

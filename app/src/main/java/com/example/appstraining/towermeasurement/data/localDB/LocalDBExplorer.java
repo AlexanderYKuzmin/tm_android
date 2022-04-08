@@ -55,10 +55,9 @@ public class LocalDBExplorer {
 
     public void update(Building building) {
         if (!localDB.isOpen()) localDB = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "Starting update building in SQLite id = " + building.getId() +
-                "Number of Sections = " + building.getNumberOfSections());
         long b_id = -1, s_id = -1, m_id = -1;                        // excluded for update action
         int updCountB = 0, updCountS = 0, updCountM = 0, updCountR = 0;
+
         updCountB = localDB.update("buildings", getBuildingCV(building, MODE_UPDATE),
                 "b_id = ?", new String[] { String.valueOf(building.getId())});
 
@@ -66,9 +65,10 @@ public class LocalDBExplorer {
 
         for (int i = 0; i < building.getNumberOfSections(); i++) {
             Section section = building.getSection(i + 1);
-            String[] params = {String.valueOf(section.getId()), String.valueOf(section.getBuilding_id())};
+            String[] params = {String.valueOf(section.getNumber()), String.valueOf(section.getBuilding_id())};
             updCountS = localDB.update("sections", getSectionCV(section, b_id, MODE_UPDATE),
-                    "(s_id = ? and s_b_id = ?)", params);
+                    "(s_number = ? and s_b_id = ?)", params);
+
             Log.d(LOG_TAG, "update section = " + updCountS);
         }
         int shift = 0;
@@ -78,26 +78,27 @@ public class LocalDBExplorer {
                 Measurement measurement = building.getMeasurements().get(shift + sec - 1);
 
                 Result result = building.getResults().get(shift + sec - 1);
-                String[] mParams = {String.valueOf(measurement.getId()),
-                        String.valueOf(measurement.getSectionId()),
-                        String.valueOf(measurement.getBuildingId())};
-                String[] rParams = {String.valueOf(result.getId()),
-                        String.valueOf(result.getMeasureID())};
-                Log.d(LOG_TAG, "Update measurement ... m_id = " + measurement.getId() +
-                        "; m_s_id = " + measurement.getSectionId() +
-                        "; m_b_id = " + measurement.getBuildingId()
-                );
+                String[] mParams = {String.valueOf(measurement.getNumber()),
+                        String.valueOf(measurement.getSectionNumber()),
+                        String.valueOf(building.getId())};
 
                 updCountM = localDB.update("measures", getMeasurementCV(measurement, b_id, s_id, MODE_UPDATE),
-                        "(m_id = ? and m_s_id = ? and m_b_id = ?)", mParams);
+                        "(m_number = ? and m_sectionnumber = ? and m_b_id = ?)", mParams);
+
                 Log.d(LOG_TAG, "updated measurement = " + updCountM);
 
-                Log.d(LOG_TAG, "Update result ... r_id = " + result.getId() +
-                        "; r_s_id = " + result.getSectionID() +
-                        "; r_b_id = " + result.getBuildingID()
-                );
+                String query = "select * from measures " +
+                        "where m_b_id = ? and m_number = ?;";
+                cursor = localDB.rawQuery(query,new String[] {String.valueOf(building.getId()), String.valueOf(measurement.getNumber())});
+                cursor.moveToFirst();
+                int measure_id = cursor.getInt(cursor.getColumnIndex("m_id"));
+
+                String[] rParams = {String.valueOf(measure_id)};
+
+                Log.d(LOG_TAG, "measure_id = " + measure_id);
+
                 updCountR = localDB.update("results", getResultCV(result, b_id, s_id, m_id, MODE_UPDATE),
-                        "r_id = ? and r_m_id = ?", rParams);
+                        "r_m_id = ?", rParams);
                 Log.d(LOG_TAG, "updated result = " + updCountR);
             }
             shift = shift + building.getNumberOfSections() + 1;
@@ -114,19 +115,16 @@ public class LocalDBExplorer {
         int currentSectionId = 0;
         Building localDBBuilding = new Building();
 
-        ArrayList<Section> reportSections = new ArrayList<>();
+        /*ArrayList<Section> reportSections = new ArrayList<>();
         ArrayList<Measurement> reportMeasurements = new ArrayList<>();
-        ArrayList<Result> reportResults = new ArrayList<>();
-        Log.d(LOG_TAG, "Is database open  : " + localDB.isOpen());
+        ArrayList<Result> reportResults = new ArrayList<>();*/
         String query = "select * from measures " +
                 "inner join results on m_id = r_id " +
                 "inner join sections on m_s_id = s_id " +
                 "inner join buildings on m_b_id = b_id " +
                 "where m_b_id = ?;";
-        cursor = localDB.rawQuery(query,new String[] {String.valueOf(id)});
-        /*cursor = localDB.rawQuery(query, new String[] {"2"});*/
 
-        Log.d(LOG_TAG, "Cursor count " + cursor.getCount());
+        cursor = localDB.rawQuery(query,new String[] {String.valueOf(id)});
         if (cursor != null) {
             if (cursor.moveToFirst()) {
                 cursor.moveToFirst();
@@ -227,10 +225,6 @@ public class LocalDBExplorer {
             Log.d(LOG_TAG, "Cursor is null");
         }
 
-        //return null;
-        //reportBuilding.getSections().sort(Comparator.comparing(Section::getId));
-        //reportBuilding.getMeasurements().sort(Comparator.comparing(Measurement::getId));
-        //reportBuilding.getResults().sort(Comparator.comparing(Result::getId));
         if (isSingleGet) localDB.close();
         return localDBBuilding;
     }
@@ -255,7 +249,6 @@ public class LocalDBExplorer {
                 } while (mapCursor.moveToNext());
             }
         }
-        Log.d(LOG_TAG, "map size = " + localDBBuildingMap.size());
         localDB.close();
         return localDBBuildingMap;
     }
@@ -264,24 +257,18 @@ public class LocalDBExplorer {
     public long save(Building building) {
 
         if (!localDB.isOpen()) localDB = dbHelper.getWritableDatabase();
-        Log.d(LOG_TAG, "Start to insert building ot Local Database");
-        Log.d(LOG_TAG, "Building id = " + building.getId());
-        //building.getSections().sort(Comparator.comparing(Section::getId));
-        long b_id = 0, s_ids[] = new long[building.getNumberOfSections()], m_ids[] = new long[building.getMeasurements().size()];
-        //long lastId = localDB.rawQuery("SELECT MAX(b_id) FROM buildings", null).getInt(0);
-        Log.d(LOG_TAG, "building is new:" + building.isNew());
+
+        long b_id = 0;
+        long[] s_ids = new long[building.getNumberOfSections()];
+        long[] m_ids = new long[building.getMeasurements().size()];
+
         if (!building.isNew()) update(building);
 
-        Log.d(LOG_TAG, "localDB is open: " + localDB.isOpen());
         cursor = localDB.query("buildings", new String[]{"b_id"}, "b_id = ?",
                 new String[] {String.valueOf(building.getId())}, null, null, null);
-        Log.d(LOG_TAG, "cursor getCount() = " + cursor.getCount() + " ...insert");
         if(cursor.getCount() == 0) {
+
             b_id = localDB.insert("buildings", null, getBuildingCV(building, MODE_INSERT));
-            /*for (int i = 0; i < building.getNumberOfSections(); i++) {
-                Section section = building.getSection(i + 1);
-                s_ids[i] = localDB.insert("sections", null, getSectionCV(section, b_id, MODE_INSERT));
-            }*/
 
             long finalB_id = b_id;
             building.getSections().forEach(section -> {
@@ -299,19 +286,12 @@ public class LocalDBExplorer {
                         MODE_INSERT));
             });
 
-            /*int shift = 0; // сдвиг
-            for (int side = 1; side < building.getConfig() + 1; side++) {
-                for (int sec = 1; sec < building.getNumberOfSections() + 2; sec++) { // include top measure
-                    Measurement measurement = building.getMeasurements().get(shift + sec - 1);
-                    Result result = building.getResults().get(shift + sec - 1);
-
-                    m_ids[shift + sec - 1] = localDB.insert("measures", null, getMeasurementCV(measurement, b_id, s_ids[sec - 1], MODE_INSERT));
-                    localDB.insert("results", null, getResultCV(result, b_id, s_id, m_id, MODE_INSERT));
-                }
-                shift += building.getNumberOfSections() + 1;
-            }*/
-
         Log.d(LOG_TAG, "building successfully saved id_b = " + b_id);
+        //************** TEST ************
+            Building checkBuilding = get(finalB_id, true);
+            Log.d(LOG_TAG, "Inserted building is: " + checkBuilding.toString());
+        //********************************
+
         } else {
             update(building);
         }
@@ -381,6 +361,7 @@ public class LocalDBExplorer {
     private ContentValues getSectionCV(Section section, long b_id, int mode) {
         ContentValues cv = new ContentValues();
         //cv.clear();
+        Log.d(LOG_TAG, "Section: " + section.toString());
         switch (mode) {
             case MODE_INSERT:
                 cv.put("s_b_id", b_id);
@@ -397,8 +378,9 @@ public class LocalDBExplorer {
 
     private ContentValues getMeasurementCV(Measurement measurement, long b_id, long s_id, int mode) {
         //cv.clear();
-        Log.d(LOG_TAG, "Prepare to store in local DB. Measurement left angle = " + measurement.getLeftAngle() + "\n"
-        + "Measurement right angle = " + measurement.getRightAngle());
+        /*Log.d(LOG_TAG, "Prepare to store in local DB. Measurement left angle = " + measurement.getLeftAngle() + "\n"
+        + "Measurement right angle = " + measurement.getRightAngle());*/
+        Log.d(LOG_TAG, "Measurement: " + measurement.toString());
         ContentValues cv = new ContentValues();
         switch (mode) {
             case MODE_INSERT:
@@ -424,6 +406,8 @@ public class LocalDBExplorer {
 
     private ContentValues getResultCV(Result result, long b_id, long s_id, long m_id, int mode) {
         ContentValues cv = new ContentValues();
+
+        Log.d(LOG_TAG, "Result: " + result.toString());
         switch (mode) {
             case MODE_INSERT:
                 cv.put("r_s_id", s_id);

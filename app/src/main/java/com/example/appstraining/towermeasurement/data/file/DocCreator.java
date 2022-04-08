@@ -308,6 +308,7 @@ public class DocCreator {
                 table.getRow(rowNum).createCell();
             }*/
             cellData = getCellDataResultTable(rowNum, resultsSideOne, resultsSideTwo);
+            Log.d(LOG_TAG, "cell data ot string: " + cellData[0] + ", " + cellData[1]);
             fillRow(table.getRow(rowNum), cellData, 0, 4, false);
         }
     }
@@ -316,11 +317,9 @@ public class DocCreator {
 
     private void fillRow(XWPFTableRow row, String[] cellsData, int from, int to, boolean isTitle) {
         List<XWPFTableCell> cellsList = row.getTableCells();
-        //System.out.println(cellsList.size());
 
         //int spacing = 10;
         for(int i = from; i < to + 1; i++) {
-            //System.out.println(cellsData[i]);
 
             if (cellsData[i] != null) {
                 cellsList.get(i).removeParagraph(0);
@@ -485,7 +484,9 @@ public class DocCreator {
 
     private String[] getCellDataResultTable(int rowNum, List<Result> resultTableSideOne, List<Result> resultTableSideTwo) {
         String[] cellDataResultTable = new String[5];
-
+        for (int i = 0; i < building.getLevels().length; i++) {
+            Log.d(LOG_TAG, " level " + i + " = " + building.getLevels()[i]);
+        }
         cellDataResultTable[0] = String.valueOf(building.getLevels()[rowNum]);
         cellDataResultTable[1] = String.valueOf(building.getShiftLimitBySection(rowNum + 1));
         cellDataResultTable[2] = String.valueOf(resultTableSideOne.get(rowNum).getShiftMm());

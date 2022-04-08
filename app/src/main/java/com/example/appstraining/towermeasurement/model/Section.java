@@ -1,5 +1,9 @@
 package com.example.appstraining.towermeasurement.model;
 
+import android.annotation.SuppressLint;
+
+import androidx.annotation.NonNull;
+
 public class Section {
 	private int id;
 	private int number;
@@ -90,5 +94,12 @@ public class Section {
 	public void setBuilding_id(Long building_id) {
 		this.building_id = building_id;
 	}
-	
+
+	@SuppressLint("DefaultLocale")
+	@NonNull
+	@Override
+	public String toString() {
+		return String.format("Section to String: id = %d, number = %d, width bottom = %d, width top = %d, height = %d",
+				getId(), getNumber(), getWidthBottom(), getWidthTop(), getHeight());
+	}
 }
